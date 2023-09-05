@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import xyz.interfacesejong.interfaceapi.user.dto.UserDTO;
 import xyz.interfacesejong.interfaceapi.user.dto.UserInfoResponse;
 import xyz.interfacesejong.interfaceapi.user.service.UserService;
-import xyz.interfacesejong.interfaceapi.user.domain.User;
 
 import java.util.HashMap;
 import java.util.List;

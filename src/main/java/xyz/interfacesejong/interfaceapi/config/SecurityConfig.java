@@ -13,6 +13,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChai(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
                 .csrf().disable()
+                .cors().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).disable()
                 .formLogin().disable()
                 .httpBasic().disable();
