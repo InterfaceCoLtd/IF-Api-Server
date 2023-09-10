@@ -73,7 +73,7 @@ public class sejongAuth {
         return null;
     }
 
-    public void sendPost(String studentId, String password, String jsessionId) {
+    public void sendPost(String studentId, String password, String jsessionId) throws IOException{
 
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
@@ -88,14 +88,11 @@ public class sejongAuth {
                 .method("POST", body)
                 .addHeader("Cookie", "JSESSIONID=" + jsessionId)
                 .build();
-        try {
-            Response response = client.newCall(request).execute();
 
+        try (Response response = client.newCall(request).execute()) {
             LOGGER.info("[sendPost] " + response);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
+
     }
 
     public StudentDTO sendGet(String jsessionId) throws IOException {
@@ -108,22 +105,18 @@ public class sejongAuth {
                 .addHeader("Cookie", "JSESSIONID=" + jsessionId)
                 .build();
 
-        Response response = client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
 
-        LOGGER.info("[sendGet] " + response);
+            LOGGER.info("[sendGet] " + response);
 
-        List<String> list = extractDataFromHtml(response.body() != null ? response.body().string() : null);
-
-        return StudentDTO.builder()
-                .major(list.get(0))
-                .studentId(list.get(1))
-                .studentName(list.get(2))
-                .grade(list.get(3))
-                .enrolled(list.get(4))
-                .build();
+            if (response.body() != null) {
+                return extractDataFromHtml(response.body().string());
+            } else
+                return null;
+        }
     }
 
-    public List<String> extractDataFromHtml(String html) {
+    public StudentDTO extractDataFromHtml(String html) {
         List<String> dataList = new ArrayList<>();
         Document doc = Jsoup.parse(html);
 
@@ -133,6 +126,12 @@ public class sejongAuth {
             dataList.add(element.text());
         }
 
-        return dataList;
+        return StudentDTO.builder()
+                .major(dataList.get(0))
+                .studentId(dataList.get(1))
+                .studentName(dataList.get(2))
+                .grade(dataList.get(3))
+                .enrolled(dataList.get(4))
+                .build();
     }
 }
