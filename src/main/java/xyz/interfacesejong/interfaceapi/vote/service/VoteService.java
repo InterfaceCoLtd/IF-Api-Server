@@ -16,7 +16,9 @@ import xyz.interfacesejong.interfaceapi.vote.dto.*;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -76,22 +78,16 @@ public class VoteService {
     * 특정 주제에 대한 옵션 및 현황 조회
     * */
     @Transactional
-    public List<OptionDTO> getOptions(Long id) {
-        Optional<VoteSubject> optionalSubjects = subjectRepository.findById(id);
-        if (optionalSubjects.isPresent()) {
-            List<OptionDTO> options = optionalSubjects.get().getVoteOptions().stream()
-                    .map(option -> OptionDTO.builder()
-                            .option(option.getOption())
-                            .count(option.getCount())
-                            .build())
-                    .collect(Collectors.toList());
+    public List<Map<String, Integer>> getOptions(Long id) {
+        VoteSubject subject = subjectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Non Exist Subject"));
 
-            LOGGER.info("[getOptions] " + id + "에 대한 옵션 조회");
-            return options;
-        } else {
-            LOGGER.info("[getOptions] 존재하지 않는 투표 조회");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unregistered Subject");
-        }
+        List<Map<String, Integer>> options = subject.getVoteOptions().stream()
+                .map(option -> Collections.singletonMap(option.getOption(), option.getCount()))
+                .collect(Collectors.toList());
+
+        LOGGER.info("[getOptions] " + id + "에 대한 옵션 조회");
+        return options;
     }
 
     /*
@@ -112,6 +108,11 @@ public class VoteService {
         if (hasVote){
             LOGGER.info("[vote] 이미 투표한 유저");
             throw new EntityExistsException("Already Voted User");
+        }
+
+        if (!option.getVoteSubject().getId().equals(subject.getId())){
+            LOGGER.info("[vote] 잘못된 참조 관계");
+            throw new IllegalArgumentException("Invalid Relation");
         }
 
         VoteVoter voter = VoteVoter.builder()

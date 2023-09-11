@@ -10,11 +10,8 @@ import lombok.NoArgsConstructor;
 public class OptionDTO {
     private String option;
 
-    private Integer count;
-
     @Builder
-    public OptionDTO(String option, Integer count) {
+    public OptionDTO(String option) {
         this.option = option;
-        this.count = count;
     }
 }

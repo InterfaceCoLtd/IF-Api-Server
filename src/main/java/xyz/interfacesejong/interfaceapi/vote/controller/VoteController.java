@@ -13,6 +13,7 @@ import xyz.interfacesejong.interfaceapi.vote.dto.VoterDTO;
 import xyz.interfacesejong.interfaceapi.vote.service.VoteService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/vote")
@@ -26,7 +27,7 @@ public class VoteController {
     ResponseEntity<String> registerVote(@RequestBody VoteDTO voteDTO) {
         String ret = voteService.saveVote(voteDTO);
 
-        LOGGER.info("[registerVote] 투표 등록");
+        LOGGER.info("[registerVote] 투표 등록 완료");
         return new ResponseEntity<>(ret, HttpStatus.CREATED);
     }
 
@@ -39,8 +40,8 @@ public class VoteController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<List<OptionDTO>> getOptionById(@PathVariable Long id) {
-        List<OptionDTO> options = voteService.getOptions(id);
+    ResponseEntity<List<Map<String, Integer>>> getOptionById(@PathVariable Long id) {
+        List<Map<String, Integer>> options = voteService.getOptions(id);
 
         LOGGER.info("[getOptionById] " + id + " 투표 조회");
         return new ResponseEntity<>(options, HttpStatus.OK);
