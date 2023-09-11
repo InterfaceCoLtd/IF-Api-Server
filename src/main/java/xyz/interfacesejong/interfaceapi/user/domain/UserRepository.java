@@ -6,5 +6,6 @@ import javax.persistence.Id;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Id> {
+    User findById(Long id);
     Optional<User> findByEmail(String email);
 }
