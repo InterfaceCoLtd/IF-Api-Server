@@ -23,10 +23,14 @@ public class VoteSubject {
     @OneToMany(mappedBy = "voteSubject", cascade = CascadeType.ALL)
     private List<VoteOption> voteOptions;
 
+    @OneToMany(mappedBy = "voteSubject", cascade = CascadeType.ALL)
+    private List<VoteVoter> voteVoters;
+
     @Builder
-    public VoteSubject(Long id, String subject, List<VoteOption> voteOptions) {
+    public VoteSubject(Long id, String subject, List<VoteOption> voteOptions, List<VoteVoter> voteVoters) {
         this.id = id;
         this.subject = subject;
         this.voteOptions = voteOptions;
+        this.voteVoters = voteVoters;
     }
 }

@@ -6,6 +6,6 @@ import xyz.interfacesejong.interfaceapi.vote.domain.VoteSubject;
 import javax.persistence.Id;
 import java.util.Optional;
 
-public interface VoteSubjectRepository extends JpaRepository<VoteSubject, Id> {
+public interface VoteSubjectRepository extends JpaRepository<VoteSubject, Long> {
     Optional<VoteSubject> findById(Long id);
 }

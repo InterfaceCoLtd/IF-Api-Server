@@ -33,7 +33,7 @@ public class UserService {
     }
 
     @Transactional
-    public void save(String email, String password) throws Exception{
+    public void save(String email, String password) throws EntityExistsException{
         Optional<User> isExistUser = userRepository.findByEmail(email);
         if (isExistUser.isPresent()){
             throw new EntityExistsException("이미 등록된 계정입니다.");

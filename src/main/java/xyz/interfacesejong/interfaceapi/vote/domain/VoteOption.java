@@ -25,12 +25,21 @@ public class VoteOption {
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private VoteSubject voteSubject;
+
+    @OneToMany(mappedBy = "voteOption", cascade = CascadeType.ALL)
+    private List<VoteVoter> voteVoters;
+
     @Builder
-    public VoteOption(Long id, String option, Integer count, VoteSubject voteSubject) {
+    public VoteOption(Long id, String option, Integer count, VoteSubject voteSubject, List<VoteVoter> voteVoters) {
         this.id = id;
         this.option = option;
         this.count = count;
         this.voteSubject = voteSubject;
+        this.voteVoters = voteVoters;
+    }
+
+    public void addCount(){
+        ++count;
     }
 
 }
