@@ -17,11 +17,12 @@ public class VoteOption extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "option_id")
-    Long id;
+    private Long id;
 
-    String option;
+    private String option;
 
-    Integer count;
+    @Column(insertable = true, updatable = true)
+    private int count = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
@@ -31,7 +32,7 @@ public class VoteOption extends BaseTime {
     private List<VoteVoter> voteVoters;
 
     @Builder
-    public VoteOption(Long id, String option, Integer count, VoteSubject voteSubject, List<VoteVoter> voteVoters) {
+    public VoteOption(Long id, String option, int count, VoteSubject voteSubject, List<VoteVoter> voteVoters) {
         this.id = id;
         this.option = option;
         this.count = count;

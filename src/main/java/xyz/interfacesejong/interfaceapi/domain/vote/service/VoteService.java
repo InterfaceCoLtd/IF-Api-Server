@@ -41,7 +41,6 @@ public class VoteService {
         for (OptionDTO option : voteDTO.getOptions()) {
             VoteOption voteOption = VoteOption.builder()
                     .voteSubject(voteSubject)
-                    .count(0)
                     .option(option.getOption())
                     .build();
 
