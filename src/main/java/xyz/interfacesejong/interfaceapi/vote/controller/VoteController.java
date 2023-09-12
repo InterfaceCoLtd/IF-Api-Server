@@ -6,14 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.interfacesejong.interfaceapi.vote.dto.OptionDTO;
-import xyz.interfacesejong.interfaceapi.vote.dto.SubjectDTO;
-import xyz.interfacesejong.interfaceapi.vote.dto.VoteDTO;
-import xyz.interfacesejong.interfaceapi.vote.dto.VoterDTO;
+import xyz.interfacesejong.interfaceapi.vote.dto.*;
 import xyz.interfacesejong.interfaceapi.vote.service.VoteService;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/vote")
@@ -40,11 +36,11 @@ public class VoteController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<List<Map<String, Integer>>> getOptionById(@PathVariable Long id) {
-        List<Map<String, Integer>> options = voteService.getOptions(id);
+    ResponseEntity<OptionResponse> getOptionById(@PathVariable Long id) {
+        OptionResponse optionResponse = voteService.getOptions(id);
 
         LOGGER.info("[getOptionById] " + id + " 투표 조회");
-        return new ResponseEntity<>(options, HttpStatus.OK);
+        return new ResponseEntity<>(optionResponse, HttpStatus.OK);
     }
 
     @PostMapping

@@ -5,16 +5,21 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class SubjectDTO {
-    private Long subjectId;
-
+public class OptionResponse {
     private String subject;
 
+    private List<OptionDTO> options;
+
+    private Integer total;
+
     @Builder
-    public SubjectDTO(String subject, Long subjectId) {
+    public OptionResponse(String subject, List<OptionDTO> options, Integer total) {
         this.subject = subject;
-        this.subjectId = subjectId;
+        this.options = options;
+        this.total = total;
     }
 }

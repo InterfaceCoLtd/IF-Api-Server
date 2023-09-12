@@ -22,7 +22,7 @@ public class VoteOption {
 
     Integer count;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
     private VoteSubject voteSubject;
 

@@ -3,23 +3,16 @@ package xyz.interfacesejong.interfaceapi.vote.service;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 import xyz.interfacesejong.interfaceapi.user.domain.User;
 import xyz.interfacesejong.interfaceapi.user.domain.UserRepository;
-import xyz.interfacesejong.interfaceapi.vote.domain.VoteOption;
-import xyz.interfacesejong.interfaceapi.vote.domain.VoteSubject;
-import xyz.interfacesejong.interfaceapi.vote.domain.VoteVoter;
+import xyz.interfacesejong.interfaceapi.vote.domain.*;
 import xyz.interfacesejong.interfaceapi.vote.dto.*;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,6 +60,7 @@ public class VoteService {
         List<SubjectDTO> subjects = subjectRepository.findAll().stream()
                 .map(subject -> SubjectDTO.builder()
                         .subject(subject.getSubject())
+                        .subjectId(subject.getId())
                         .build())
                 .collect(Collectors.toList());
 
@@ -78,16 +72,25 @@ public class VoteService {
     * 특정 주제에 대한 옵션 및 현황 조회
     * */
     @Transactional
-    public List<Map<String, Integer>> getOptions(Long id) {
+    public OptionResponse getOptions(Long id) {
         VoteSubject subject = subjectRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Non Exist Subject"));
 
-        List<Map<String, Integer>> options = subject.getVoteOptions().stream()
-                .map(option -> Collections.singletonMap(option.getOption(), option.getCount()))
-                .collect(Collectors.toList());
+        OptionResponse optionResponse = OptionResponse.builder()
+                        .subject(subject.getSubject())
+                        .options(subject.getVoteOptions().stream()
+                                .map(voteOption -> OptionDTO.builder()
+                                        .optionId(voteOption.getId())
+                                        .option(voteOption.getOption())
+                                        .count(voteOption.getCount())
+                                        .build())
+                                .collect(Collectors.toList()))
+                        .total(subject.getVoteOptions().stream()
+                                .mapToInt(VoteOption::getCount).sum())
+                        .build();
 
         LOGGER.info("[getOptions] " + id + "에 대한 옵션 조회");
-        return options;
+        return optionResponse;
     }
 
     /*

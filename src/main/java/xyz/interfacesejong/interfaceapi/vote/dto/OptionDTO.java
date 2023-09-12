@@ -8,10 +8,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class OptionDTO {
+    private Long optionId;
+
     private String option;
 
+    private Integer count;
+
+
     @Builder
-    public OptionDTO(String option) {
+    public OptionDTO(String option, Long optionId, Integer count) {
         this.option = option;
+        this.count = count;
+        this.optionId = optionId;
     }
 }
