@@ -56,7 +56,7 @@ public class VoteController {
             return new ResponseEntity<>("Missing Field", HttpStatus.BAD_REQUEST);
         } else {
             voteService.vote(voterDTO);
-            
+
             LOGGER.info("[vote] 투표 등록 완료");
             return new ResponseEntity<>("Suceess", HttpStatus.OK);
         }
