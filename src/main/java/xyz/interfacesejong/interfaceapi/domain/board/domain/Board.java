@@ -1,13 +1,12 @@
 package xyz.interfacesejong.interfaceapi.domain.board.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter

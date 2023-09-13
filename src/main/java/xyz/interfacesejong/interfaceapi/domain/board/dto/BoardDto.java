@@ -1,14 +1,14 @@
 package xyz.interfacesejong.interfaceapi.domain.board.dto;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
+import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardDto {
     private Long id;

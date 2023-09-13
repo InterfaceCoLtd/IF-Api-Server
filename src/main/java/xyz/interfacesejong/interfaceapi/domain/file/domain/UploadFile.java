@@ -2,18 +2,21 @@ package xyz.interfacesejong.interfaceapi.domain.file.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@NoArgsConstructor
 public class UploadFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;  // 파일 id
-    @ManyToOne
+    @ManyToOne(targetEntity = Board.class)
     @JoinColumn(name = "board_id")
-    private Long boardId;  // 게시글 id
+    private Board board;  // 게시글 id
     @Column
     private String originalName;  // 파일 원래이름
     @Column
@@ -28,7 +31,7 @@ public class UploadFile {
         this.size = size;
     }
 
-    public void setBoardId(Long boardId) {
-        this.boardId = boardId;
+    public void setBoard(Board board) {
+        this.board = board;
     }
 }

@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class User extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    //@Column(name = "user_id")
     private Long id;
 
     private String email;
