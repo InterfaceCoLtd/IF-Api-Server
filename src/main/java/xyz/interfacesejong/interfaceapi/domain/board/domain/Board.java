@@ -28,9 +28,15 @@ public class Board extends BaseTime {
     private User writer;
 
     @Builder
-    public Board(String title, String content, User writer) {
+    public Board(Long id, String title, String content, User writer) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
+    }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 }
