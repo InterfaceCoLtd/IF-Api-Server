@@ -3,9 +3,13 @@ package xyz.interfacesejong.interfaceapi.domain.board.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardDto;
 import xyz.interfacesejong.interfaceapi.domain.board.service.BoardService;
+import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
+import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
+import xyz.interfacesejong.interfaceapi.global.util.FileUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -16,21 +20,21 @@ public class BoardController {
 
     private final BoardService boardService;
     private final UserService userService;
+    private final FileService fileService;
+    private final FileUtils fileUtils;
 
-    public BoardController(BoardService boardService, UserService userService) {
+    public BoardController(BoardService boardService, UserService userService, FileService fileService, FileUtils fileUtils) {
         this.boardService = boardService;
         this.userService = userService;
+        this.fileService = fileService;
+        this.fileUtils = fileUtils;
     }
 
     // 글작성
     @PostMapping("/create")
-    public ResponseEntity<BoardDto> create(@RequestBody Map<String, String> param) throws Exception {
-        String title = param.get("title");
-        String content = param.get("content");
-        Long user_id = Long.parseLong(param.get("user_id"));
+    public ResponseEntity<BoardDto> create(@ModelAttribute BoardDto boardDto, @RequestParam List<MultipartFile> multipartFileList) throws Exception {
 
-        BoardDto boardDto = new BoardDto(0L, title, content, user_id);
-        boardService.save(boardDto);
+        boardService.save(boardDto, multipartFileList);
 
         return ResponseEntity.ok(boardDto);
     }
