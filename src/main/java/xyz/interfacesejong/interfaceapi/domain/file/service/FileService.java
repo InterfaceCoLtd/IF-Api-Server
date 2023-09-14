@@ -17,9 +17,9 @@ public class FileService {
     private final FileRepository fileRepository;
     private final BoardRepository boardRepository;
 
-    public void saveFiles(Long boardId, List<UploadFile> fileList) {
+    public void saveFiles(Board board, List<UploadFile> fileList) {
         if(CollectionUtils.isEmpty(fileList)) return;
-        Board board = boardRepository.findById(boardId);
+        System.out.println("saveFiles board : "+ board.getId());
         for(UploadFile file : fileList) {
             file.setBoard(board);
             fileRepository.save(file);

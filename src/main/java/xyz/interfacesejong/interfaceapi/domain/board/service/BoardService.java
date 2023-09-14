@@ -31,11 +31,6 @@ public class BoardService {
     @Transactional
     public void save(BoardDto boardDto, List<MultipartFile> multipartFileList) throws Exception {
 
-        System.out.println("user_id : " + boardDto.getUserId());
-        List<User> userList = userRepository.findAll();
-        User user = userList.get(0);
-        System.out.println("user_id : " + user.getId() + ", user_email : " + user.getEmail());
-
         Board board = Board.builder()
                 .title(boardDto.getTitle())
                 .content(boardDto.getContent())
@@ -45,7 +40,7 @@ public class BoardService {
 
         if(!multipartFileList.isEmpty()) {
             List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList);
-            fileService.saveFiles(board.getId(), uploadFileList);
+            fileService.saveFiles(board, uploadFileList);
         }
     }
 

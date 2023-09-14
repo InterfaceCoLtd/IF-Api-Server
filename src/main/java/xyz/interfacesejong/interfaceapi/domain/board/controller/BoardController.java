@@ -31,12 +31,8 @@ public class BoardController {
 
     // 글작성
     @PostMapping("/create")
-    public ResponseEntity<BoardDto> create(@ModelAttribute BoardDto boardDto, @RequestPart("file") List<MultipartFile> multipartFileList) throws Exception {
-//        String title = param.get("title");
-//        String content = param.get("content");
-//        Long user_id = Long.parseLong(param.get("user_id"));
-//
-//        BoardDto boardDto = new BoardDto(title, content, user_id);
+    public ResponseEntity<BoardDto> create(@ModelAttribute BoardDto boardDto, @RequestParam List<MultipartFile> multipartFileList) throws Exception {
+
         boardService.save(boardDto, multipartFileList);
 
         return ResponseEntity.ok(boardDto);

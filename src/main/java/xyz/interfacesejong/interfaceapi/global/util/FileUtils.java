@@ -8,6 +8,8 @@ import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -34,16 +36,20 @@ public class FileUtils {
         if(multipartFile.isEmpty()) return null;
 
         String saveName = createSaveFileName(multipartFile.getOriginalFilename());
-        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
+        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
-        // 기본 업로드 위치 + 날짜 디렉터리 생성 후 파일 업로드
-        File dir = new File(rootUploadPath + File.separator + date);
-        if(!dir.exists()) dir.mkdirs();
-        String uploadPath = dir.getPath();
-        File uploadFile = new File(uploadPath);
+        // 기본 업로드 위치 + 날짜 디렉터리 생성
+        String uploadDir = rootUploadPath+File.separator+date;
+        File dir = new File(uploadDir);
+        if(!dir.exists()) dir.mkdir();
+
+        // 파일 업로드
+        Path path = Paths.get(uploadDir).toAbsolutePath().normalize();
+        String filename = multipartFile.getOriginalFilename();
+        Path targetPath = path.resolve(filename).normalize();
 
         try {
-            multipartFile.transferTo(uploadFile);
+            multipartFile.transferTo(targetPath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
