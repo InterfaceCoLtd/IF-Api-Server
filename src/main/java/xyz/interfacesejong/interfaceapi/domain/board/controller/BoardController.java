@@ -1,5 +1,6 @@
 package xyz.interfacesejong.interfaceapi.domain.board.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,6 +53,29 @@ public class BoardController {
     @GetMapping("/findById")
     public ResponseEntity<BoardDto> findById(@RequestParam("id")Long id) throws Exception {
         return ResponseEntity.ok(boardService.findById(id));
+    }
+
+    // 글삭제
+    @DeleteMapping("/delete")
+    public ResponseEntity<BoardDto> delete(@RequestParam("id") Long id) throws Exception {
+        boardService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //글수정
+    @PutMapping("/update")
+    public ResponseEntity<BoardDto> update(@RequestBody Map<String,String> param) throws Exception {
+        String idString = param.get("id");
+        Long id = Long.parseLong(idString);
+        String title = param.get("title");
+        String content = param.get("content");
+        String userIdString = param.get("userId");
+        Long userId = Long.parseLong(userIdString);
+
+        BoardDto updatedBoardDto = new BoardDto(id, title, content, userId);
+        updatedBoardDto = boardService.update(updatedBoardDto);
+
+        return ResponseEntity.ok(updatedBoardDto);
     }
 
 }

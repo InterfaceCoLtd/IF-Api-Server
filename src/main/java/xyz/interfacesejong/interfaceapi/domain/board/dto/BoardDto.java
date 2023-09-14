@@ -28,8 +28,8 @@ public class BoardDto {
         this.modifiedDate = board.getModifiedDate();
     }
 
-    @Builder
-    public BoardDto(String title, String content, Long userId) {
+    public BoardDto(Long id, String title, String content, Long userId) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.userId = userId;
