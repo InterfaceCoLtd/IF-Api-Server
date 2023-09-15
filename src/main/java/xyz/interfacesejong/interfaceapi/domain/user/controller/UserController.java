@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserDTO;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserInfoResponse;
 import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
+import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,11 +21,13 @@ public class UserController {
 
     private final UserService userService;
 
+    @Timer
     @GetMapping("/getAll")
     public ResponseEntity<List<UserInfoResponse>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
+    @Timer
     @PostMapping("/register")
     public ResponseEntity<Map<String,String>> registerUser(UserDTO userDTO){
 

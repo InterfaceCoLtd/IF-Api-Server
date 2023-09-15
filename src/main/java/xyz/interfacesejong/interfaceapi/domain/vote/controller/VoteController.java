@@ -11,6 +11,7 @@ import xyz.interfacesejong.interfaceapi.domain.vote.dto.SubjectDTO;
 import xyz.interfacesejong.interfaceapi.domain.vote.dto.VoteDTO;
 import xyz.interfacesejong.interfaceapi.domain.vote.dto.VoterDTO;
 import xyz.interfacesejong.interfaceapi.domain.vote.service.VoteService;
+import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 
 import java.util.List;
 
@@ -22,7 +23,8 @@ public class VoteController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(VoteController.class);
 
-    @PostMapping("/register")
+    @Timer
+    @PostMapping("create")
     ResponseEntity<String> registerVote(@RequestBody VoteDTO voteDTO) {
         String ret = voteService.saveVote(voteDTO);
 
@@ -30,24 +32,27 @@ public class VoteController {
         return new ResponseEntity<>(ret, HttpStatus.CREATED);
     }
 
-    @GetMapping("/0")
-    ResponseEntity<List<SubjectDTO>> getAllSubject() {
+    @Timer
+    @GetMapping("find/0")
+    ResponseEntity<List<SubjectDTO>> findAllSubject() {
         List<SubjectDTO> subjects = voteService.getAllSubjects();
 
         LOGGER.info("[getAllSubject] 모든 투표 조회");
         return new ResponseEntity<>(subjects, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    ResponseEntity<OptionResponse> getOptionById(@PathVariable Long id) {
+    @Timer
+    @GetMapping("find/{id}")
+    ResponseEntity<OptionResponse> findOptionById(@PathVariable Long id) {
         OptionResponse optionResponse = voteService.getOptions(id);
 
         LOGGER.info("[getOptionById] " + id + " 투표 조회");
         return new ResponseEntity<>(optionResponse, HttpStatus.OK);
     }
 
-    @PostMapping
-    ResponseEntity<String> vote(@RequestBody VoterDTO voterDTO) {
+    @Timer
+    @PostMapping("register")
+    ResponseEntity<String> registerVote(@RequestBody VoterDTO voterDTO) {
         if (voterDTO.getSubjectId() == null ||
                 voterDTO.getOptionId() == null ||
                 voterDTO.getUserId() == null) {
