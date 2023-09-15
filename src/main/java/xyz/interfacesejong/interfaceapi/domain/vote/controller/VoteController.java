@@ -11,6 +11,7 @@ import xyz.interfacesejong.interfaceapi.domain.vote.dto.SubjectDTO;
 import xyz.interfacesejong.interfaceapi.domain.vote.dto.VoteDTO;
 import xyz.interfacesejong.interfaceapi.domain.vote.dto.VoterDTO;
 import xyz.interfacesejong.interfaceapi.domain.vote.service.VoteService;
+import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class VoteController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(VoteController.class);
 
+    @Timer
     @PostMapping("/register")
     ResponseEntity<String> registerVote(@RequestBody VoteDTO voteDTO) {
         String ret = voteService.saveVote(voteDTO);
@@ -30,6 +32,7 @@ public class VoteController {
         return new ResponseEntity<>(ret, HttpStatus.CREATED);
     }
 
+    @Timer
     @GetMapping("/0")
     ResponseEntity<List<SubjectDTO>> getAllSubject() {
         List<SubjectDTO> subjects = voteService.getAllSubjects();
@@ -38,6 +41,7 @@ public class VoteController {
         return new ResponseEntity<>(subjects, HttpStatus.OK);
     }
 
+    @Timer
     @GetMapping("/{id}")
     ResponseEntity<OptionResponse> getOptionById(@PathVariable Long id) {
         OptionResponse optionResponse = voteService.getOptions(id);
@@ -46,6 +50,7 @@ public class VoteController {
         return new ResponseEntity<>(optionResponse, HttpStatus.OK);
     }
 
+    @Timer
     @PostMapping
     ResponseEntity<String> vote(@RequestBody VoterDTO voterDTO) {
         if (voterDTO.getSubjectId() == null ||
