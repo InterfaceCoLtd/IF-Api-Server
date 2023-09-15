@@ -24,7 +24,7 @@ public class VoteController {
     private final Logger LOGGER = LoggerFactory.getLogger(VoteController.class);
 
     @Timer
-    @PostMapping("/register")
+    @PostMapping("create")
     ResponseEntity<String> registerVote(@RequestBody VoteDTO voteDTO) {
         String ret = voteService.saveVote(voteDTO);
 
@@ -33,8 +33,8 @@ public class VoteController {
     }
 
     @Timer
-    @GetMapping("/0")
-    ResponseEntity<List<SubjectDTO>> getAllSubject() {
+    @GetMapping("find/0")
+    ResponseEntity<List<SubjectDTO>> findAllSubject() {
         List<SubjectDTO> subjects = voteService.getAllSubjects();
 
         LOGGER.info("[getAllSubject] 모든 투표 조회");
@@ -42,8 +42,8 @@ public class VoteController {
     }
 
     @Timer
-    @GetMapping("/{id}")
-    ResponseEntity<OptionResponse> getOptionById(@PathVariable Long id) {
+    @GetMapping("find/{id}")
+    ResponseEntity<OptionResponse> findOptionById(@PathVariable Long id) {
         OptionResponse optionResponse = voteService.getOptions(id);
 
         LOGGER.info("[getOptionById] " + id + " 투표 조회");
@@ -51,8 +51,8 @@ public class VoteController {
     }
 
     @Timer
-    @PostMapping
-    ResponseEntity<String> vote(@RequestBody VoterDTO voterDTO) {
+    @PostMapping("register")
+    ResponseEntity<String> registerVote(@RequestBody VoterDTO voterDTO) {
         if (voterDTO.getSubjectId() == null ||
                 voterDTO.getOptionId() == null ||
                 voterDTO.getUserId() == null) {
