@@ -23,12 +23,15 @@ public class UploadFile {
     private String saveName;  // 파일 업로드 이름
     @Column
     private long size;  // 파일 크기
+    @Column
+    private String savePath;  // 파일 저장 위치
 
     @Builder
-    public UploadFile(String originalName, String saveName, long size) {
+    public UploadFile(String originalName, String saveName, long size, String savePath) {
         this.originalName = originalName;
         this.saveName = saveName;
         this.size = size;
+        this.savePath = savePath;
     }
 
     public void setBoard(Board board) {
