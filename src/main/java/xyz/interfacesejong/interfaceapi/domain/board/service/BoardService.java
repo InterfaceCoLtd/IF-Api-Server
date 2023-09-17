@@ -87,8 +87,6 @@ public class BoardService {
         Board board=boardRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 게시물이 없습니다."));
 
-        fileService.deleteFilesByBoardId(id);
-
         boardRepository.delete(board);
     }
 

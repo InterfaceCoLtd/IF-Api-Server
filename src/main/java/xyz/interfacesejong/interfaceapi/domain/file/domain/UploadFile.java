@@ -1,5 +1,6 @@
 package xyz.interfacesejong.interfaceapi.domain.file.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +10,12 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UploadFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;  // 파일 id
-    @ManyToOne(targetEntity = Board.class)
+    @ManyToOne(targetEntity = Board.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "board_id")
     private Board board;  // 게시글 id
     @Column

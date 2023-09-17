@@ -2,6 +2,7 @@ package xyz.interfacesejong.interfaceapi.domain.file.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.BoardRepository;
@@ -18,6 +19,7 @@ public class FileService {
 
     private final FileRepository fileRepository;
     private final FileUtils fileUtils;
+    @Transactional
     public void saveFiles(Board board, List<UploadFile> fileList) {
         if(CollectionUtils.isEmpty(fileList)) return;
 
@@ -26,7 +28,7 @@ public class FileService {
             fileRepository.save(file);
         }
     }
-
+    @Transactional
     public void deleteFilesByBoardId(Long id) {
         // 게시글 삭제 시 첨부파일 삭제
         List<UploadFile> uploadFileList = fileRepository.findByBoardId(id);
