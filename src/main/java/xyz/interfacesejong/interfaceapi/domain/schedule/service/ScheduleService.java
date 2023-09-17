@@ -1,4 +1,4 @@
-package xyz.interfacesejong.interfaceapi.domain.Schedule.service;
+package xyz.interfacesejong.interfaceapi.domain.schedule.service;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -8,9 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.Schedule;
-import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.ScheduleRepository;
-import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleDTO;
+import xyz.interfacesejong.interfaceapi.domain.schedule.domain.Schedule;
+import xyz.interfacesejong.interfaceapi.domain.schedule.domain.ScheduleRepository;
+import xyz.interfacesejong.interfaceapi.domain.schedule.dto.ScheduleDTO;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
 import javax.persistence.EntityNotFoundException;
@@ -54,6 +54,7 @@ public class ScheduleService extends BaseTime {
 
         scheduleRepository.save(schedule);
 
+        LOGGER.info("[save] 일정 저장 완료");
         return new ResponseEntity<>(schedule, HttpStatus.CREATED);
     }
 
@@ -64,7 +65,7 @@ public class ScheduleService extends BaseTime {
     public ResponseEntity<List<ScheduleDTO>> findByDateTime(LocalDate date){
         List<ScheduleDTO> schedules = scheduleRepository.findByDateTimeBetween(date.atStartOfDay());
 
-        LOGGER.info("[findByDateTime] ");
+        LOGGER.info("[findByDateTime] {} 일정 조회", date);
         return new ResponseEntity<>(schedules, HttpStatus.OK);
     }
 
@@ -79,7 +80,7 @@ public class ScheduleService extends BaseTime {
 
         List<ScheduleDTO> schedules = scheduleRepository.findByMonth(startOfMonth, endOfMonth);
 
-        LOGGER.info("[findByMonth] {}", month);
+        LOGGER.info("[findByMonth] {}월 일정 조회", month);
         return new ResponseEntity<>(schedules, HttpStatus.OK);
 
     }
@@ -99,6 +100,7 @@ public class ScheduleService extends BaseTime {
                         .allDay(schedule.isAllDay()).build())
                 .collect(Collectors.toList());
 
+        LOGGER.info("[findScheduleAll] 모든 일정 조회");
         return new ResponseEntity<>(schedules, HttpStatus.OK);
     }
 
@@ -117,6 +119,7 @@ public class ScheduleService extends BaseTime {
                 .endDate(schedule.getEndDate())
                 .allDay(schedule.isAllDay()).build();
 
+        LOGGER.info("[findById] {} 일정 조회", id);
         return new ResponseEntity<>(scheduleDTO, HttpStatus.OK);
     }
 
@@ -132,9 +135,11 @@ public class ScheduleService extends BaseTime {
         try {
             scheduleRepository.deleteById(id);
         }catch (EmptyResultDataAccessException exception){
+            LOGGER.info("[delete] 존재하지 않는 id");
             throw new EntityNotFoundException("NON EXIST SCHEDULE");
         }
 
+        LOGGER.info("[delete] {} 일정 삭제", id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
