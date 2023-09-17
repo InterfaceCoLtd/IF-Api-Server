@@ -8,6 +8,7 @@ import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -45,8 +46,9 @@ public class FileUtils {
 
         // 파일 업로드
         Path path = Paths.get(uploadDir).toAbsolutePath().normalize();
-        String filename = multipartFile.getOriginalFilename();
-        Path targetPath = path.resolve(filename).normalize();
+        //String filename = multipartFile.getOriginalFilename();
+        Path targetPath = path.resolve(saveName).normalize();
+        String savePath = targetPath.toString();
 
         try {
             multipartFile.transferTo(targetPath);
@@ -57,7 +59,8 @@ public class FileUtils {
         return UploadFile.builder()
                 .originalName(multipartFile.getOriginalFilename())
                 .saveName(saveName)
-                .size(multipartFile.getSize()).build();
+                .size(multipartFile.getSize())
+                .savePath(savePath).build();
     }
 
     // 디스크에 저장할 파일명
@@ -65,5 +68,14 @@ public class FileUtils {
         String uuid = UUID.randomUUID().toString().replaceAll("-","");
         String ext = StringUtils.getFilenameExtension(filename);
         return uuid+"."+ext;
+    }
+
+    public void deleteFile(UploadFile uploadFile) {
+        try {
+            Path file = Paths.get(uploadFile.getSavePath());
+            Files.deleteIfExists(file);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

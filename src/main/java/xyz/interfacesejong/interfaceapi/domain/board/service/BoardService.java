@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.BoardRepository;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardDto;
+import xyz.interfacesejong.interfaceapi.domain.file.domain.FileRepository;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
@@ -26,6 +27,7 @@ public class BoardService {
     private final UserRepository userRepository;
     private final FileService fileService;
     private final FileUtils fileUtils;
+    private final FileRepository fileRepository;
 
     //게시물 저장
     @Transactional
@@ -84,15 +86,21 @@ public class BoardService {
     public void delete(Long id) throws EntityNotFoundException {
         Board board=boardRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 게시물이 없습니다."));
+
         boardRepository.delete(board);
     }
 
     // 게시물 수정
     @Transactional
-    public BoardDto update(BoardDto updatedBoardDto) throws EntityNotFoundException {
+    public BoardDto update(BoardDto updatedBoardDto, List<MultipartFile> multipartFileList) throws EntityNotFoundException {
         Board board = boardRepository.findById(updatedBoardDto.getId()).orElseThrow(() -> new EntityNotFoundException("해당 게시글이 없습니다."));
-
         board.update(updatedBoardDto.getTitle(), updatedBoardDto.getContent());
+
+        fileService.deleteFilesByBoardId(updatedBoardDto.getId());
+        if(!multipartFileList.isEmpty()) {
+            List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList);
+            fileService.saveFiles(board, uploadFileList);
+        }
 
         return new BoardDto(board);
     }
