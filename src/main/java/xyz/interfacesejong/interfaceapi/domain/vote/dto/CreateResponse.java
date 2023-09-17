@@ -1,7 +1,5 @@
 package xyz.interfacesejong.interfaceapi.domain.vote.dto;
 
-import lombok.Builder;
-import lombok.Setter;
 import xyz.interfacesejong.interfaceapi.domain.vote.domain.VoteOption;
 import xyz.interfacesejong.interfaceapi.domain.vote.domain.VoteSubject;
 
