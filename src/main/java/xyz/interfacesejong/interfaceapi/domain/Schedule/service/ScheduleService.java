@@ -1,6 +1,9 @@
 package xyz.interfacesejong.interfaceapi.domain.Schedule.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,8 @@ import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +25,8 @@ import java.util.stream.Collectors;
 public class ScheduleService extends BaseTime {
 
     private final ScheduleRepository scheduleRepository;
+
+    private final Logger LOGGER = LoggerFactory.getLogger(ScheduleService.class);
 
     /*
     * 일정 생성
@@ -53,12 +60,35 @@ public class ScheduleService extends BaseTime {
     /*
     * 일정 조회
     * */
+    @Transactional
+    public ResponseEntity<List<ScheduleDTO>> findByDateTime(LocalDate date){
+        List<ScheduleDTO> schedules = scheduleRepository.findByDateTimeBetween(date.atStartOfDay());
+
+        LOGGER.info("[findByDateTime] ");
+        return new ResponseEntity<>(schedules, HttpStatus.OK);
+    }
+
+    /*
+    * 달별 일정 조회
+    * */
+    @Transactional
+    public ResponseEntity<List<ScheduleDTO>> findByMonth(Integer month){
+        Year year = Year.of(LocalDate.now().getYear());
+        LocalDateTime startOfMonth = year.atMonth(month).atDay(1).atStartOfDay();
+        LocalDateTime endOfMonth = year.atMonth(month % 12 + 1).atDay(1).atStartOfDay();
+
+        List<ScheduleDTO> schedules = scheduleRepository.findByMonth(startOfMonth, endOfMonth);
+
+        LOGGER.info("[findByMonth] {}", month);
+        return new ResponseEntity<>(schedules, HttpStatus.OK);
+
+    }
 
     /*
     * 모든 일정 조회
     * */
     @Transactional
-    public ResponseEntity<List<ScheduleDTO>> findAllSchedule(){
+    public ResponseEntity<List<ScheduleDTO>> findScheduleAll(){
         List<ScheduleDTO> schedules = scheduleRepository.findAll().stream()
                 .map(schedule -> ScheduleDTO.builder()
                         .id(schedule.getId())
@@ -72,8 +102,10 @@ public class ScheduleService extends BaseTime {
         return new ResponseEntity<>(schedules, HttpStatus.OK);
     }
 
+    /*
+    * id로 일정 조회*/
     @Transactional
-    public ResponseEntity<ScheduleDTO> findScheduleById(Long id) {
+    public ResponseEntity<ScheduleDTO> findById(Long id) {
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Non Exist Schedule"));
 
@@ -88,12 +120,7 @@ public class ScheduleService extends BaseTime {
         return new ResponseEntity<>(scheduleDTO, HttpStatus.OK);
     }
 
-    @Transactional
-    public ResponseEntity<ScheduleDTO> findScheduleByDate(LocalDate date){
-        return null;
-    }
-
-    /*
+    /* TODO 수정 서비스 구현해야 함
     * 일정 수정
     * */
 
@@ -102,8 +129,11 @@ public class ScheduleService extends BaseTime {
     * */
     @Transactional
     public ResponseEntity<Void> delete(Long id){
-        scheduleRepository.delete(scheduleRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Non Exist Schedule")));
+        try {
+            scheduleRepository.deleteById(id);
+        }catch (EmptyResultDataAccessException exception){
+            throw new EntityNotFoundException("Non Exist Schedule");
+        }
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
