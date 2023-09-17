@@ -1,4 +1,4 @@
-package xyz.interfacesejong.interfaceapi.domain.schedule.service;
+package xyz.interfacesejong.interfaceapi.domain.Schedule.service;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -8,9 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.interfacesejong.interfaceapi.domain.schedule.domain.Schedule;
-import xyz.interfacesejong.interfaceapi.domain.schedule.domain.ScheduleRepository;
-import xyz.interfacesejong.interfaceapi.domain.schedule.dto.ScheduleDTO;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.Schedule;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.ScheduleRepository;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleDTO;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
 import javax.persistence.EntityNotFoundException;

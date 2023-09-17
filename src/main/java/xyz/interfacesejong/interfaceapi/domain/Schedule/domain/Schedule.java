@@ -1,4 +1,4 @@
-package xyz.interfacesejong.interfaceapi.domain.schedule.domain;
+package xyz.interfacesejong.interfaceapi.domain.Schedule.domain;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;

@@ -1,12 +1,12 @@
-package xyz.interfacesejong.interfaceapi.domain.schedule.controller;
+package xyz.interfacesejong.interfaceapi.domain.Schedule.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.interfacesejong.interfaceapi.domain.schedule.domain.Schedule;
-import xyz.interfacesejong.interfaceapi.domain.schedule.dto.ScheduleDTO;
-import xyz.interfacesejong.interfaceapi.domain.schedule.service.ScheduleService;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.Schedule;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleDTO;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.service.ScheduleService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 
 import java.time.LocalDate;
