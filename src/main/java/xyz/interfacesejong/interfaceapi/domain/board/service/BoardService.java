@@ -92,10 +92,15 @@ public class BoardService {
 
     // 게시물 수정
     @Transactional
-    public BoardDto update(BoardDto updatedBoardDto) throws EntityNotFoundException {
+    public BoardDto update(BoardDto updatedBoardDto, List<MultipartFile> multipartFileList) throws EntityNotFoundException {
         Board board = boardRepository.findById(updatedBoardDto.getId()).orElseThrow(() -> new EntityNotFoundException("해당 게시글이 없습니다."));
-
         board.update(updatedBoardDto.getTitle(), updatedBoardDto.getContent());
+
+        fileService.deleteFilesByBoardId(updatedBoardDto.getId());
+        if(!multipartFileList.isEmpty()) {
+            List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList);
+            fileService.saveFiles(board, uploadFileList);
+        }
 
         return new BoardDto(board);
     }

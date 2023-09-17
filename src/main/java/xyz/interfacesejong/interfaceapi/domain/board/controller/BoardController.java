@@ -64,16 +64,8 @@ public class BoardController {
 
     //글수정
     @PutMapping("/update")
-    public ResponseEntity<BoardDto> update(@RequestBody Map<String,String> param) throws Exception {
-        String idString = param.get("id");
-        Long id = Long.parseLong(idString);
-        String title = param.get("title");
-        String content = param.get("content");
-        String userIdString = param.get("userId");
-        Long userId = Long.parseLong(userIdString);
-
-        BoardDto updatedBoardDto = new BoardDto(id, title, content, userId);
-        updatedBoardDto = boardService.update(updatedBoardDto);
+    public ResponseEntity<BoardDto> update(@ModelAttribute BoardDto boardDto,@RequestParam List<MultipartFile> multipartFileList) throws Exception {
+        BoardDto updatedBoardDto = boardService.update(boardDto, multipartFileList);
 
         return ResponseEntity.ok(updatedBoardDto);
     }
