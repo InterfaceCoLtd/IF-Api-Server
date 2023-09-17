@@ -107,7 +107,7 @@ public class ScheduleService extends BaseTime {
     @Transactional
     public ResponseEntity<ScheduleDTO> findById(Long id) {
         Schedule schedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Non Exist Schedule"));
+                .orElseThrow(() -> new EntityNotFoundException("NON EXIST SCHEDULE"));
 
         ScheduleDTO scheduleDTO = ScheduleDTO.builder()
                 .id(schedule.getId())
@@ -132,7 +132,7 @@ public class ScheduleService extends BaseTime {
         try {
             scheduleRepository.deleteById(id);
         }catch (EmptyResultDataAccessException exception){
-            throw new EntityNotFoundException("Non Exist Schedule");
+            throw new EntityNotFoundException("NON EXIST SCHEDULE");
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
