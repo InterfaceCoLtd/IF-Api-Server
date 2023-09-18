@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class StudentDTO {
+public class SejongStudentAuthResponse {
     private String major;
 
     private String studentId;
@@ -16,7 +16,7 @@ public class StudentDTO {
     private String enrolled;
 
     @Builder
-    StudentDTO(String major, String studentId, String studentName, String grade, String enrolled){
+    SejongStudentAuthResponse(String major, String studentId, String studentName, String grade, String enrolled){
         this.major = major;
         this.studentId = studentId;
         this.studentName = studentName;

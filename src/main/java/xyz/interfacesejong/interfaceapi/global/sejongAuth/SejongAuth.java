@@ -8,37 +8,35 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import xyz.interfacesejong.interfaceapi.global.sejongAuth.dto.StudentDTO;
+import xyz.interfacesejong.interfaceapi.global.sejongAuth.dto.SejongStudentAuthResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class sejongAuth {
+public class SejongAuth {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(sejongAuth.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(SejongAuth.class);
 
-    public StudentDTO getUserAuthInfos(String studentId, String password) throws IOException {
+    public SejongStudentAuthResponse getUserAuthInfos(String studentId, String password) throws IOException {
 
         String jsessionId = setJsessionId();
-        sendPost(studentId, password, jsessionId);
+        sendPostToSejong(studentId, password, jsessionId);
 
-        return sendGet(jsessionId);
+        return sendGetToSejong(jsessionId);
     }
 
     public String setJsessionId() throws IOException {
 
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
 
         Request request = new Request.Builder()
-                .url("http://classic.sejong.ac.kr")
-                .build();
+                .url("http://classic.sejong.ac.kr").build();
 
         Response response = client.newCall(request).execute();
 
-        LOGGER.info("[setJsessionId] " + response);
+        LOGGER.info("[setJsessionId] {}", response);
 
         Headers headers = response.headers();
 
@@ -47,14 +45,11 @@ public class sejongAuth {
             if ("Set-Cookie".equalsIgnoreCase(name)) {
                 for (String value : values) {
                     if (value.contains("JSESSIONID")) {
-                        String jsessionId = extractJSessionID(value);
-                        System.out.println("JSESSIONID: " + jsessionId);
-                        return jsessionId;
+                        return extractJSessionID(value);
                     }
                 }
             }
         }
-
 
         return null;
     }
@@ -73,29 +68,27 @@ public class sejongAuth {
         return null;
     }
 
-    public void sendPost(String studentId, String password, String jsessionId) throws IOException{
+    public void sendPostToSejong(String studentId, String password, String jsessionId) throws IOException{
 
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
 
-        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+        RequestBody body = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
                 .addFormDataPart("userId", studentId)
-                .addFormDataPart("password", password)
-                .build();
+                .addFormDataPart("password", password).build();
 
         Request request = new Request.Builder()
                 .url("https://classic.sejong.ac.kr/userLogin.do?userId=" + studentId + "&password=" + password)
                 .method("POST", body)
-                .addHeader("Cookie", "JSESSIONID=" + jsessionId)
-                .build();
+                .addHeader("Cookie", "JSESSIONID=" + jsessionId).build();
 
         try (Response response = client.newCall(request).execute()) {
-            LOGGER.info("[sendPost] " + response);
+            LOGGER.debug("[sendPostToSejong] {}", response);
         }
 
     }
 
-    public StudentDTO sendGet(String jsessionId) throws IOException {
+    public SejongStudentAuthResponse sendGetToSejong(String jsessionId) throws IOException {
 
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
@@ -107,7 +100,7 @@ public class sejongAuth {
 
         try (Response response = client.newCall(request).execute()) {
 
-            LOGGER.info("[sendGet] " + response);
+            LOGGER.debug("[sendGetToSejong] {}", response);
 
             if (response.body() != null) {
                 return extractDataFromHtml(response.body().string());
@@ -116,7 +109,7 @@ public class sejongAuth {
         }
     }
 
-    public StudentDTO extractDataFromHtml(String html) {
+    public SejongStudentAuthResponse extractDataFromHtml(String html) {
         List<String> dataList = new ArrayList<>();
         Document doc = Jsoup.parse(html);
 
@@ -126,7 +119,7 @@ public class sejongAuth {
             dataList.add(element.text());
         }
 
-        return StudentDTO.builder()
+        return SejongStudentAuthResponse.builder()
                 .major(dataList.get(0))
                 .studentId(dataList.get(1))
                 .studentName(dataList.get(2))

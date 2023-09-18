@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.mail.MessagingException;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
@@ -31,6 +32,13 @@ public class RestExceptionHandler {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body("{ \"exception\" : \"" + exception.getMessage() + "\" }");
-        }
+    }
+
+    @ExceptionHandler(MessagingException.class)
+    public ResponseEntity<String> messagingException(MessagingException exception){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body("{ \"exception\" : \"" + exception.getMessage() + "\" }");
+    }
 
 }
