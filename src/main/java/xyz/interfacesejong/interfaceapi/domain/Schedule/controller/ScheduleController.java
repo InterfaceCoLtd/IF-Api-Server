@@ -1,12 +1,13 @@
-package xyz.interfacesejong.interfaceapi.domain.schedule.controller;
+package xyz.interfacesejong.interfaceapi.domain.Schedule.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.interfacesejong.interfaceapi.domain.schedule.domain.Schedule;
-import xyz.interfacesejong.interfaceapi.domain.schedule.dto.ScheduleDTO;
-import xyz.interfacesejong.interfaceapi.domain.schedule.service.ScheduleService;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.Schedule;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleDTO;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.service.ScheduleService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 
 import java.time.LocalDate;
@@ -22,36 +23,37 @@ public class ScheduleController {
     @Timer
     @PostMapping("create")
     public ResponseEntity<Schedule> createSchedule(ScheduleDTO scheduleDTO){
-        return scheduleService.save(scheduleDTO);
+        return new ResponseEntity<>(scheduleService.save(scheduleDTO), HttpStatus.CREATED);
     }
 
     @Timer
     @GetMapping("find/all")
     public ResponseEntity<List<ScheduleDTO>> findByAll(){
-        return scheduleService.findScheduleAll();
+        return new ResponseEntity<>(scheduleService.findAllSchedules(), HttpStatus.OK);
     }
 
     @Timer
     @GetMapping("find/{id}")
     public ResponseEntity<ScheduleDTO> findById(@PathVariable Long id){
-        return scheduleService.findById(id);
+        return new ResponseEntity<>(scheduleService.findById(id), HttpStatus.OK);
     }
 
     @Timer
     @GetMapping("find/date/{date}")
     public ResponseEntity<List<ScheduleDTO>> findByDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date){
-        return scheduleService.findByDateTime(date);
+        return new ResponseEntity<>(scheduleService.findByDateTime(date), HttpStatus.OK);
     }
 
     @Timer
     @GetMapping("find/month/{month}")
     public ResponseEntity<List<ScheduleDTO>> findByMonth(@PathVariable Integer month){
-        return scheduleService.findByMonth(month);
+        return new ResponseEntity<>(scheduleService.findByMonth(month), HttpStatus.OK);
     }
 
     @Timer
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id){
-        return scheduleService.delete(id);
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id){
+        scheduleService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

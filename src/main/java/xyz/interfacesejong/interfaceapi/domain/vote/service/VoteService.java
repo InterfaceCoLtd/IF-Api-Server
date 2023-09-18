@@ -32,30 +32,31 @@ public class VoteService {
     * 새로운 투표 주제 등록
     */
     @Transactional
-    public String saveVote(VoteDTO voteDTO) {
+    public CreateResponse save(VoteDTO voteDTO) {
+
         VoteSubject voteSubject = VoteSubject.builder()
                 .subject(voteDTO.getSubject())
                 .build();
-        subjectRepository.save(voteSubject);
 
-        for (OptionDTO option : voteDTO.getOptions()) {
-            VoteOption voteOption = VoteOption.builder()
-                    .voteSubject(voteSubject)
-                    .option(option.getOption())
-                    .build();
+        List<VoteOption> options = voteDTO.getOptions().stream()
+                .map(option -> VoteOption.builder()
+                        .voteSubject(voteSubject)
+                        .option(option.getOption()).build())
+                .collect(Collectors.toList());
 
-            optionRepository.save(voteOption);
-        }
+        CreateResponse createResponse
+                = new CreateResponse(subjectRepository.save(voteSubject), optionRepository.saveAll(options));
 
-        LOGGER.info("[saveVote] 투표 등록");
-        return "Registration complete";
+
+        LOGGER.info("[save] 신규 투표 생성");
+        return createResponse;
     }
 
     /*
     * 모든 투표 주제 조회
     */
     @Transactional
-    public List<SubjectDTO> getAllSubjects() {
+    public List<SubjectDTO> findAllSubjects() {
         List<SubjectDTO> subjects = subjectRepository.findAll().stream()
                 .map(subject -> SubjectDTO.builder()
                         .subject(subject.getSubject())
@@ -63,7 +64,7 @@ public class VoteService {
                         .build())
                 .collect(Collectors.toList());
 
-        LOGGER.info("[getAllSubjects] 모든 투표 조회");
+        LOGGER.info("[findAllSubjects] 모든 투표 조회");
         return subjects;
     }
 
@@ -71,9 +72,9 @@ public class VoteService {
     * 특정 주제에 대한 옵션 및 현황 조회
     * */
     @Transactional
-    public OptionResponse getOptions(Long id) {
+    public OptionResponse findBySubjectId(Long id) {
         VoteSubject subject = subjectRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Non Exist Subject"));
+                .orElseThrow(() -> new EntityNotFoundException("NON EXIST SUBJECT"));
 
         OptionResponse optionResponse = OptionResponse.builder()
                         .subject(subject.getSubject())
@@ -88,33 +89,33 @@ public class VoteService {
                                 .mapToInt(VoteOption::getCount).sum())
                         .build();
 
-        LOGGER.info("[getOptions] " + id + "에 대한 옵션 조회");
+        LOGGER.info("[findBySubjectId] {} 조회 투표 ", id);
         return optionResponse;
     }
 
     /*
-    * 투표 등록
+    * 유저 투표 등록
     */
     @Transactional
     public void vote(VoterDTO voterDTO) {
         VoteSubject subject = subjectRepository.findById(voterDTO.getSubjectId())
-                .orElseThrow(() -> new EntityNotFoundException("Non Exist Subject"));
+                .orElseThrow(() -> new EntityNotFoundException("NON EXIST SUBJECT"));
 
         VoteOption option = optionRepository.findById(voterDTO.getOptionId())
-                .orElseThrow(() -> new EntityNotFoundException("Non Exist Option"));
+                .orElseThrow(() -> new EntityNotFoundException("NON EXIST OPTION"));
 
         User user = userRepository.findById(voterDTO.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("Non Exist User"));
+                .orElseThrow(() -> new EntityNotFoundException("NON EXIST USER"));
 
         boolean hasVote = voterRepository.existsByVoteSubjectAndUser(subject, user);
         if (hasVote){
             LOGGER.info("[vote] 이미 투표한 유저");
-            throw new EntityExistsException("Already Voted User");
+            throw new EntityExistsException("ALREADY VOTED USER");
         }
 
         if (!option.getVoteSubject().getId().equals(subject.getId())){
             LOGGER.info("[vote] 잘못된 참조 관계");
-            throw new IllegalArgumentException("Invalid Relation");
+            throw new IllegalArgumentException("INVALID RELATION");
         }
 
         VoteVoter voter = VoteVoter.builder()
@@ -128,4 +129,12 @@ public class VoteService {
         
         LOGGER.info("[vote] 투표 등록 성공");
     }
+
+    /* TODO update 기능 구현
+    * 유저 재투표
+    * 투포 수정 */
+    
+    /* TODO delete 기능 구현
+    * 유저 투표 철회
+    * 투표 삭제 */
 }

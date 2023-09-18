@@ -1,16 +1,14 @@
-package xyz.interfacesejong.interfaceapi.domain.schedule.service;
+package xyz.interfacesejong.interfaceapi.domain.Schedule.service;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.interfacesejong.interfaceapi.domain.schedule.domain.Schedule;
-import xyz.interfacesejong.interfaceapi.domain.schedule.domain.ScheduleRepository;
-import xyz.interfacesejong.interfaceapi.domain.schedule.dto.ScheduleDTO;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.Schedule;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.ScheduleRepository;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleDTO;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
 import javax.persistence.EntityNotFoundException;
@@ -32,48 +30,46 @@ public class ScheduleService extends BaseTime {
     * 일정 생성
     * */
     @Transactional
-    public ResponseEntity<Schedule> save(ScheduleDTO scheduleDTO){
+    public Schedule save(ScheduleDTO scheduleDTO){
         Schedule schedule;
         if (scheduleDTO.isAllDay()){
-            schedule = Schedule.builder()
+            schedule = scheduleRepository.save(Schedule.builder()
                     .title(scheduleDTO.getTitle())
                     .description(scheduleDTO.getDescription())
                     .startDate(scheduleDTO.getStartDate().withHour(0).withMinute(0).withSecond(0))
                     .endDate(scheduleDTO.getEndDate().withHour(23).withMinute(59).withSecond(59))
                     .allDay(scheduleDTO.isAllDay())
-                    .type(scheduleDTO.getType()).build();
+                    .type(scheduleDTO.getType()).build());
         }else{
-            schedule = Schedule.builder()
+            schedule = scheduleRepository.save(Schedule.builder()
                     .title(scheduleDTO.getTitle())
                     .description(scheduleDTO.getDescription())
                     .startDate(scheduleDTO.getStartDate())
                     .endDate(scheduleDTO.getEndDate())
                     .allDay(scheduleDTO.isAllDay())
-                    .type(scheduleDTO.getType()).build();
+                    .type(scheduleDTO.getType()).build());
         }
 
-        scheduleRepository.save(schedule);
-
         LOGGER.info("[save] 일정 저장 완료");
-        return new ResponseEntity<>(schedule, HttpStatus.CREATED);
+        return schedule;
     }
 
     /*
     * 일정 조회
     * */
     @Transactional
-    public ResponseEntity<List<ScheduleDTO>> findByDateTime(LocalDate date){
+    public List<ScheduleDTO> findByDateTime(LocalDate date){
         List<ScheduleDTO> schedules = scheduleRepository.findByDateTimeBetween(date.atStartOfDay());
 
         LOGGER.info("[findByDateTime] {} 일정 조회", date);
-        return new ResponseEntity<>(schedules, HttpStatus.OK);
+        return schedules;
     }
 
     /*
     * 달별 일정 조회
     * */
     @Transactional
-    public ResponseEntity<List<ScheduleDTO>> findByMonth(Integer month){
+    public List<ScheduleDTO> findByMonth(Integer month){
         Year year = Year.of(LocalDate.now().getYear());
         LocalDateTime startOfMonth = year.atMonth(month).atDay(1).atStartOfDay();
         LocalDateTime endOfMonth = year.atMonth(month % 12 + 1).atDay(1).atStartOfDay();
@@ -81,7 +77,7 @@ public class ScheduleService extends BaseTime {
         List<ScheduleDTO> schedules = scheduleRepository.findByMonth(startOfMonth, endOfMonth);
 
         LOGGER.info("[findByMonth] {}월 일정 조회", month);
-        return new ResponseEntity<>(schedules, HttpStatus.OK);
+        return schedules;
 
     }
 
@@ -89,7 +85,7 @@ public class ScheduleService extends BaseTime {
     * 모든 일정 조회
     * */
     @Transactional
-    public ResponseEntity<List<ScheduleDTO>> findScheduleAll(){
+    public List<ScheduleDTO> findAllSchedules(){
         List<ScheduleDTO> schedules = scheduleRepository.findAll().stream()
                 .map(schedule -> ScheduleDTO.builder()
                         .id(schedule.getId())
@@ -101,13 +97,13 @@ public class ScheduleService extends BaseTime {
                 .collect(Collectors.toList());
 
         LOGGER.info("[findScheduleAll] 모든 일정 조회");
-        return new ResponseEntity<>(schedules, HttpStatus.OK);
+        return schedules;
     }
 
     /*
     * id로 일정 조회*/
     @Transactional
-    public ResponseEntity<ScheduleDTO> findById(Long id) {
+    public ScheduleDTO findById(Long id) {
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("NON EXIST SCHEDULE"));
 
@@ -120,7 +116,7 @@ public class ScheduleService extends BaseTime {
                 .allDay(schedule.isAllDay()).build();
 
         LOGGER.info("[findById] {} 일정 조회", id);
-        return new ResponseEntity<>(scheduleDTO, HttpStatus.OK);
+        return scheduleDTO;
     }
 
     /* TODO 수정 서비스 구현해야 함
@@ -131,7 +127,7 @@ public class ScheduleService extends BaseTime {
     * 일정 제거
     * */
     @Transactional
-    public ResponseEntity<Void> delete(Long id){
+    public void deleteById(Long id){
         try {
             scheduleRepository.deleteById(id);
         }catch (EmptyResultDataAccessException exception){
@@ -140,7 +136,6 @@ public class ScheduleService extends BaseTime {
         }
 
         LOGGER.info("[delete] {} 일정 삭제", id);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
