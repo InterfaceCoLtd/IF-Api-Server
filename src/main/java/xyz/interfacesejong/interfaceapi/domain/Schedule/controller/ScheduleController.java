@@ -29,7 +29,7 @@ public class ScheduleController {
     @Timer
     @GetMapping("find/all")
     public ResponseEntity<List<ScheduleDTO>> findByAll(){
-        return new ResponseEntity<>(scheduleService.findScheduleAll(), HttpStatus.OK);
+        return new ResponseEntity<>(scheduleService.findAllSchedules(), HttpStatus.OK);
     }
 
     @Timer
@@ -52,7 +52,8 @@ public class ScheduleController {
 
     @Timer
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id){
+        scheduleService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

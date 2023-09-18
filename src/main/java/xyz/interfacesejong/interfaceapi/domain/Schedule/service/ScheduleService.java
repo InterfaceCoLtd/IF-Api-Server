@@ -85,7 +85,7 @@ public class ScheduleService extends BaseTime {
     * 모든 일정 조회
     * */
     @Transactional
-    public List<ScheduleDTO> findScheduleAll(){
+    public List<ScheduleDTO> findAllSchedules(){
         List<ScheduleDTO> schedules = scheduleRepository.findAll().stream()
                 .map(schedule -> ScheduleDTO.builder()
                         .id(schedule.getId())
@@ -127,7 +127,7 @@ public class ScheduleService extends BaseTime {
     * 일정 제거
     * */
     @Transactional
-    public void delete(Long id){
+    public void deleteById(Long id){
         try {
             scheduleRepository.deleteById(id);
         }catch (EmptyResultDataAccessException exception){

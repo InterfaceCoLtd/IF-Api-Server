@@ -9,12 +9,9 @@ public class UserInfoResponse {
 
     private String email;
 
-    private String password;
-
     @Builder
     UserInfoResponse(Long id, String email, String password){
         this.id = id;
         this.email = email;
-        this.password = password;
     }
 }

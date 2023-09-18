@@ -1,18 +1,16 @@
 package xyz.interfacesejong.interfaceapi.domain.user.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserDTO;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserInfoResponse;
 import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,22 +20,14 @@ public class UserController {
     private final UserService userService;
 
     @Timer
-    @GetMapping("/getAll")
-    public ResponseEntity<List<UserInfoResponse>> getAllUsers(){
-        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+    @GetMapping("/find/all")
+    public ResponseEntity<List<UserInfoResponse>> findUserAll(){
+        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
 
     @Timer
-    @PostMapping("/register")
-    public ResponseEntity<Map<String,String>> registerUser(UserDTO userDTO){
-
-        userService.save(userDTO.getEmail(), userDTO.getPassword());
-
-        Map<String, String> map = new HashMap<>();
-        map.put("type", HttpStatus.OK.getReasonPhrase());
-        map.put("code", "200");
-        map.put("message", "계정 등록에 성공.");
-
-        return new ResponseEntity<>(map, new HttpHeaders(), HttpStatus.OK);
+    @PostMapping("/create")
+    public ResponseEntity<User> createUser(UserDTO userDTO){
+        return new ResponseEntity<>(userService.save(userDTO), HttpStatus.CREATED);
     }
 }

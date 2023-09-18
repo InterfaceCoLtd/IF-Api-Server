@@ -22,7 +22,7 @@ public class VoteController {
 
     @Timer
     @PostMapping("create")
-    ResponseEntity<CreateResponse> create(@RequestBody VoteDTO voteDTO) {
+    ResponseEntity<CreateResponse> createVote(@RequestBody VoteDTO voteDTO) {
         return new ResponseEntity<>(voteService.save(voteDTO), HttpStatus.CREATED);
     }
 
@@ -34,7 +34,7 @@ public class VoteController {
 
     @Timer
     @GetMapping("find/{id}")
-    ResponseEntity<OptionResponse> findOptionById(@PathVariable Long id) {
+    ResponseEntity<OptionResponse> findBySubjectId(@PathVariable Long id) {
         return new ResponseEntity<>(voteService.findBySubjectId(id), HttpStatus.OK);
     }
 
