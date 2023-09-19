@@ -31,15 +31,17 @@ public class Board extends BaseTime {
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<UploadFile> uploadFiles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "Board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
+
     @Builder
-    public Board(Long id, String title, String content, User writer, List<UploadFile> uploadFiles) {
+    public Board(Long id, String title, String content, User writer, List<UploadFile> uploadFiles,List<Comment> comments) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
         this.uploadFiles = uploadFiles;
+        this.comments=comments;
     }
 
     public void update(String title, String content) {

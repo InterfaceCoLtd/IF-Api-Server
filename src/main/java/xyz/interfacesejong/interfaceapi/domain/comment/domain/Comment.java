@@ -17,17 +17,17 @@ import javax.persistence.*;
 public class Comment extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; //댓글 id
 
     @Column
-    private String c_content;
+    private String c_content; //댓글 내용
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User c_writer;
+    private User c_writer; // 사용자 id
 
     @ManyToOne
     @JoinColumn(name = "board_id")
-    private Board board;
+    private Board board; //게시글 id
 
     @Builder
     public Comment(String c_content, User c_writer, Board board) {
