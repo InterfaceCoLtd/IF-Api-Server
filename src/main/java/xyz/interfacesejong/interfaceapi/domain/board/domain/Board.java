@@ -1,6 +1,7 @@
 package xyz.interfacesejong.interfaceapi.domain.board.domain;
 
 import lombok.*;
+import xyz.interfacesejong.interfaceapi.domain.comment.domain.Comment;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
@@ -30,6 +31,8 @@ public class Board extends BaseTime {
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<UploadFile> uploadFiles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "Board", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
     @Builder
     public Board(Long id, String title, String content, User writer, List<UploadFile> uploadFiles) {
         this.id = id;
