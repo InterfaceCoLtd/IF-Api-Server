@@ -21,7 +21,7 @@ public class VoteOption extends BaseTime {
 
     private String option;
 
-    @Column(insertable = true, updatable = true)
+    @Column(insertable = true)
     private int count = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)

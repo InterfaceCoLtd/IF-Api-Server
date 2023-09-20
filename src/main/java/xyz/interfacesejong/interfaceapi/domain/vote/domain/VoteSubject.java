@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,6 +22,13 @@ public class VoteSubject extends BaseTime {
 
     private String subject;
 
+    private LocalDateTime statDateTime;
+
+    private LocalDateTime endDateTime;
+
+    @Column(insertable = true)
+    private int total = 0;
+
     @OneToMany(mappedBy = "voteSubject", cascade = CascadeType.ALL)
     private List<VoteOption> voteOptions;
 
@@ -28,10 +36,17 @@ public class VoteSubject extends BaseTime {
     private List<VoteVoter> voteVoters;
 
     @Builder
-    public VoteSubject(Long id, String subject, List<VoteOption> voteOptions, List<VoteVoter> voteVoters) {
+    public VoteSubject(Long id, String subject, LocalDateTime statDateTime, LocalDateTime endDateTime, int total, List<VoteOption> voteOptions, List<VoteVoter> voteVoters) {
         this.id = id;
         this.subject = subject;
+        this.statDateTime = statDateTime;
+        this.endDateTime = endDateTime;
+        this.total = total;
         this.voteOptions = voteOptions;
         this.voteVoters = voteVoters;
+    }
+
+    public void addTotal(){
+        ++total;
     }
 }

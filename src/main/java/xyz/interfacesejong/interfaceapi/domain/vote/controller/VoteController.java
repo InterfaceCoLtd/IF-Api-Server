@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xyz.interfacesejong.interfaceapi.domain.vote.domain.Status;
 import xyz.interfacesejong.interfaceapi.domain.vote.dto.*;
 import xyz.interfacesejong.interfaceapi.domain.vote.service.VoteService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
@@ -28,9 +29,9 @@ public class VoteController {
     * 투표 주제 등록*/
     @Timer
     @PostMapping()
-    @Operation(summary = "투표 주제 등록", description = "투표 주제와 하위 선택지를 등록합니다.")
-    ResponseEntity<CreateResponse> createVote(@RequestBody VoteDTO voteDTO) {
-        return new ResponseEntity<>(voteService.saveVote(voteDTO), HttpStatus.CREATED);
+    @Operation(summary = "투표 주제 등록", description = "투표 주제와 기한, 하위 선택지를 등록합니다.")
+    ResponseEntity<CreateResponse> createVote(@RequestBody SubjectRequest subjectRequest) {
+        return new ResponseEntity<>(voteService.saveVote(subjectRequest), HttpStatus.CREATED);
     }
 
     /*
@@ -41,6 +42,22 @@ public class VoteController {
     ResponseEntity<List<SubjectDTO>> findAllSubjects() {
         return new ResponseEntity<>(voteService.findAllSubjects(), HttpStatus.OK);
     }
+
+    @Timer
+    @GetMapping("subjects")
+    @Operation(summary = "투표 상태별 조회", description = "투표를 상태 구분에 따라 조회합니다.\n 현재 'ONGOING'만 구현됨")
+    ResponseEntity<List<SubjectDTO>> findSubjectsByStatus(@RequestParam Status status){
+        if (status == Status.ONGOING){
+            return new ResponseEntity<>(voteService.findOngoingSubjects(), HttpStatus.OK);
+        } else if (status == Status.UPCOMING){
+            return null;
+        } else if (status == Status.COMPLETED){
+            return null;
+        } else {
+            throw new IllegalArgumentException("ILLEGAL STATUS");
+        }
+    }
+
 
     /*
     * 주제 id로 투표 조회*/

@@ -12,6 +12,7 @@ import xyz.interfacesejong.interfaceapi.domain.vote.dto.*;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,11 +33,14 @@ public class VoteService {
     * 새로운 투표 주제 등록
     */
     @Transactional
-    public CreateResponse saveVote(VoteDTO voteDTO) {
+    public CreateResponse saveVote(SubjectRequest subjectRequest) {
         VoteSubject voteSubject = VoteSubject.builder()
-                .subject(voteDTO.getSubject()).build();
+                .subject(subjectRequest.getSubject())
+                .statDateTime(subjectRequest.getStartDateTime())
+                .endDateTime(subjectRequest.getEndDateTime())
+                .build();
 
-        List<VoteOption> options = voteDTO.getOptions().stream()
+        List<VoteOption> options = subjectRequest.getOptions().stream()
                 .map(option -> VoteOption.builder()
                         .voteSubject(voteSubject)
                         .option(option.getOption()).build())
@@ -49,7 +53,7 @@ public class VoteService {
         return createResponse;
     }
 
-    /*
+    /*x`
     * 모든 투표 주제 조회
     */
     @Transactional
@@ -62,6 +66,17 @@ public class VoteService {
                 .collect(Collectors.toList());
 
         LOGGER.info("[findAllSubjects] 모든 투표 조회");
+        return subjects;
+    }
+
+    /*
+    * 진행 중인 투표 주제 조회
+    * */
+    @Transactional
+    public List<SubjectDTO> findOngoingSubjects(){
+        List<SubjectDTO> subjects = subjectRepository.findAllByOngoing(LocalDateTime.now());
+
+        LOGGER.info("[findAllByOngoing] 활성된 투표 조회");
         return subjects;
     }
 
@@ -123,6 +138,9 @@ public class VoteService {
 
         option.addCount();
         optionRepository.save(option);
+
+        subject.addTotal();
+        subjectRepository.save(subject);
         
         LOGGER.info("[vote] 투표 등록 성공");
     }
