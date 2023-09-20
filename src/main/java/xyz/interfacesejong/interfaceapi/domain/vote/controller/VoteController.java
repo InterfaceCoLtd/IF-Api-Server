@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/votes")
 @RequiredArgsConstructor
-@Tag(name = "vote", description = "투표 API")
+@Tag(name = "Vote", description = "투표 API")
 public class VoteController {
     private final VoteService voteService;
 
@@ -45,10 +45,10 @@ public class VoteController {
     /*
     * 주제 id로 투표 조회*/
     @Timer
-    @GetMapping("subject/{id}")
+    @GetMapping("subject/{subjectId}")
     @Operation(summary = "투표 주제 상세 조회", description = "해당 id의 투표 주제와 선택지 정보를 조회합니다.")
-    ResponseEntity<OptionResponse> findBySubjectId(@PathVariable Long id) {
-        return new ResponseEntity<>(voteService.findBySubjectId(id), HttpStatus.OK);
+    ResponseEntity<OptionResponse> findBySubjectId(@PathVariable Long subjectId) {
+        return new ResponseEntity<>(voteService.findBySubjectId(subjectId), HttpStatus.OK);
     }
 
     @Timer
