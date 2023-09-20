@@ -137,4 +137,10 @@ public class VoteService {
     /* TODO delete 기능 구현
     * 유저 투표 철회
     * 투표 삭제 */
+    @Transactional
+    public void delete(Long id){
+        try {
+
+        }
+    }
 }

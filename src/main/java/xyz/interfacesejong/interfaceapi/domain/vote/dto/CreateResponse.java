@@ -1,10 +1,12 @@
 package xyz.interfacesejong.interfaceapi.domain.vote.dto;
 
+import lombok.Getter;
 import xyz.interfacesejong.interfaceapi.domain.vote.domain.VoteOption;
 import xyz.interfacesejong.interfaceapi.domain.vote.domain.VoteSubject;
 
 import java.util.List;
 
+@Getter
 public class CreateResponse {
     VoteSubject subject;
 

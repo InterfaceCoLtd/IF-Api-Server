@@ -5,6 +5,8 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +22,7 @@ public class TokenProvider {
     @Value("${jwt.secret}")
     private String secretKey = "0123456789defaultSecretKey0123456789";
 
+    private final Logger LOGGER = LoggerFactory.getLogger(TokenProvider.class);
     private final Long VALIDITY_TIME = 60 * 60 * 1000L;
 
     @PostConstruct
@@ -37,6 +40,7 @@ public class TokenProvider {
                 .setExpiration(new Date(now.getTime() + VALIDITY_TIME))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
+
         return token;
     }
 
