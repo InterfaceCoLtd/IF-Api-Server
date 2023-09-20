@@ -17,27 +17,26 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/user")
+@RequestMapping("api/users")
 public class UserController {
 
     private final UserService userService;
 
     private final AuthEmail authEmail;
-
     @Timer
-    @GetMapping("find/all")
-    public ResponseEntity<List<UserInfoResponse>> findUserAll(){
-        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
-    }
-
-    @Timer
-    @PostMapping("create")
+    @PostMapping()
     public ResponseEntity<User> createUser(UserDTO userDTO){
         return new ResponseEntity<>(userService.save(userDTO), HttpStatus.CREATED);
     }
 
     @Timer
-    @GetMapping("mail/{email}")
+    @GetMapping()
+    public ResponseEntity<List<UserInfoResponse>> findAllUsers(){
+        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
+    }
+
+    @Timer
+    @PostMapping("auth/email/{email}")
     public ResponseEntity<AuthEmailResponse> sendAuthMail(@PathVariable String email) throws MessagingException {
         AuthEmailResponse authEmailResponse = authEmail.sendMessage(email);
         return new ResponseEntity<>(authEmailResponse, HttpStatus.OK);

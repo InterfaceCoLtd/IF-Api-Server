@@ -14,44 +14,44 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/schedule")
+@RequestMapping("/api/schedules")
 @RequiredArgsConstructor
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
     @Timer
-    @PostMapping("create")
+    @PostMapping()
     public ResponseEntity<Schedule> createSchedule(ScheduleDTO scheduleDTO){
         return new ResponseEntity<>(scheduleService.save(scheduleDTO), HttpStatus.CREATED);
     }
 
     @Timer
-    @GetMapping("find/all")
-    public ResponseEntity<List<ScheduleDTO>> findByAll(){
+    @GetMapping()
+    public ResponseEntity<List<ScheduleDTO>> findAllSchedules(){
         return new ResponseEntity<>(scheduleService.findAllSchedules(), HttpStatus.OK);
     }
 
     @Timer
-    @GetMapping("find/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<ScheduleDTO> findById(@PathVariable Long id){
         return new ResponseEntity<>(scheduleService.findById(id), HttpStatus.OK);
     }
 
     @Timer
-    @GetMapping("find/date/{date}")
+    @GetMapping("date/{date}")
     public ResponseEntity<List<ScheduleDTO>> findByDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date){
         return new ResponseEntity<>(scheduleService.findByDateTime(date), HttpStatus.OK);
     }
 
     @Timer
-    @GetMapping("find/month/{month}")
+    @GetMapping("month/{month}")
     public ResponseEntity<List<ScheduleDTO>> findByMonth(@PathVariable Integer month){
         return new ResponseEntity<>(scheduleService.findByMonth(month), HttpStatus.OK);
     }
 
     @Timer
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteSchedule(@PathVariable Long id){
         scheduleService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
