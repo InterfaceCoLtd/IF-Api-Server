@@ -5,12 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
-import xyz.interfacesejong.interfaceapi.domain.board.domain.BoardRepository;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.FileRepository;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 import xyz.interfacesejong.interfaceapi.global.util.FileUtils;
 
-import java.nio.file.Path;
 import java.util.List;
 
 @Service
@@ -28,6 +26,13 @@ public class FileService {
             fileRepository.save(file);
         }
     }
+
+    @Transactional
+    public List<UploadFile> getAllUploadFiles(Long id) throws Exception {
+        List<UploadFile> uploadFileList = fileRepository.findByBoardId(id);
+        return uploadFileList;
+    }
+
     @Transactional
     public void deleteFilesByBoardId(Long id) {
         // 게시글 삭제 시 첨부파일 삭제
