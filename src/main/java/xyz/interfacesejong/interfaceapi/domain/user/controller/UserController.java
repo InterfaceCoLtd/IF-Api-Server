@@ -1,5 +1,7 @@
 package xyz.interfacesejong.interfaceapi.domain.user.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,27 +19,29 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/user")
+@RequestMapping("api/users")
+@Tag(name = "User")
 public class UserController {
 
     private final UserService userService;
 
     private final AuthEmail authEmail;
-
     @Timer
-    @GetMapping("find/all")
-    public ResponseEntity<List<UserInfoResponse>> findUserAll(){
-        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
-    }
-
-    @Timer
-    @PostMapping("create")
+    @PostMapping()
+    @Operation(summary = "신규 유저 등록", description = "신규 유저를 생성합니다.")
     public ResponseEntity<User> createUser(UserDTO userDTO){
         return new ResponseEntity<>(userService.save(userDTO), HttpStatus.CREATED);
     }
 
     @Timer
-    @GetMapping("mail/{email}")
+    @GetMapping()
+    @Operation(summary = "전체 유저 조회", description = "모든 유저를 조회합니다.")
+    public ResponseEntity<List<UserInfoResponse>> findAllUsers(){
+        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
+    }
+
+    @Timer
+    @PostMapping("auth/email/{email}")
     public ResponseEntity<AuthEmailResponse> sendAuthMail(@PathVariable String email) throws MessagingException {
         AuthEmailResponse authEmailResponse = authEmail.sendMessage(email);
         return new ResponseEntity<>(authEmailResponse, HttpStatus.OK);

@@ -31,7 +31,7 @@ public class RestExceptionHandler {
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException exception){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body("{ \"exception\" : \"" + exception.getMessage() + "\" }");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(httpHeaders).body("{ \"exception\" : \"" + exception.getMessage() + "\" }");
     }
 
     @ExceptionHandler(MessagingException.class)

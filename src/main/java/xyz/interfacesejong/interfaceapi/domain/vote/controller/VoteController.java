@@ -1,5 +1,8 @@
 package xyz.interfacesejong.interfaceapi.domain.vote.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,33 +16,45 @@ import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/vote")
+@RequestMapping("api/votes")
 @RequiredArgsConstructor
+@Tag(name = "Vote", description = "투표 API")
 public class VoteController {
     private final VoteService voteService;
 
     private final Logger LOGGER = LoggerFactory.getLogger(VoteController.class);
 
+    /*
+    * 투표 주제 등록*/
     @Timer
-    @PostMapping("create")
+    @PostMapping()
+    @Operation(summary = "투표 주제 등록", description = "투표 주제와 하위 선택지를 등록합니다.")
     ResponseEntity<CreateResponse> createVote(@RequestBody VoteDTO voteDTO) {
-        return new ResponseEntity<>(voteService.save(voteDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(voteService.saveVote(voteDTO), HttpStatus.CREATED);
     }
 
+    /*
+    * 모든 투표 조회*/
     @Timer
-    @GetMapping("find/all")
-    ResponseEntity<List<SubjectDTO>> findAllSubject() {
+    @GetMapping()
+    @Operation(summary = "투표 주제 전체 조회", description = "모든 투표 주제를 조회합니다.")
+    ResponseEntity<List<SubjectDTO>> findAllSubjects() {
         return new ResponseEntity<>(voteService.findAllSubjects(), HttpStatus.OK);
     }
 
+    /*
+    * 주제 id로 투표 조회*/
     @Timer
-    @GetMapping("find/{id}")
-    ResponseEntity<OptionResponse> findBySubjectId(@PathVariable Long id) {
-        return new ResponseEntity<>(voteService.findBySubjectId(id), HttpStatus.OK);
+    @GetMapping("subject/{subjectId}")
+    @Operation(summary = "투표 주제 상세 조회", description = "해당 id의 투표 주제와 선택지 정보를 조회합니다.")
+    ResponseEntity<OptionResponse> findBySubjectId(@PathVariable Long subjectId) {
+        return new ResponseEntity<>(voteService.findBySubjectId(subjectId), HttpStatus.OK);
     }
 
     @Timer
-    @PostMapping("register")
+    @PostMapping("voter")
+    @Operation(summary = "투표자 등록", description = "투표자와 선택을 등록합니다.")
+    @ApiResponses()
     ResponseEntity<String> registerVote(@RequestBody VoterDTO voterDTO) {
         if (voterDTO.getSubjectId() == null ||
                 voterDTO.getOptionId() == null ||

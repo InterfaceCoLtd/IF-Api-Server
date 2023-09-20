@@ -32,11 +32,9 @@ public class VoteService {
     * 새로운 투표 주제 등록
     */
     @Transactional
-    public CreateResponse save(VoteDTO voteDTO) {
-
+    public CreateResponse saveVote(VoteDTO voteDTO) {
         VoteSubject voteSubject = VoteSubject.builder()
-                .subject(voteDTO.getSubject())
-                .build();
+                .subject(voteDTO.getSubject()).build();
 
         List<VoteOption> options = voteDTO.getOptions().stream()
                 .map(option -> VoteOption.builder()
@@ -46,7 +44,6 @@ public class VoteService {
 
         CreateResponse createResponse
                 = new CreateResponse(subjectRepository.save(voteSubject), optionRepository.saveAll(options));
-
 
         LOGGER.info("[save] 신규 투표 생성");
         return createResponse;
@@ -136,11 +133,11 @@ public class VoteService {
     
     /* TODO delete 기능 구현
     * 유저 투표 철회
-    * 투표 삭제 */
+    * 투표 삭제 *//*
     @Transactional
     public void delete(Long id){
         try {
 
         }
-    }
+    }*/
 }
