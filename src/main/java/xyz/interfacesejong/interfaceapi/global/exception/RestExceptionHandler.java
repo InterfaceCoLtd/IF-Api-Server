@@ -1,11 +1,10 @@
 package xyz.interfacesejong.interfaceapi.global.exception;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import xyz.interfacesejong.interfaceapi.global.exception.dto.BaseExceptionResponse;
 
 import javax.mail.MessagingException;
 import javax.persistence.EntityExistsException;
@@ -14,31 +13,23 @@ import javax.persistence.EntityNotFoundException;
 @RestControllerAdvice
 public class RestExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException exception){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body("{ \"exception\" : \"" + exception.getMessage() + "\" }");
+    public ResponseEntity<BaseExceptionResponse> handleEntityNotFoundException(EntityNotFoundException exception){
+        return new ResponseEntity<>(new BaseExceptionResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(EntityExistsException.class)
-    public ResponseEntity<String> handleEntityExistsException(EntityExistsException exception){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body("{ \"exception\" : \"" + exception.getMessage() + "\" }");
+    public ResponseEntity<BaseExceptionResponse> handleEntityExistsException(EntityExistsException exception){
+        return new ResponseEntity<>(new BaseExceptionResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException exception){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(httpHeaders).body("{ \"exception\" : \"" + exception.getMessage() + "\" }");
+    public ResponseEntity<BaseExceptionResponse> handleIllegalArgumentException(IllegalArgumentException exception){
+        return new ResponseEntity<>(new BaseExceptionResponse(exception.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MessagingException.class)
-    public ResponseEntity<String> messagingException(MessagingException exception){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(httpHeaders).body("{ \"exception\" : \"" + exception.getMessage() + "\" }");
+    public ResponseEntity<BaseExceptionResponse> messagingException(MessagingException exception){
+        return new ResponseEntity<>(new BaseExceptionResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
     }
 
 }
