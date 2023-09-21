@@ -4,15 +4,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import xyz.interfacesejong.interfaceapi.domain.board.domain.Comment;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardDto;
 import xyz.interfacesejong.interfaceapi.domain.board.service.BoardService;
-import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
 import xyz.interfacesejong.interfaceapi.global.util.FileUtils;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/board")
@@ -68,6 +68,30 @@ public class BoardController {
         BoardDto updatedBoardDto = boardService.update(boardDto, multipartFileList);
 
         return ResponseEntity.ok(updatedBoardDto);
+    }
+
+    //게시글 id로 댓글 리스트 불러오기
+    @GetMapping("/getCommentsByBoardId")
+    public ResponseEntity<Optional<List<Comment>>> findByBoardId(@RequestParam("boardId")Long id) throws Exception{
+        return ResponseEntity.ok(boardService.getCommentsByBoardId(id));
+    }
+
+    //댓글 저장
+    @PostMapping("/saveComment")
+    public ResponseEntity<Comment> saveComment(
+            @RequestParam("boardId") Long boardId,
+            @RequestParam("userId") Long userId,
+            @RequestParam("content") String content) throws Exception {
+
+        boardService.saveComment(boardId, userId, content);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // 게시물에 댓글 삭제
+    @DeleteMapping("/deleteComment")
+    public ResponseEntity<Void> deleteComment(@RequestParam("commentId") Long commentId) {
+        boardService.deleteComment(commentId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

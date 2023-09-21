@@ -7,20 +7,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.BoardRepository;
+import xyz.interfacesejong.interfaceapi.domain.board.domain.Comment;
+import xyz.interfacesejong.interfaceapi.domain.board.domain.CommentRepository;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardDto;
-import xyz.interfacesejong.interfaceapi.domain.file.domain.FileRepository;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
-import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
-import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
 import xyz.interfacesejong.interfaceapi.global.util.FileUtils;
+
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -28,6 +29,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
     private final FileService fileService;
     private final FileUtils fileUtils;
     private final Logger LOGGER = LoggerFactory.getLogger(BoardService.class);
@@ -107,4 +109,38 @@ public class BoardService {
 
         return new BoardDto(board);
     }
+
+    //게시글 id로 댓글 리스트 불러오기
+    @Transactional
+    public Optional<List<Comment>> getCommentsByBoardId(Long boardId) throws EntityNotFoundException {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 게시물이 없습니다."));
+        return commentRepository.findByBoardId(boardId);
+    }
+
+    //댓글 저장
+    @Transactional
+    public void saveComment(Long boardId, Long userId, String content) throws Exception {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 게시물이 없습니다."));
+
+        Comment comment = Comment.builder()
+                .content(content)
+                .writer(userRepository.findById(userId)
+                        .orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다.")))
+                .board(board)
+                .build();
+
+        commentRepository.save(comment);
+    }
+
+    //댓글 삭제
+    @Transactional
+    public void deleteComment(Long commentId){
+        Comment comment= (Comment) commentRepository.findByBoardId(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 댓글이 없습니다."));
+
+        commentRepository.delete(comment);
+    }
+
 }
