@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FileRepository extends JpaRepository<UploadFile, Long> {
-    List<UploadFile> findByBoardId(Long id);
+    Optional<List<UploadFile>> findByBoardId(Long id);
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
+import xyz.interfacesejong.interfaceapi.domain.file.dto.UploadFileDto;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 
 import java.util.List;
@@ -19,8 +20,12 @@ public class FileController {
         this.fileService = fileService;
     }
 
+    @GetMapping("/findById")
+    public ResponseEntity<UploadFileDto> getUploadFile(@RequestParam("id")Long id) {
+        return ResponseEntity.ok(fileService.getUploadFile(id));
+    }
     @GetMapping("/findByBoardId")
-    public ResponseEntity<List<UploadFile>> getAllUploadFiles(@RequestParam("boardId")Long id) throws Exception {
+    public ResponseEntity<List<UploadFileDto>> getAllUploadFiles(@RequestParam("boardId")Long id) throws Exception {
         return ResponseEntity.ok(fileService.getAllUploadFiles(id));
     }
 }
