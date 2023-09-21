@@ -1,6 +1,8 @@
 package xyz.interfacesejong.interfaceapi.domain.board.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
@@ -11,6 +13,7 @@ import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
+import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
 import xyz.interfacesejong.interfaceapi.global.util.FileUtils;
 
 import javax.persistence.EntityNotFoundException;
@@ -27,8 +30,7 @@ public class BoardService {
     private final UserRepository userRepository;
     private final FileService fileService;
     private final FileUtils fileUtils;
-    private final FileRepository fileRepository;
-
+    private final Logger LOGGER = LoggerFactory.getLogger(BoardService.class);
     //게시물 저장
     @Transactional
     public void save(BoardDto boardDto, List<MultipartFile> multipartFileList) throws Exception {
@@ -54,6 +56,7 @@ public class BoardService {
         for(Board board : boardList) {
             boardDtoList.add(new BoardDto(board));
         }
+        LOGGER.info("[findAllBoards] : 모든 게시글 조회");
         return boardDtoList;
     }
 
