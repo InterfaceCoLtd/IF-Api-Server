@@ -37,4 +37,8 @@ public class VoteVoter extends BaseTime {
         this.voteOption = voteOption;
         this.user = user;
     }
+
+    public void updateOption(VoteOption option){
+        this.voteOption = option;
+    }
 }
