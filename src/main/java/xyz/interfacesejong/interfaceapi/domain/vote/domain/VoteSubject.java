@@ -32,7 +32,7 @@ public class VoteSubject extends BaseTime {
     @OneToMany(mappedBy = "voteSubject", cascade = CascadeType.ALL)
     private List<VoteOption> voteOptions;
 
-    @OneToMany(mappedBy = "voteSubject", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "voteSubject", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VoteVoter> voteVoters;
 
     @Builder
@@ -47,6 +47,10 @@ public class VoteSubject extends BaseTime {
     }
 
     public void addTotal(){
-        ++total;
+        ++(this.total);
+    }
+
+    public void removeTotal(){
+        --(this.total);
     }
 }

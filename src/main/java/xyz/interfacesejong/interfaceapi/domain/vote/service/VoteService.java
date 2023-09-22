@@ -106,10 +106,22 @@ public class VoteService {
     }
 
     /*
-    * 유저 투표 등록
+    * 투표한 항목 조회
+    * */
+    @Transactional
+    public VoterDTO findVoterBySubjectIdAndUserId(Long subjectId, Long userId){
+        if (!voterRepository.findByVoteSubjectIdAndUserId(subjectId, userId).isEmpty()){
+            return voterRepository.findByVoteSubjectIdAndUserId(subjectId, userId).get(0);
+        } else {
+            return null;
+        }
+    }
+
+    /*
+    * 신규 투표자 등록
     */
     @Transactional
-    public void vote(VoterDTO voterDTO) {
+    public VoterDTO saveVoter(VoterDTO voterDTO) {
         VoteSubject subject = subjectRepository.findById(voterDTO.getSubjectId())
                 .orElseThrow(() -> new EntityNotFoundException("NON EXIST SUBJECT"));
 
@@ -136,26 +148,66 @@ public class VoteService {
                 .user(user).build();
         voterRepository.save(voter);
 
-        option.addCount();
+        option.increaseCount();
         optionRepository.save(option);
 
         subject.addTotal();
         subjectRepository.save(subject);
         
         LOGGER.info("[vote] 투표 등록 성공");
+        return voterDTO;
     }
 
     /* TODO update 기능 구현
     * 유저 재투표
     * 투포 수정 */
-    
+    @Transactional
+    public VoterDTO updateVoter(VoterUpdateRequest voterUpdateRequest){
+        VoteVoter voter = voterRepository.findById(voterUpdateRequest.getVoterId())
+                .orElseThrow(() -> new EntityNotFoundException("NON EXIST VOTER"));
+
+
+        VoteOption updateOption = optionRepository.findById(voterUpdateRequest.getOptionId())
+                .orElseThrow(() -> new EntityNotFoundException("NON EXIST OPTION"));
+
+        if (!updateOption.getVoteSubject().getId().equals(voter.getVoteSubject().getId())){
+            LOGGER.info("[vote] 잘못된 참조 관계");
+            throw new IllegalArgumentException("INVALID RELATION");
+        }
+
+        updateOption.increaseCount();
+
+        VoteOption option = voter.getVoteOption();
+        option.decreaseCount();
+
+        optionRepository.save(option);
+        optionRepository.save(updateOption);
+
+        voter.updateOption(updateOption);
+        voterRepository.save(voter);
+        LOGGER.info("[updateVoter] voter 업데이트 완료");
+
+        return new VoterDTO(voter.getId(), voter.getVoteSubject().getId(), voter.getVoteOption().getId(), voter.getUser().getId());
+    }
+
+
     /* TODO delete 기능 구현
     * 유저 투표 철회
-    * 투표 삭제 *//*
+    *  */
     @Transactional
-    public void delete(Long id){
-        try {
+    public void deleteVoter(Long voterId){
+        VoteVoter voter = voterRepository.findById(voterId)
+                .orElseThrow(() -> new EntityNotFoundException("NON EXIST VOTER"));
 
-        }
-    }*/
+        VoteSubject subject = voter.getVoteSubject();
+        subject.removeTotal();
+
+        VoteOption option = voter.getVoteOption();
+        option.decreaseCount();
+
+        voterRepository.delete(voter);
+        LOGGER.info("[deleteVoter] 투표 철회");
+    }
+
+
 }

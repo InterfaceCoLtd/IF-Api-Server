@@ -40,8 +40,12 @@ public class VoteOption extends BaseTime {
         this.voteVoters = voteVoters;
     }
 
-    public void addCount(){
-        ++count;
+    public void increaseCount(){
+        ++(this.count);
+    }
+    
+    public void decreaseCount(){
+        --(this.count);
     }
 
 }
