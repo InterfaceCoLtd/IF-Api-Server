@@ -5,22 +5,20 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+import javax.validation.constraints.NotNull;
+
 @Getter
-public class VoterDTO {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class VoterUpdateRequest {
+    @NotNull
     private Long voterId;
 
-    private Long subjectId;
-
+    @NotNull
     private Long optionId;
 
-    private Long userId;
-
     @Builder
-    public VoterDTO(Long voterId, Long subjectId, Long optionId, Long userId) {
+    public VoterUpdateRequest(Long voterId, Long optionId) {
         this.voterId = voterId;
-        this.subjectId = subjectId;
         this.optionId = optionId;
-        this.userId = userId;
     }
 }

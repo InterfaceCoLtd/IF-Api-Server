@@ -1,9 +1,19 @@
 package xyz.interfacesejong.interfaceapi.domain.vote.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import xyz.interfacesejong.interfaceapi.domain.vote.dto.SubjectDTO;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface VoteSubjectRepository extends JpaRepository<VoteSubject, Long> {
     Optional<VoteSubject> findById(Long id);
+
+    @Query("SELECT new xyz.interfacesejong.interfaceapi.domain.vote.dto" +
+            ".SubjectDTO(s.id, s.subject, s.statDateTime, s.endDateTime, s.total)" +
+            " FROM VoteSubject s WHERE s.statDateTime <= :now AND :now <= s.endDateTime" +
+            " ORDER BY s.statDateTime, s.id")
+    List<SubjectDTO> findAllByOngoing(LocalDateTime now);
 }
