@@ -1,7 +1,6 @@
 package xyz.interfacesejong.interfaceapi.domain.Schedule.domain;
 
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
 import javax.persistence.*;
@@ -23,10 +22,8 @@ public class Schedule extends BaseTime {
     private String description;
 
     @Column(nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd/HH:mm:ss")
     private LocalDateTime startDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd/HH:mm:ss")
     private LocalDateTime endDate;
 
     private boolean allDay;

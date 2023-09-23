@@ -36,7 +36,7 @@ public class VoteService {
     public CreateResponse saveVote(SubjectRequest subjectRequest) {
         VoteSubject voteSubject = VoteSubject.builder()
                 .subject(subjectRequest.getSubject())
-                .statDateTime(subjectRequest.getStartDateTime())
+                .startDateTime(subjectRequest.getStartDateTime())
                 .endDateTime(subjectRequest.getEndDateTime())
                 .build();
 
@@ -62,6 +62,8 @@ public class VoteService {
                 .map(subject -> SubjectDTO.builder()
                         .subject(subject.getSubject())
                         .subjectId(subject.getId())
+                        .startDate(subject.getStartDateTime())
+                        .endDate(subject.getEndDateTime())
                         .build())
                 .collect(Collectors.toList());
 
@@ -76,9 +78,31 @@ public class VoteService {
     public List<SubjectDTO> findOngoingSubjects(){
         List<SubjectDTO> subjects = subjectRepository.findAllByOngoing(LocalDateTime.now());
 
-        LOGGER.info("[findAllByOngoing] 활성된 투표 조회");
+        LOGGER.info("[findOngoingSubjects] 활성된 투표 조회");
         return subjects;
     }
+    /*
+    * 진행 예정 투표 주제 조회
+    * */
+    @Transactional
+    public List<SubjectDTO> findUpcomingSubjects(){
+        List<SubjectDTO> subjects = subjectRepository.findAllByUpcoming(LocalDateTime.now());
+
+        LOGGER.info("[findUpcomingSubjects] 예정된 투표 조회");
+        return subjects;
+    }
+    /*
+    * 만료된 투표 주제 조회
+    * */
+    @Transactional
+    public List<SubjectDTO> findCompletedSubjects(){
+        List<SubjectDTO> subjects = subjectRepository.findAllByCompleted(LocalDateTime.now());
+
+        LOGGER.info("[findCompletedSubjects] 만료된 투표 조회");
+        return subjects;
+    }
+
+
 
     /*
     * 특정 주제에 대한 옵션 및 현황 조회
@@ -191,7 +215,7 @@ public class VoteService {
     }
 
 
-    /* TODO delete 기능 구현
+    /*
     * 유저 투표 철회
     *  */
     @Transactional

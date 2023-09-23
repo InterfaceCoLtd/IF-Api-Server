@@ -74,9 +74,9 @@ public class VoteController {
         if (status == Status.ONGOING){
             return new ResponseEntity<>(voteService.findOngoingSubjects(), HttpStatus.OK);
         } else if (status == Status.UPCOMING){
-            return null;
+            return new ResponseEntity<>(voteService.findUpcomingSubjects(), HttpStatus.OK);
         } else if (status == Status.COMPLETED){
-            return null;
+            return new ResponseEntity<>(voteService.findCompletedSubjects(), HttpStatus.OK);
         } else {
             throw new IllegalArgumentException("ILLEGAL STATUS");
         }
@@ -95,7 +95,11 @@ public class VoteController {
     @GetMapping("voter")
     @Operation(summary = "투표자 선택 조회", description = "주제와 유저id로 투표 정보를 조회합니다.")
     ResponseEntity<VoterDTO> findVoterBySubjectIdAndUserId(@RequestParam Long subjectId, @RequestParam Long userId){
-        return new ResponseEntity<>(voteService.findVoterBySubjectIdAndUserId(subjectId, userId), HttpStatus.OK);
+        VoterDTO response = voteService.findVoterBySubjectIdAndUserId(subjectId, userId);
+        if (response == null){
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Timer
