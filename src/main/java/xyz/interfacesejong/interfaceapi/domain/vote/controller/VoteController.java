@@ -111,9 +111,25 @@ public class VoteController {
 
     @Timer
     @DeleteMapping("voter/{id}")
-    @Operation(summary = "투표 선택 철회", description = "선택한 투표를 철회합니다.")
+    @Operation(summary = "투표 선택 철회", description = "해당 path의 id를 가지는 voter를 table에서 제거합니다.")
     ResponseEntity<Void> deleteVoter(@PathVariable Long id){
         voteService.deleteVoter(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Timer
+    @DeleteMapping("option/{id}")
+    @Operation(summary = "투표 선택지 삭제", description = "해당 path의 id를 가지는 option을 table에서 제거합니다.")
+    ResponseEntity<Void> deleteOption(@PathVariable Long id){
+        voteService.deleteOptionById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Timer
+    @DeleteMapping("subject/{id}")
+    @Operation(summary = "투표 주제 삭제", description = "해당 path의 id를 가지는 subject를 table에서 제거합니다.")
+    ResponseEntity<Void> deleteSubject(@PathVariable Long id){
+        voteService.deleteSubjectById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

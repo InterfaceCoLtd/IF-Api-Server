@@ -182,9 +182,9 @@ public class VoteService {
         return voterDTO;
     }
 
-    /* TODO update 기능 구현
+    /*
     * 유저 재투표
-    * 투포 수정 */
+    * */
     @Transactional
     public VoterDTO updateVoter(VoterUpdateRequest voterUpdateRequest){
         VoteVoter voter = voterRepository.findById(voterUpdateRequest.getVoterId())
@@ -232,6 +232,27 @@ public class VoteService {
         voterRepository.delete(voter);
         LOGGER.info("[deleteVoter] 투표 철회");
     }
+
+    /*
+    * 투표 옵션 삭제
+    * */
+    @Transactional
+    public void deleteOptionById(Long optionId){
+        optionRepository.deleteById(optionId);
+        LOGGER.info("[deleteOptionById] {} 옵션 삭제", optionId);
+    }
+
+    /*
+    * 투표 주제 삭제
+    * */
+    @Transactional
+    public void deleteSubjectById(Long subjectId){
+        subjectRepository.deleteById(subjectId);
+        LOGGER.info("[deleteSubjectById] {} 주제 삭제", subjectId);
+    }
+
+    /*TODO subject, option 수정 기능
+    * */
 
 
 }

@@ -29,7 +29,7 @@ public class VoteSubject extends BaseTime {
     @Column(insertable = true)
     private int total = 0;
 
-    @OneToMany(mappedBy = "voteSubject", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "voteSubject", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VoteOption> voteOptions;
 
     @OneToMany(mappedBy = "voteSubject", cascade = CascadeType.ALL, orphanRemoval = true)
