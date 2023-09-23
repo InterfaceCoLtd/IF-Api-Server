@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 
 @Component
 @Aspect
-public class LogAspect {
+public class    LogAspect {
     private final static Logger LOGGER = LoggerFactory.getLogger(LogAspect.class);
 
     @Pointcut("execution(* xyz.interfacesejong.interfaceapi..*Controller.*(..))")
@@ -36,7 +36,7 @@ public class LogAspect {
             params.append("null");
         }else {
             for (Object arg : args){
-                params.append(arg).append(", ");
+                params.append(arg.toString()).append(", ");
             }
         }
 
