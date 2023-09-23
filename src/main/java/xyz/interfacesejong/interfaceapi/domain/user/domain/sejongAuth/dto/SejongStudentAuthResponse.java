@@ -1,4 +1,4 @@
-package xyz.interfacesejong.interfaceapi.global.sejongAuth.dto;
+package xyz.interfacesejong.interfaceapi.domain.user.domain.sejongAuth.dto;
 
 import lombok.Builder;
 import lombok.Data;
