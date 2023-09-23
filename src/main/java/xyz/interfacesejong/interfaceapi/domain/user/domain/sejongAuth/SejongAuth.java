@@ -1,4 +1,4 @@
-package xyz.interfacesejong.interfaceapi.global.sejongAuth;
+package xyz.interfacesejong.interfaceapi.domain.user.domain.sejongAuth;
 
 import okhttp3.*;
 import org.jsoup.Jsoup;
@@ -8,7 +8,7 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import xyz.interfacesejong.interfaceapi.global.sejongAuth.dto.SejongStudentAuthResponse;
+import xyz.interfacesejong.interfaceapi.domain.user.domain.sejongAuth.dto.SejongStudentAuthResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;

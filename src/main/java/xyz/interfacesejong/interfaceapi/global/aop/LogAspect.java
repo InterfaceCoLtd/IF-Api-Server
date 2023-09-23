@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 @Component
 @Aspect
 public class LogAspect {
-    private final static Logger LOGGER = LoggerFactory.getLogger(Timer.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(LogAspect.class);
 
     @Pointcut("execution(* xyz.interfacesejong.interfaceapi..*Controller.*(..))")
     public void controller(){
@@ -30,7 +30,17 @@ public class LogAspect {
 
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
-        LOGGER.info("[{}] {}", method.getName(), joinPoint.getArgs());
+        Object[] args = joinPoint.getArgs();
+        StringBuilder params = new StringBuilder("Parameters : ");
+        if (args.length == 0){
+            params.append("null");
+        }else {
+            for (Object arg : args){
+                params.append(arg).append(", ");
+            }
+        }
+
+        LOGGER.info("[{}] {}", method.getName(), params);
 
         Object proceed = joinPoint.proceed();
 
