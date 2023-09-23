@@ -1,11 +1,8 @@
 package xyz.interfacesejong.interfaceapi.domain.Schedule.dto;
 
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.ScheduleType;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

@@ -1,7 +1,6 @@
 package xyz.interfacesejong.interfaceapi.domain.Schedule.domain;
 
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
 import javax.persistence.*;

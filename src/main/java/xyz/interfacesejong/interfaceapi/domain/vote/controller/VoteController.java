@@ -74,9 +74,9 @@ public class VoteController {
         if (status == Status.ONGOING){
             return new ResponseEntity<>(voteService.findOngoingSubjects(), HttpStatus.OK);
         } else if (status == Status.UPCOMING){
-            return null;
+            return new ResponseEntity<>(voteService.findUpcomingSubjects(), HttpStatus.OK);
         } else if (status == Status.COMPLETED){
-            return null;
+            return new ResponseEntity<>(voteService.findCompletedSubjects(), HttpStatus.OK);
         } else {
             throw new IllegalArgumentException("ILLEGAL STATUS");
         }
