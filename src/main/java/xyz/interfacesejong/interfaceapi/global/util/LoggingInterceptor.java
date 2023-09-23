@@ -14,9 +14,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String clientIP = request.getRemoteAddr();
-        String requestURI = request.getRequestURI();
-        LOGGER.info("[{}] request from IP: {}", requestURI, clientIP);
+        LOGGER.info("[{} {}] request from IP: {}", request.getMethod(), request.getRequestURI(), request.getRemoteAddr());
         return true;
     }
 }

@@ -1,14 +1,12 @@
 package xyz.interfacesejong.interfaceapi.domain.vote.dto;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@ToString
 public class SubjectDTO {
     private Long subjectId;
 

@@ -3,6 +3,7 @@ package xyz.interfacesejong.interfaceapi.domain.vote.service;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
@@ -42,7 +43,6 @@ public class VoteService {
 
         List<VoteOption> options = subjectRequest.getOptions().stream()
                 .map(option -> VoteOption.builder()
-                        .voteSubject(voteSubject)
                         .option(option.getOption()).build())
                 .collect(Collectors.toList());
 
@@ -238,7 +238,12 @@ public class VoteService {
     * */
     @Transactional
     public void deleteOptionById(Long optionId){
-        optionRepository.deleteById(optionId);
+        try {
+            optionRepository.deleteById(optionId);
+        }catch (EmptyResultDataAccessException exception){
+            LOGGER.info("[deleteOptionById] 존재하지 않는 id");
+            throw new EntityNotFoundException("NON EXIST SCHEDULE");
+        }
         LOGGER.info("[deleteOptionById] {} 옵션 삭제", optionId);
     }
 
@@ -247,7 +252,12 @@ public class VoteService {
     * */
     @Transactional
     public void deleteSubjectById(Long subjectId){
-        subjectRepository.deleteById(subjectId);
+        try {
+            subjectRepository.deleteById(subjectId);
+        }catch (EmptyResultDataAccessException exception){
+            LOGGER.info("[deleteSubjectById] 존재하지 않는 id");
+            throw new EntityNotFoundException("NON EXIST SCHEDULE");
+        }
         LOGGER.info("[deleteSubjectById] {} 주제 삭제", subjectId);
     }
 
