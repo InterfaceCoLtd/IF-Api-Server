@@ -28,7 +28,7 @@ public class VoteOption extends BaseTime {
     @JoinColumn(name = "subject_id")
     private VoteSubject voteSubject;
 
-    @OneToMany(mappedBy = "voteOption", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "voteOption", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VoteVoter> voteVoters;
 
     @Builder

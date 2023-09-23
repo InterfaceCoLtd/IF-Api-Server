@@ -22,24 +22,24 @@ public class VoteSubject extends BaseTime {
 
     private String subject;
 
-    private LocalDateTime statDateTime;
+    private LocalDateTime startDateTime;
 
     private LocalDateTime endDateTime;
 
     @Column(insertable = true)
     private int total = 0;
 
-    @OneToMany(mappedBy = "voteSubject", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "voteSubject", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VoteOption> voteOptions;
 
     @OneToMany(mappedBy = "voteSubject", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VoteVoter> voteVoters;
 
     @Builder
-    public VoteSubject(Long id, String subject, LocalDateTime statDateTime, LocalDateTime endDateTime, int total, List<VoteOption> voteOptions, List<VoteVoter> voteVoters) {
+    public VoteSubject(Long id, String subject, LocalDateTime startDateTime, LocalDateTime endDateTime, int total, List<VoteOption> voteOptions, List<VoteVoter> voteVoters) {
         this.id = id;
         this.subject = subject;
-        this.statDateTime = statDateTime;
+        this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.total = total;
         this.voteOptions = voteOptions;
