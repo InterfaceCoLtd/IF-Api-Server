@@ -12,8 +12,8 @@ public interface VoteSubjectRepository extends JpaRepository<VoteSubject, Long> 
     Optional<VoteSubject> findById(Long id);
 
     @Query("SELECT new xyz.interfacesejong.interfaceapi.domain.vote.dto" +
-            ".SubjectDTO(s.id, s.subject, s.statDateTime, s.endDateTime, s.total)" +
-            " FROM VoteSubject s WHERE s.statDateTime <= :now AND :now <= s.endDateTime" +
-            " ORDER BY s.statDateTime, s.id")
+            ".SubjectDTO(s.id, s.subject, s.startDateTime, s.endDateTime, s.total)" +
+            " FROM VoteSubject s WHERE s.startDateTime <= :now AND :now <= s.endDateTime" +
+            " ORDER BY s.startDateTime, s.id")
     List<SubjectDTO> findAllByOngoing(LocalDateTime now);
 }

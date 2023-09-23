@@ -14,16 +14,12 @@ import java.time.LocalDateTime;
 public class ScheduleDTO {
     private Long id;
 
-    @NotNull
     private String title;
 
     private String description;
 
-    @Column(nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd/HH:mm:ss")
     private LocalDateTime startDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd/HH:mm:ss")
     private LocalDateTime endDate;
 
     private boolean allDay;

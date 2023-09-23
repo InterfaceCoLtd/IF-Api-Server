@@ -23,10 +23,8 @@ public class Schedule extends BaseTime {
     private String description;
 
     @Column(nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd/HH:mm:ss")
     private LocalDateTime startDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd/HH:mm:ss")
     private LocalDateTime endDate;
 
     private boolean allDay;

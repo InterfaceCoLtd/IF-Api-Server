@@ -36,7 +36,7 @@ public class VoteService {
     public CreateResponse saveVote(SubjectRequest subjectRequest) {
         VoteSubject voteSubject = VoteSubject.builder()
                 .subject(subjectRequest.getSubject())
-                .statDateTime(subjectRequest.getStartDateTime())
+                .startDateTime(subjectRequest.getStartDateTime())
                 .endDateTime(subjectRequest.getEndDateTime())
                 .build();
 
@@ -62,6 +62,8 @@ public class VoteService {
                 .map(subject -> SubjectDTO.builder()
                         .subject(subject.getSubject())
                         .subjectId(subject.getId())
+                        .startDate(subject.getStartDateTime())
+                        .endDate(subject.getEndDateTime())
                         .build())
                 .collect(Collectors.toList());
 
@@ -191,7 +193,7 @@ public class VoteService {
     }
 
 
-    /* TODO delete 기능 구현
+    /*
     * 유저 투표 철회
     *  */
     @Transactional
