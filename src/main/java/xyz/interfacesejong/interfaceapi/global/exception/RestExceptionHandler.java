@@ -16,17 +16,18 @@ public class RestExceptionHandler {
     public ResponseEntity<BaseExceptionResponse> handleEntityNotFoundException(EntityNotFoundException exception){
         return new ResponseEntity<>(new BaseExceptionResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
     }
-
     @ExceptionHandler(EntityExistsException.class)
     public ResponseEntity<BaseExceptionResponse> handleEntityExistsException(EntityExistsException exception){
         return new ResponseEntity<>(new BaseExceptionResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
     }
-
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<BaseExceptionResponse> handleIllegalArgumentException(IllegalArgumentException exception){
         return new ResponseEntity<>(new BaseExceptionResponse(exception.getMessage()), HttpStatus.BAD_REQUEST);
     }
-
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<BaseExceptionResponse> handleIllegalStateException(IllegalStateException exception){
+        return new ResponseEntity<>(new BaseExceptionResponse(exception.getMessage()), HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(MessagingException.class)
     public ResponseEntity<BaseExceptionResponse> messagingException(MessagingException exception){
         return new ResponseEntity<>(new BaseExceptionResponse(exception.getMessage()), HttpStatus.NOT_FOUND);

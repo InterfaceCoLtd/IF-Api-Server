@@ -43,11 +43,18 @@ public class VoteService {
 
         List<VoteOption> options = subjectRequest.getOptions().stream()
                 .map(option -> VoteOption.builder()
+                        .voteSubject(voteSubject)
                         .option(option.getOption()).build())
                 .collect(Collectors.toList());
 
         CreateResponse createResponse
-                = new CreateResponse(subjectRepository.save(voteSubject), optionRepository.saveAll(options));
+                = new CreateResponse(subjectRepository.save(voteSubject),
+                optionRepository.saveAll(options).stream()
+                        .map(option -> OptionDTO.builder()
+                                .optionId(option.getId())
+                                .option(option.getOption())
+                                .count(option.getCount()).build())
+                        .collect(Collectors.toList()));
 
         LOGGER.info("[save] 신규 투표 생성");
         return createResponse;
@@ -238,6 +245,10 @@ public class VoteService {
     * */
     @Transactional
     public void deleteOptionById(Long optionId){
+        if (optionRepository.findCountById(optionId).getCount() != 0){
+            LOGGER.info("[deleteOptionById] 투표 내역이 있는 옵션");
+            throw new IllegalStateException("ALREADY SOMEONE VOTING THIS OPTION");
+        }
         try {
             optionRepository.deleteById(optionId);
         }catch (EmptyResultDataAccessException exception){
