@@ -2,6 +2,7 @@ package xyz.interfacesejong.interfaceapi.domain.vote.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -10,14 +11,14 @@ import java.util.List;
 public class OptionResponse {
     private String subject;
 
+    private LocalDateTime endDateTime;
+
     private List<OptionDTO> options;
 
-    private Integer total;
-
     @Builder
-    public OptionResponse(String subject, List<OptionDTO> options, Integer total) {
+    public OptionResponse(String subject, List<OptionDTO> options, LocalDateTime endDateTime) {
         this.subject = subject;
+        this.endDateTime = endDateTime;
         this.options = options;
-        this.total = total;
     }
 }
