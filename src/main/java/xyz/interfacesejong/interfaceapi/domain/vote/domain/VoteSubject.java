@@ -53,4 +53,10 @@ public class VoteSubject extends BaseTime {
     public void removeTotal(){
         --(this.total);
     }
+
+    @PrePersist
+    public void dropMilliSecond(){
+        this.startDateTime = this.startDateTime.withNano(0);
+        this.endDateTime = this.endDateTime.withNano(0);
+    }
 }

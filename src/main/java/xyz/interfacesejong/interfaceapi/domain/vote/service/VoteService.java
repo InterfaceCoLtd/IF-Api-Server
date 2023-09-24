@@ -121,6 +121,7 @@ public class VoteService {
 
         OptionResponse optionResponse = OptionResponse.builder()
                         .subject(subject.getSubject())
+                        .endDateTime(subject.getEndDateTime())
                         .options(subject.getVoteOptions().stream()
                                 .map(voteOption -> OptionDTO.builder()
                                         .optionId(voteOption.getId())
@@ -128,8 +129,6 @@ public class VoteService {
                                         .count(voteOption.getCount())
                                         .build())
                                 .collect(Collectors.toList()))
-                        .total(subject.getVoteOptions().stream()
-                                .mapToInt(VoteOption::getCount).sum())
                         .build();
 
         LOGGER.info("[findBySubjectId] {} 조회 투표 ", id);
