@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.Schedule;
 import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.ScheduleRepository;
-import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleDTO;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleResponse;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleRequest;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
 import javax.persistence.EntityNotFoundException;
@@ -30,24 +31,28 @@ public class ScheduleService extends BaseTime {
     * 일정 생성
     * */
     @Transactional
-    public Schedule save(ScheduleDTO scheduleDTO){
+    public Schedule save(ScheduleRequest scheduleRequest){
+        if (scheduleRequest.getStartDate().isBefore(scheduleRequest.getEndDate())){
+            LOGGER.info("[save] 잘못된 시간 순서");
+            throw new IllegalArgumentException("INVALID TIME ORDER");
+        }
         Schedule schedule;
-        if (scheduleDTO.isAllDay()){
+        if (scheduleRequest.isAllDay()){
             schedule = scheduleRepository.save(Schedule.builder()
-                    .title(scheduleDTO.getTitle())
-                    .description(scheduleDTO.getDescription())
-                    .startDate(scheduleDTO.getStartDate().withHour(0).withMinute(0).withSecond(0))
-                    .endDate(scheduleDTO.getEndDate().withHour(23).withMinute(59).withSecond(59))
-                    .allDay(scheduleDTO.isAllDay())
-                    .type(scheduleDTO.getType()).build());
+                    .title(scheduleRequest.getTitle())
+                    .description(scheduleRequest.getDescription())
+                    .startDate(scheduleRequest.getStartDate().withHour(0).withMinute(0).withSecond(0))
+                    .endDate(scheduleRequest.getEndDate().withHour(23).withMinute(59).withSecond(59))
+                    .allDay(scheduleRequest.isAllDay())
+                    .type(scheduleRequest.getType()).build());
         }else{
             schedule = scheduleRepository.save(Schedule.builder()
-                    .title(scheduleDTO.getTitle())
-                    .description(scheduleDTO.getDescription())
-                    .startDate(scheduleDTO.getStartDate())
-                    .endDate(scheduleDTO.getEndDate())
-                    .allDay(scheduleDTO.isAllDay())
-                    .type(scheduleDTO.getType()).build());
+                    .title(scheduleRequest.getTitle())
+                    .description(scheduleRequest.getDescription())
+                    .startDate(scheduleRequest.getStartDate())
+                    .endDate(scheduleRequest.getEndDate())
+                    .allDay(scheduleRequest.isAllDay())
+                    .type(scheduleRequest.getType()).build());
         }
 
         LOGGER.info("[save] 일정 저장 완료");
@@ -58,8 +63,8 @@ public class ScheduleService extends BaseTime {
     * 일정 조회
     * */
     @Transactional
-    public List<ScheduleDTO> findByDateTime(LocalDate date){
-        List<ScheduleDTO> schedules = scheduleRepository.findByDateTimeBetween(date.atStartOfDay());
+    public List<ScheduleResponse> findByDateTime(LocalDate date){
+        List<ScheduleResponse> schedules = scheduleRepository.findByDateTimeBetween(date.atStartOfDay());
 
         LOGGER.info("[findByDateTime] {} 일정 조회", date);
         return schedules;
@@ -69,12 +74,15 @@ public class ScheduleService extends BaseTime {
     * 달별 일정 조회
     * */
     @Transactional
-    public List<ScheduleDTO> findByMonth(Integer month){
+    public List<ScheduleResponse> findByMonth(Integer month){
+        if (month < 0 || month > 12){
+            throw new IllegalArgumentException("ILLEGAL MONTH VALUE");
+        }
         Year year = Year.of(LocalDate.now().getYear());
         LocalDateTime startOfMonth = year.atMonth(month).atDay(1).atStartOfDay();
         LocalDateTime endOfMonth = year.atMonth(month % 12 + 1).atDay(1).atStartOfDay();
 
-        List<ScheduleDTO> schedules = scheduleRepository.findByMonth(startOfMonth, endOfMonth);
+        List<ScheduleResponse> schedules = scheduleRepository.findByMonth(startOfMonth, endOfMonth);
 
         LOGGER.info("[findByMonth] {}월 일정 조회", month);
         return schedules;
@@ -85,15 +93,16 @@ public class ScheduleService extends BaseTime {
     * 모든 일정 조회
     * */
     @Transactional
-    public List<ScheduleDTO> findAllSchedules(){
-        List<ScheduleDTO> schedules = scheduleRepository.findAll().stream()
-                .map(schedule -> ScheduleDTO.builder()
+    public List<ScheduleResponse> findAllSchedules(){
+        List<ScheduleResponse> schedules = scheduleRepository.findAll().stream()
+                .map(schedule -> ScheduleResponse.builder()
                         .id(schedule.getId())
                         .title(schedule.getTitle())
                         .description(schedule.getDescription())
                         .startDate(schedule.getStartDate())
                         .endDate(schedule.getEndDate())
-                        .allDay(schedule.isAllDay()).build())
+                        .allDay(schedule.isAllDay())
+                        .type(schedule.getType()).build())
                 .collect(Collectors.toList());
 
         LOGGER.info("[findScheduleAll] 모든 일정 조회");
@@ -103,11 +112,11 @@ public class ScheduleService extends BaseTime {
     /*
     * id로 일정 조회*/
     @Transactional
-    public ScheduleDTO findById(Long id) {
+    public ScheduleResponse findById(Long id) {
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("NON EXIST SCHEDULE"));
 
-        ScheduleDTO scheduleDTO = ScheduleDTO.builder()
+        ScheduleResponse scheduleResponse = ScheduleResponse.builder()
                 .id(schedule.getId())
                 .title(schedule.getTitle())
                 .description(schedule.getDescription())
@@ -116,7 +125,7 @@ public class ScheduleService extends BaseTime {
                 .allDay(schedule.isAllDay()).build();
 
         LOGGER.info("[findById] {} 일정 조회", id);
-        return scheduleDTO;
+        return scheduleResponse;
     }
 
     /* TODO 수정 서비스 구현해야 함

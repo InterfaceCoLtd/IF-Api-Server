@@ -5,12 +5,10 @@ import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.ScheduleType;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
-public class ScheduleDTO {
-    private Long id;
-
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class ScheduleRequest {
     private String title;
 
     private String description;
@@ -24,8 +22,7 @@ public class ScheduleDTO {
     private ScheduleType type;
 
     @Builder
-    public ScheduleDTO(Long id, String title, String description, LocalDateTime startDate, LocalDateTime endDate, boolean allDay, ScheduleType type) {
-        this.id = id;
+    public ScheduleRequest(String title, String description, LocalDateTime startDate, LocalDateTime endDate, boolean allDay, ScheduleType type) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
