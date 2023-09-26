@@ -1,6 +1,7 @@
 package xyz.interfacesejong.interfaceapi.domain.Schedule.dto;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.ScheduleType;
 
 import java.time.LocalDateTime;
@@ -13,8 +14,10 @@ public class ScheduleRequest {
 
     private String description;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime startDate;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime endDate;
 
     private boolean allDay;
