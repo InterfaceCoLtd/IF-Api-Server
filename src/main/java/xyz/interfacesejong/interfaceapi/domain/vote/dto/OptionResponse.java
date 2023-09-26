@@ -1,6 +1,7 @@
 package xyz.interfacesejong.interfaceapi.domain.vote.dto;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 public class OptionResponse {
     private String subject;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime endDateTime;
 
     private List<OptionDTO> options;
