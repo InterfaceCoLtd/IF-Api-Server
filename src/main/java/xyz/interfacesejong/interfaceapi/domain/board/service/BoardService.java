@@ -1,6 +1,7 @@
 package xyz.interfacesejong.interfaceapi.domain.board.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardDto;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
+import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 import xyz.interfacesejong.interfaceapi.global.util.FileUtils;
 
 
@@ -23,8 +25,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -58,8 +62,9 @@ public class BoardService {
         for(Board board : boardList) {
             boardDtoList.add(new BoardDto(board));
         }
-        LOGGER.info("[findAllBoards] : 모든 게시글 조회");
+
         return boardDtoList;
+        //LOGGER.info("[findAllBoards] : 모든 게시글 조회");
     }
 
     // 작성자 id로 게시물 불러오기
@@ -111,11 +116,15 @@ public class BoardService {
     }
 
     //게시글 id로 댓글 리스트 불러오기
+
+
     @Transactional
     public Optional<List<Comment>> getCommentsByBoardId(Long boardId) throws EntityNotFoundException {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 게시물이 없습니다."));
+
         return commentRepository.findByBoardId(boardId);
+        LOGGER.info("[getCommentsByBoardId] 댓글 리스트 조회,게시글 ID: {}", boardId);
     }
 
     //댓글 저장
@@ -130,8 +139,8 @@ public class BoardService {
                         .orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다.")))
                 .board(board)
                 .build();
-
         commentRepository.save(comment);
+        //LOGGER.info("[saveComment] 댓글 저장, 게시글 ID: {}, 댓글 ID: {}", boardId, comment.getId());
     }
 
     //댓글 삭제
@@ -141,6 +150,7 @@ public class BoardService {
                 .orElseThrow(() -> new EntityNotFoundException("해당 댓글이 없습니다."));
 
         commentRepository.delete(comment);
+        //LOGGER.info("[deleteComment] 댓글이 삭제되었습니다. 댓글 ID: {}", commentId);
     }
 
 }
