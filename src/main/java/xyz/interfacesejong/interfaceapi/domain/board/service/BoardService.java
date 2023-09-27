@@ -123,8 +123,8 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 게시물이 없습니다."));
 
+        log.info("[getCommentsByBoardId] 댓글 리스트 조회,게시글 ID: {}", boardId);
         return commentRepository.findByBoardId(boardId);
-        LOGGER.info("[getCommentsByBoardId] 댓글 리스트 조회,게시글 ID: {}", boardId);
     }
 
     //댓글 저장
@@ -140,7 +140,7 @@ public class BoardService {
                 .board(board)
                 .build();
         commentRepository.save(comment);
-        //LOGGER.info("[saveComment] 댓글 저장, 게시글 ID: {}, 댓글 ID: {}", boardId, comment.getId());
+        log.info("[saveComment] 댓글 저장, 게시글 ID: {}, 댓글 ID: {}", boardId, comment.getId());
     }
 
     //댓글 삭제
@@ -150,7 +150,7 @@ public class BoardService {
                 .orElseThrow(() -> new EntityNotFoundException("해당 댓글이 없습니다."));
 
         commentRepository.delete(comment);
-        //LOGGER.info("[deleteComment] 댓글이 삭제되었습니다. 댓글 ID: {}", commentId);
+        log.info("[deleteComment] 댓글이 삭제되었습니다. 댓글 ID: {}", commentId);
     }
 
 }

@@ -32,7 +32,7 @@ public class ScheduleService extends BaseTime {
     * */
     @Transactional
     public Schedule save(ScheduleRequest scheduleRequest){
-        if (scheduleRequest.getStartDate().isBefore(scheduleRequest.getEndDate())){
+        if (!scheduleRequest.getStartDate().isBefore(scheduleRequest.getEndDate())){
             LOGGER.info("[save] 잘못된 시간 순서");
             throw new IllegalArgumentException("INVALID TIME ORDER");
         }
@@ -81,6 +81,9 @@ public class ScheduleService extends BaseTime {
         Year year = Year.of(LocalDate.now().getYear());
         LocalDateTime startOfMonth = year.atMonth(month).atDay(1).atStartOfDay();
         LocalDateTime endOfMonth = year.atMonth(month % 12 + 1).atDay(1).atStartOfDay();
+        if (month == 12){
+            endOfMonth = endOfMonth.plusYears(1);
+        }
 
         List<ScheduleResponse> schedules = scheduleRepository.findByMonth(startOfMonth, endOfMonth);
 
