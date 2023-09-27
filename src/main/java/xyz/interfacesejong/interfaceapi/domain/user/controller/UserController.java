@@ -41,9 +41,49 @@ public class UserController {
     }
 
     @Timer
-    @PostMapping("auth/email/{email}")
-    public ResponseEntity<AuthEmailResponse> sendAuthMail(@PathVariable String email) throws MessagingException {
-        AuthEmailResponse authEmailResponse = authEmail.sendMessage(email);
-        return new ResponseEntity<>(authEmailResponse, HttpStatus.OK);
+    @GetMapping("exists")
+    @Operation(summary = "이메일 중복 검사", description = "해당 이메일이 db에 존재하는 계정인지 확인합니다.")
+    public ResponseEntity<?> checkEmailDuplication(@RequestParam String email){
+        return null;
+    }
+
+    //이름
+    @Timer
+    @PutMapping("user/{id}/username")
+    @Operation(summary = "이름 변경", description = "해당 id 유저의 이름을 변경한다.")
+    public ResponseEntity<?> updateUsername(@PathVariable Long id){
+        return null;
+    }
+
+    //비밀번호
+    @Timer
+    @PutMapping("user/{id}/password")
+    @Operation(summary = "비밀번호 변경", description = "해당 id 유저의 비밀번호를 변경한다.")
+    public ResponseEntity<?> updatePassword(@PathVariable Long id){
+        return null;
+    }
+
+    //전화번호 char
+    @Timer
+    @PutMapping("user/{id}/phone-number")
+    @Operation(summary = "전화번호 변경", description = "해당 id 유저의 전화번호를 변경한다.")
+    public ResponseEntity<?> updatePhoneNumber(@PathVariable Long id){
+        return null;
+    }
+
+    //github
+    @Timer
+    @PutMapping("user/{id}/github-account")
+    @Operation(summary = "gitbub아이디 변경", description = "해당 id 유저의 github 아이디를 변경한다.")
+    public ResponseEntity<?> updateGithubAccount(@PathVariable Long id){
+        return null;
+    }
+
+    //discord
+    @Timer
+    @PutMapping("user/{id}/discord-account")
+    @Operation(summary = "dicord아이디 변경", description = "해당 id 유저의 discord아이디를 변경한다.")
+    public ResponseEntity<?> updateDiscordAccount(@PathVariable Long id) {
+        return null;
     }
 }
