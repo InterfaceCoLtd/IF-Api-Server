@@ -6,9 +6,4 @@ import javax.persistence.*;
 public class UserAuth {
     @Id
     private Long id;
-
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
-    private User user;
 }

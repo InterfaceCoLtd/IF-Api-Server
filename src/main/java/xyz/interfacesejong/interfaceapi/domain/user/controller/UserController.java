@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserInfoResponse;
+import xyz.interfacesejong.interfaceapi.domain.user.dto.UserInfoUpdateRequest;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserSignUpRequest;
 import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
@@ -45,43 +46,36 @@ public class UserController {
         return null;
     }
 
-    //이름
-    @Timer
-    @PutMapping("user/{id}/username")
-    @Operation(summary = "이름 변경", description = "해당 id 유저의 이름을 변경한다.")
-    public ResponseEntity<?> updateUsername(@PathVariable Long id){
-        return null;
-    }
 
     //비밀번호
-    @Timer
+    /*@Timer
     @PutMapping("user/{id}/password")
     @Operation(summary = "비밀번호 변경", description = "해당 id 유저의 비밀번호를 변경한다.")
     public ResponseEntity<?> updatePassword(@PathVariable Long id){
         return null;
-    }
+    }*/
 
-    //전화번호 char
+    //전화번호
     @Timer
     @PutMapping("user/{id}/phone-number")
     @Operation(summary = "전화번호 변경", description = "해당 id 유저의 전화번호를 변경한다.")
-    public ResponseEntity<?> updatePhoneNumber(@PathVariable Long id){
-        return null;
+    public ResponseEntity<User> updatePhoneNumber(@PathVariable Long id, @RequestBody UserInfoUpdateRequest infoUpdateRequest){
+        return new ResponseEntity<>(userService.updatePhoneNumber(id, infoUpdateRequest), HttpStatus.OK);
     }
 
     //github
     @Timer
     @PutMapping("user/{id}/github-account")
     @Operation(summary = "gitbub아이디 변경", description = "해당 id 유저의 github 아이디를 변경한다.")
-    public ResponseEntity<?> updateGithubAccount(@PathVariable Long id){
-        return null;
+    public ResponseEntity<?> updateGithubAccount(@PathVariable Long id, @RequestBody UserInfoUpdateRequest infoUpdateRequest){
+        return new ResponseEntity<>(userService.updateGithubId(id, infoUpdateRequest), HttpStatus.OK);
     }
 
     //discord
     @Timer
     @PutMapping("user/{id}/discord-account")
     @Operation(summary = "dicord아이디 변경", description = "해당 id 유저의 discord아이디를 변경한다.")
-    public ResponseEntity<?> updateDiscordAccount(@PathVariable Long id) {
-        return null;
+    public ResponseEntity<?> updateDiscordAccount(@PathVariable Long id, @RequestBody UserInfoUpdateRequest infoUpdateRequest) {
+        return new ResponseEntity<>(userService.updateDiscordId(id, infoUpdateRequest), HttpStatus.OK);
     }
 }

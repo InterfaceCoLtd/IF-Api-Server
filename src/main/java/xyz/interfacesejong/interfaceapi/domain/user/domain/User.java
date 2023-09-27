@@ -16,35 +16,32 @@ public class User extends BaseTime {
     private Long id;
 
     @Column(length = 64)
-    private String email;
+    private String email; //val
 
-    private String password;
+    private String password; //var
 
-    private Integer generation;
+    private Integer generation; //var
 
     @Column(length = 11)
-    private String phoneNumber;
+    private String phoneNumber; //var
 
     @Column(length = 32)
-    private String githubId;
+    private String githubId; //var
 
     @Column(length = 32)
-    private String discordId;
+    private String discordId; //var
 
     @Column(length = 16)
-    private String username; //인증정보
+    private String username; //인증정보 val
 
-    private Integer studentId; //인증정보
+    private Integer studentId; //인증정보 val
 
     @Column(length = 64)
-    private String major; //인증정보
+    private String major; //인증정보 val
     
-    private Integer grade; //인증정보
+    private Integer grade; //인증정보 val
 
-    private Boolean enrolled; //인증정보
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserAuth auth;
+    private Boolean enrolled; //인증정보 val
 
     @Builder
     public User(Long id, String email, String password){

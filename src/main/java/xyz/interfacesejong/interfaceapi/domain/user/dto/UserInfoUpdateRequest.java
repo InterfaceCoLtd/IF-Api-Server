@@ -5,7 +5,7 @@ import lombok.*;
 @Getter
 @ToString
 @RequiredArgsConstructor
-public class UserInfoRequest {
+public class UserInfoUpdateRequest {
     private Integer generation;
     private String phoneNumber;
     private String githubId;

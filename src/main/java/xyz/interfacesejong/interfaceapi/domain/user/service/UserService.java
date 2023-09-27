@@ -7,7 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
-import xyz.interfacesejong.interfaceapi.domain.user.dto.UserInfoRequest;
+import xyz.interfacesejong.interfaceapi.domain.user.dto.UserInfoUpdateRequest;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserInfoResponse;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserSignUpRequest;
 
@@ -55,12 +55,9 @@ public class UserService {
 
     /*
     private String password;
-
-    private Integer generation;
-
     */
     @Transactional
-    public void updateGeneration(Long id, UserInfoRequest infoRequest){
+    public void updateGeneration(Long id, UserInfoUpdateRequest infoRequest){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("NON EXIST USER"));
 
@@ -73,43 +70,61 @@ public class UserService {
         userRepository.save(user);
     }
     @Transactional
-    public void updatePhoneNumber(Long id, UserInfoRequest infoRequest){
+    public User updatePhoneNumber(Long id, UserInfoUpdateRequest infoRequest){
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("NON EXIST USER"));
+                .orElseThrow(() -> {
+                    LOGGER.info("[updatePhoneNumber] 등록 되지 않은 유저");
+                    return new EntityNotFoundException("NON EXIST USER");
+                });
 
         if (infoRequest.getPhoneNumber() == null){
+            LOGGER.info("[updatePhoneNumber] null 인자 입력");
             throw new IllegalArgumentException("MISSING FIELD");
         }else {
             user.changePhoneNumber(infoRequest.getPhoneNumber());
         }
 
-
-        userRepository.save(user);
+        user = userRepository.save(user);
+        LOGGER.info("[updatePhoneNumber] 전화번호 업데이트 성공");
+        return user;
     }
     @Transactional
-    public void updateGithubId(Long id, UserInfoRequest infoRequest){
+    public User updateGithubId(Long id, UserInfoUpdateRequest infoRequest){
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("NON EXIST USER"));
+                .orElseThrow(() -> {
+                    LOGGER.info("[updateGithubId] 등록 되지 않은 유저");
+                    return new EntityNotFoundException("NON EXIST USER");
+                });
 
         if (infoRequest.getGithubId() == null){
+            LOGGER.info("[updateGithubId] null 인자 입력");
             throw new IllegalArgumentException("MISSING FIELD");
         }else {
             user.changeGithubId(infoRequest.getGithubId());
         }
 
-        userRepository.save(user);
+        user = userRepository.save(user);
+        LOGGER.info("[updateGithubId] github 계정 업데이트 성공");
+        return user;
     }
     @Transactional
-    public void updateDiscordId(Long id, UserInfoRequest infoRequest){
+    public User updateDiscordId(Long id, UserInfoUpdateRequest infoRequest){
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("NON EXIST USER"));
+                .orElseThrow(() -> {
+                    LOGGER.info("[updateDiscordId] 등록 되지 않은 유저");
+                    return new EntityNotFoundException("NON EXIST USER");
+                });
+        
         if (infoRequest.getDiscordId() == null){
+            LOGGER.info("[updateDiscordId] null 인자 입력");
             throw new IllegalArgumentException("MISSING FIELD");
         }else {
             user.changeDiscordId(infoRequest.getDiscordId());
         }
 
-        userRepository.save(user);
+        user = userRepository.save(user);
+        LOGGER.info("[updateDiscordId] discord 계정 업데이트 성공");
+        return user;
     }
 
 
