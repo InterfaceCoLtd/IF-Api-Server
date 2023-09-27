@@ -16,11 +16,11 @@ public class BaseTime {
 
     @CreatedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd/HH:mm:ss")
-    @Column(name = "created_date", updatable = false)
+    @Column(name = "created_date", updatable = false, length = 0)
     private LocalDateTime createdDate;
     @LastModifiedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd/HH:mm:ss")
-    @Column(name = "modified_date")
+    @Column(name = "modified_date", length = 0)
     private LocalDateTime modifiedDate;
 
 }
