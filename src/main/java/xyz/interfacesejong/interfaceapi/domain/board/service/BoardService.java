@@ -35,7 +35,7 @@ public class BoardService {
     private final Logger LOGGER = LoggerFactory.getLogger(BoardService.class);
     //게시물 저장
     @Transactional
-    public void save(BoardDto boardDto, List<MultipartFile> multipartFileList) throws Exception {
+    public void save(BoardDto boardDto) throws Exception {
 
         Board board = Board.builder()
                 .title(boardDto.getTitle())
@@ -43,11 +43,19 @@ public class BoardService {
                 .writer(userRepository.findById(boardDto.getUserId()).orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다."))).build();
 
         boardRepository.save(board);
+    }
 
-        if(!multipartFileList.isEmpty()) {
-            List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList);
-            fileService.saveFiles(board, uploadFileList);
-        }
+    @Transactional
+    public void saveFiles(BoardDto boardDto, List<MultipartFile> multipartFileList) throws Exception {
+        Board board = Board.builder()
+                .title(boardDto.getTitle())
+                .content(boardDto.getContent())
+                .writer(userRepository.findById(boardDto.getUserId()).orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다."))).build();
+
+        boardRepository.save(board);
+
+        List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList);
+        fileService.saveFiles(board, uploadFileList);
     }
 
     // 전체 게시물 불러오기

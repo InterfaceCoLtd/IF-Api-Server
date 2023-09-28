@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Comment;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardDto;
 import xyz.interfacesejong.interfaceapi.domain.board.service.BoardService;
@@ -32,9 +33,9 @@ public class BoardController {
 
     // 글작성
     @PostMapping("/create")
-    public ResponseEntity<BoardDto> create(@ModelAttribute BoardDto boardDto, @RequestParam List<MultipartFile> multipartFileList) throws Exception {
-
-        boardService.save(boardDto, multipartFileList);
+    public ResponseEntity<BoardDto> create(@ModelAttribute BoardDto boardDto, @RequestParam(required = false) List<MultipartFile> multipartFileList) throws Exception {
+        if(multipartFileList==null)boardService.save(boardDto);
+        else boardService.saveFiles(boardDto, multipartFileList);
 
         return ResponseEntity.ok(boardDto);
     }

@@ -34,8 +34,7 @@ public class Board extends BaseTime {
     private List<Comment> comments = new ArrayList<>();
 
     @Builder
-    public Board(Long id, String title, String content, User writer, List<UploadFile> uploadFiles,List<Comment> comments) {
-        this.id = id;
+    public Board(String title, String content, User writer, List<UploadFile> uploadFiles,List<Comment> comments) {
         this.title = title;
         this.content = content;
         this.writer = writer;
