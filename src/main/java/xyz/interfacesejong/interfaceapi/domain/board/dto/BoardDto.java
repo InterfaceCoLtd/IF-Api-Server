@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardDto {
     private Long id;
@@ -27,8 +28,7 @@ public class BoardDto {
         this.modifiedDate = board.getModifiedDate();
     }
 
-    public BoardDto(Long id, String title, String content, Long userId) {
-        this.id = id;
+    public BoardDto(String title, String content, Long userId) {
         this.title = title;
         this.content = content;
         this.userId = userId;
