@@ -7,13 +7,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
-import xyz.interfacesejong.interfaceapi.domain.user.dto.UserInfoUpdateRequest;
-import xyz.interfacesejong.interfaceapi.domain.user.dto.UserInfoResponse;
-import xyz.interfacesejong.interfaceapi.domain.user.dto.UserSignUpRequest;
+import xyz.interfacesejong.interfaceapi.domain.user.dto.*;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +23,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final SejongStudentAuthService sejongStudentAuthService;
 
     private final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
@@ -53,21 +54,46 @@ public class UserService {
         return user;
     }
 
-    /*
-    private String password;
-    */
     @Transactional
-    public void updateGeneration(Long id, UserInfoUpdateRequest infoRequest){
+    public Boolean hasEmail(String email){
+        boolean result = userRepository.existsByEmail(email);
+        LOGGER.info("[hasEmail] 이메일 중복 검사");
+        return result;
+    }
+
+
+    @Transactional
+    public User reRegisterPassword(Long id, UserNewPasswordRequest newPasswordRequest){
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("NON EXIST USER"));
+                .orElseThrow(() -> {
+                    LOGGER.info("[GenerateNewPassword] 등록 되지 않은 유저");
+                    return new EntityNotFoundException("NON EXIST USER");
+                });
+
+        user.reRegisterPassword(bCryptPasswordEncoder.encode(newPasswordRequest.getNewPassword()));
+        user = userRepository.save(user);
+
+        LOGGER.info("[reRegisterPassword] {} 신규 비밀번호 등록", id);
+        return user;
+    }
+    @Transactional
+    public User updateGeneration(Long id, UserInfoUpdateRequest infoRequest){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> {
+                    LOGGER.info("[updateGeneration] 등록 되지 않은 유저");
+                    return new EntityNotFoundException("NON EXIST USER");
+                });
 
         if (infoRequest.getGeneration() == null){
+            LOGGER.info("[updateGeneration] null 인자 입력");
             throw new IllegalArgumentException("MISSING FIELD");
         }else{
             user.changeGeneration(infoRequest.getGeneration());
         }
 
-        userRepository.save(user);
+        user = userRepository.save(user);
+        LOGGER.info("[updateGeneration] 기수 업데이트 성공");
+        return user;
     }
     @Transactional
     public User updatePhoneNumber(Long id, UserInfoUpdateRequest infoRequest){
@@ -124,6 +150,27 @@ public class UserService {
 
         user = userRepository.save(user);
         LOGGER.info("[updateDiscordId] discord 계정 업데이트 성공");
+        return user;
+    }
+
+    @Transactional
+    public User updateSejongStudentAuth(Long id, SejongStudentAuthRequest sejongStudentAuthRequest){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> {
+                    LOGGER.info("[updateSejongStudentAuth] 등록 되지 않은 유저");
+                    return new EntityNotFoundException("NON EXIST USER");
+                });
+
+        try {
+            user.updateSejongAuthInfo(
+                    sejongStudentAuthService.getUserAuthInfos(sejongStudentAuthRequest.getSejongPortalId(), sejongStudentAuthRequest.getSejongPortalPassword())
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        user = userRepository.save(user);
+        LOGGER.info("[updateSejongStudentAuth] 세종대 학생 정보 인증 완료");
         return user;
     }
 

@@ -1,8 +1,6 @@
 package xyz.interfacesejong.interfaceapi.domain.user.dto;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @Getter

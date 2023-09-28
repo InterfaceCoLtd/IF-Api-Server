@@ -7,12 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
-import xyz.interfacesejong.interfaceapi.domain.user.dto.UserInfoResponse;
-import xyz.interfacesejong.interfaceapi.domain.user.dto.UserInfoUpdateRequest;
-import xyz.interfacesejong.interfaceapi.domain.user.dto.UserSignUpRequest;
+import xyz.interfacesejong.interfaceapi.domain.user.dto.*;
 import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
-import xyz.interfacesejong.interfaceapi.global.email.AuthEmail;
 
 import java.util.List;
 
@@ -24,7 +21,6 @@ public class UserController {
 
     private final UserService userService;
 
-    private final AuthEmail authEmail;
     @Timer
     @PostMapping()
     @Operation(summary = "신규 유저 등록", description = "신규 유저를 생성합니다.")
@@ -48,12 +44,20 @@ public class UserController {
 
 
     //비밀번호
-    /*@Timer
+    @Timer
     @PutMapping("user/{id}/password")
     @Operation(summary = "비밀번호 변경", description = "해당 id 유저의 비밀번호를 변경한다.")
-    public ResponseEntity<?> updatePassword(@PathVariable Long id){
-        return null;
-    }*/
+    public ResponseEntity<User> generateNewPassword(@PathVariable Long id, @RequestBody UserNewPasswordRequest newPasswordRequest){
+        return new ResponseEntity<>(userService.reRegisterPassword(id, newPasswordRequest), HttpStatus.OK);
+    }
+
+    //기수
+    @Timer
+    @PutMapping("user/{id}/generation")
+    @Operation(summary = " 기수 변경", description = "해당 id 유저의 기수를 변경한다.")
+    public ResponseEntity<User> updateGeneration(@PathVariable Long id, @RequestBody UserInfoUpdateRequest infoUpdateRequest){
+        return new ResponseEntity<>(userService.updateGeneration(id, infoUpdateRequest), HttpStatus.OK);
+    }
 
     //전화번호
     @Timer
@@ -66,16 +70,25 @@ public class UserController {
     //github
     @Timer
     @PutMapping("user/{id}/github-account")
-    @Operation(summary = "gitbub아이디 변경", description = "해당 id 유저의 github 아이디를 변경한다.")
-    public ResponseEntity<?> updateGithubAccount(@PathVariable Long id, @RequestBody UserInfoUpdateRequest infoUpdateRequest){
+    @Operation(summary = "gitbub 아이디 변경", description = "해당 id 유저의 github 아이디를 변경한다.")
+    public ResponseEntity<User> updateGithubAccount(@PathVariable Long id, @RequestBody UserInfoUpdateRequest infoUpdateRequest){
         return new ResponseEntity<>(userService.updateGithubId(id, infoUpdateRequest), HttpStatus.OK);
     }
 
     //discord
     @Timer
     @PutMapping("user/{id}/discord-account")
-    @Operation(summary = "dicord아이디 변경", description = "해당 id 유저의 discord아이디를 변경한다.")
-    public ResponseEntity<?> updateDiscordAccount(@PathVariable Long id, @RequestBody UserInfoUpdateRequest infoUpdateRequest) {
+    @Operation(summary = "dicord 아이디 변경", description = "해당 id 유저의 discord 아이디를 변경한다.")
+    public ResponseEntity<User> updateDiscordAccount(@PathVariable Long id, @RequestBody UserInfoUpdateRequest infoUpdateRequest) {
         return new ResponseEntity<>(userService.updateDiscordId(id, infoUpdateRequest), HttpStatus.OK);
     }
+
+    // 학생정보인증
+    @Timer
+    @PutMapping("user/{id}/sejong-auth")
+    @Operation(summary = "세종대 학생 정보 인증", description = "해당 id 유저의 세종대 학생 정보를 인증한다.\n\n 인증 되는 항목은 이름, 학번, 학년, 전공, 재학여부이다.")
+    public ResponseEntity<User> updateSejongStudentAuth(@PathVariable Long id, @RequestBody SejongStudentAuthRequest sejongStudentAuthRequest){
+        return new ResponseEntity<>(userService.updateSejongStudentAuth(id, sejongStudentAuthRequest), HttpStatus.OK);
+    }
+
 }

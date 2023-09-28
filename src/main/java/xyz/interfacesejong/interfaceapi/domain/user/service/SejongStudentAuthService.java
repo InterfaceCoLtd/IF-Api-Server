@@ -1,4 +1,4 @@
-package xyz.interfacesejong.interfaceapi.domain.user.domain.sejongAuth;
+package xyz.interfacesejong.interfaceapi.domain.user.service;
 
 import okhttp3.*;
 import org.jsoup.Jsoup;
@@ -8,16 +8,16 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import xyz.interfacesejong.interfaceapi.domain.user.domain.sejongAuth.dto.SejongStudentAuthResponse;
+import xyz.interfacesejong.interfaceapi.domain.user.dto.SejongStudentAuthResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class SejongAuth {
+public class SejongStudentAuthService {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(SejongAuth.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(SejongStudentAuthService.class);
 
     public SejongStudentAuthResponse getUserAuthInfos(String studentId, String password) throws IOException {
 
@@ -27,7 +27,7 @@ public class SejongAuth {
         return sendGetToSejong(jsessionId);
     }
 
-    public String setJsessionId() throws IOException {
+    private String setJsessionId() throws IOException {
 
         OkHttpClient client = new OkHttpClient().newBuilder().build();
 
@@ -36,7 +36,7 @@ public class SejongAuth {
 
         Response response = client.newCall(request).execute();
 
-        LOGGER.info("[setJsessionId] {}", response);
+        //LOGGER.info("[setJsessionId] {}", response);
 
         Headers headers = response.headers();
 
@@ -54,7 +54,7 @@ public class SejongAuth {
         return null;
     }
 
-    public String extractJSessionID(String cookieValue) {
+    private String extractJSessionID(String cookieValue) {
 
         String[] parts = cookieValue.split(";");
 
@@ -68,7 +68,7 @@ public class SejongAuth {
         return null;
     }
 
-    public void sendPostToSejong(String studentId, String password, String jsessionId) throws IOException{
+    private void sendPostToSejong(String studentId, String password, String jsessionId) throws IOException{
 
         OkHttpClient client = new OkHttpClient().newBuilder().build();
 
@@ -88,7 +88,7 @@ public class SejongAuth {
 
     }
 
-    public SejongStudentAuthResponse sendGetToSejong(String jsessionId) throws IOException {
+    private SejongStudentAuthResponse sendGetToSejong(String jsessionId) throws IOException {
 
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
@@ -109,7 +109,7 @@ public class SejongAuth {
         }
     }
 
-    public SejongStudentAuthResponse extractDataFromHtml(String html) {
+    private SejongStudentAuthResponse extractDataFromHtml(String html) {
         List<String> dataList = new ArrayList<>();
         Document doc = Jsoup.parse(html);
 

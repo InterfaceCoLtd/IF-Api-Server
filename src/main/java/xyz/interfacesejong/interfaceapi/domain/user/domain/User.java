@@ -1,7 +1,7 @@
 package xyz.interfacesejong.interfaceapi.domain.user.domain;
 
 import lombok.*;
-import xyz.interfacesejong.interfaceapi.domain.user.domain.sejongAuth.dto.SejongStudentAuthResponse;
+import xyz.interfacesejong.interfaceapi.domain.user.dto.SejongStudentAuthResponse;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
 import javax.persistence.*;
@@ -55,7 +55,7 @@ public class User extends BaseTime {
         this.studentId = Integer.parseInt(sejongStudentAuthResponse.getStudentId());
         this.major = sejongStudentAuthResponse.getMajor();
         this.grade = Integer.parseInt(sejongStudentAuthResponse.getGrade());
-        this.enrolled = Objects.equals(sejongStudentAuthResponse.getEnrolled(), "재학중");
+        this.enrolled = Objects.equals(sejongStudentAuthResponse.getEnrolled(), "재학");
     }
 
     public void changeGeneration(Integer generation) {
@@ -72,5 +72,9 @@ public class User extends BaseTime {
 
     public void changeDiscordId(String discordId) {
         this.discordId = discordId;
+    }
+
+    public void reRegisterPassword(String password){
+        this.password = password;
     }
 }
