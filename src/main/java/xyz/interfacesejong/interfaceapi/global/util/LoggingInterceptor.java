@@ -15,9 +15,11 @@ public class LoggingInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
-        if (!request.getRequestURI().equals("127.0.0.1")) {
-            LOGGER.info("[{} {}] request from IP: {}", request.getMethod(), request.getRequestURI(), request.getRemoteAddr());
+
+        if (request.getRemoteAddr().equals("127.0.0.1") || request.getRemoteAddr().equals("0:0:0:0:0:0:0:1")) {
+            return true;
         }
+        LOGGER.info("[{} {}] request from IP: {}", request.getMethod(), request.getRequestURI(), request.getRemoteAddr());
         return true;
     }
 }
