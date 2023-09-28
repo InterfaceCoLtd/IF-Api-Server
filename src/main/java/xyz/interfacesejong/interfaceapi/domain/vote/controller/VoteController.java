@@ -69,7 +69,7 @@ public class VoteController {
     * 상태별 투표 조회*/
     @Timer
     @GetMapping("subjects")
-    @Operation(summary = "투표 상태별 조회", description = "투표를 상태 구분에 따라 조회합니다.\n 현재 'ONGOING'만 구현됨")
+    @Operation(summary = "투표 상태별 조회", description = "투표를 상태 구분에 따라 조회합니다.")
     ResponseEntity<List<SubjectDTO>> findSubjectsByStatus(@RequestParam Status status){
         if (status == Status.ONGOING){
             return new ResponseEntity<>(voteService.findOngoingSubjects(), HttpStatus.OK);

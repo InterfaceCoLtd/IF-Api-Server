@@ -40,7 +40,11 @@ public class    LogAspect {
             }
         }
 
-        LOGGER.info("[{}] {}", method.getName(), params);
+        if (method.getName().equals("updateSejongStudentAuth")){
+            LOGGER.info("[{}] {}", method.getName(), args[0].toString());
+        }else{
+            LOGGER.info("[{}] {}", method.getName(), params);
+        }
 
         Object proceed = joinPoint.proceed();
 
