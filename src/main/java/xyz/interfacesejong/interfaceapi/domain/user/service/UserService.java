@@ -69,7 +69,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.info("[GenerateNewPassword] 등록 되지 않은 유저");
-                    return new EntityNotFoundException("NON EXIST USER");
+                    return new EntityNotFoundException("NON EXISTS USER");
                 });
 
         user.reRegisterPassword(bCryptPasswordEncoder.encode(newPasswordRequest.getNewPassword()));
@@ -83,7 +83,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.info("[updateGeneration] 등록 되지 않은 유저");
-                    return new EntityNotFoundException("NON EXIST USER");
+                    return new EntityNotFoundException("NON EXISTS USER");
                 });
 
         if (infoRequest.getGeneration() == null){
@@ -102,7 +102,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.info("[updatePhoneNumber] 등록 되지 않은 유저");
-                    return new EntityNotFoundException("NON EXIST USER");
+                    return new EntityNotFoundException("NON EXISTS USER");
                 });
 
         if (infoRequest.getPhoneNumber() == null){
@@ -121,7 +121,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.info("[updateGithubId] 등록 되지 않은 유저");
-                    return new EntityNotFoundException("NON EXIST USER");
+                    return new EntityNotFoundException("NON EXISTS USER");
                 });
 
         if (infoRequest.getGithubId() == null){
@@ -140,7 +140,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.info("[updateDiscordId] 등록 되지 않은 유저");
-                    return new EntityNotFoundException("NON EXIST USER");
+                    return new EntityNotFoundException("NON EXISTS USER");
                 });
         
         if (infoRequest.getDiscordId() == null){
@@ -160,7 +160,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.info("[updateSejongStudentAuth] 등록 되지 않은 유저");
-                    return new EntityNotFoundException("NON EXIST USER");
+                    return new EntityNotFoundException("NON EXISTS USER");
                 });
 
         try {
