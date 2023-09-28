@@ -13,7 +13,9 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,12 +57,12 @@ public class UserService {
     }
 
     @Transactional
-    public Boolean hasEmail(String email){
-        boolean result = userRepository.existsByEmail(email);
+    public Map<String, Boolean> hasEmail(String email){
+        HashMap<String, Boolean> result = new HashMap<String, Boolean>();
+        result.put("duplication",userRepository.existsByEmail(email));
         LOGGER.info("[hasEmail] 이메일 중복 검사");
         return result;
     }
-
 
     @Transactional
     public User reRegisterPassword(Long id, UserNewPasswordRequest newPasswordRequest){

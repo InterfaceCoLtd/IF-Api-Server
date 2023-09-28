@@ -12,6 +12,7 @@ import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,8 +39,8 @@ public class UserController {
     @Timer
     @GetMapping("exists")
     @Operation(summary = "이메일 중복 검사", description = "해당 이메일이 db에 존재하는 계정인지 확인합니다.")
-    public ResponseEntity<?> checkEmailDuplication(@RequestParam String email){
-        return null;
+    public ResponseEntity<Map<String, Boolean>> checkEmailDuplication(@RequestParam String email){
+        return new ResponseEntity<>(userService.hasEmail(email), HttpStatus.OK);
     }
 
 
