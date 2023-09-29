@@ -9,14 +9,13 @@ import xyz.interfacesejong.interfaceapi.domain.user.domain.AuthLevelType;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.*;
+import xyz.interfacesejong.interfaceapi.global.util.BaseResponse;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +43,7 @@ public class UserService {
     }
 
     @Transactional
-    public User saveUser(UserSignUpRequest signUpRequest){
+    public User saveUser(UserSignRequest signUpRequest){
         if (userRepository.existsByEmail(signUpRequest.getEmail())){
             throw new EntityExistsException("ALREADY EXISTS USER");
         }
@@ -59,18 +58,20 @@ public class UserService {
     }
 
     @Transactional
-    public Map<String, Boolean> hasEmail(String email){
-        HashMap<String, Boolean> result = new HashMap<>();
-        result.put("duplication",userRepository.existsByEmail(email));
+    public BaseResponse hasEmail(String email){
+        if (userRepository.existsByEmail(email)){
+            return new BaseResponse("DUPLICATION");
+        }
+
         LOGGER.info("[hasEmail] 이메일 중복 검사");
-        return result;
+        return new BaseResponse("NON DUPLICATION");
     }
 
     @Transactional
     public User reRegisterPassword(Long id, UserNewPasswordRequest newPasswordRequest){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
-                    LOGGER.info("[GenerateNewPassword] 등록 되지 않은 유저");
+                    LOGGER.info("[reRegisterPassword] 등록 되지 않은 유저");
                     return new EntityNotFoundException("NON EXISTS USER");
                 });
 

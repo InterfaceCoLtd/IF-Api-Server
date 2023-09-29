@@ -12,9 +12,9 @@ import xyz.interfacesejong.interfaceapi.domain.user.service.SignService;
 import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 import xyz.interfacesejong.interfaceapi.global.email.dto.AuthEmailResponse;
+import xyz.interfacesejong.interfaceapi.global.util.BaseResponse;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,13 +28,13 @@ public class UserController {
     @Timer
     @PostMapping()
     @Operation(summary = "신규 유저 등록", description = "신규 유저를 생성합니다.")
-    public ResponseEntity<User> createUser(UserSignUpRequest signUpRequest){
+    public ResponseEntity<User> createUser(UserSignRequest signUpRequest){
         return new ResponseEntity<>(userService.saveUser(signUpRequest), HttpStatus.CREATED);
     }
 
     @Timer
     @GetMapping()
-    @Operation(summary = "전체 유저 조회", description = "모든 유저를 조회합니다.")
+    @Operation(summary = "전체 유저 조회", description = "모든 유저를 조회합니다. \n\n 응답 형식 JSON, {\"duplication\"=\"true\" 수정 예정")
     public ResponseEntity<List<UserInfoResponse>> findAllUsers(){
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
@@ -42,8 +42,15 @@ public class UserController {
     @Timer
     @GetMapping("exists")
     @Operation(summary = "이메일 중복 검사", description = "해당 이메일이 db에 존재하는 계정인지 확인합니다.")
-    public ResponseEntity<Map<String, Boolean>> checkEmailDuplication(@RequestParam String email){
+    public ResponseEntity<BaseResponse> checkEmailDuplication(@RequestParam String email){
         return new ResponseEntity<>(userService.hasEmail(email), HttpStatus.OK);
+    }
+
+    @Timer
+    @PostMapping("auth/sign-in")
+    @Operation(summary = "로그인 요청", description = "로그인 요청 기능")
+    public ResponseEntity<BaseResponse> signIn(UserSignRequest signInRequest){
+        return new ResponseEntity<>(signService.signIn(signInRequest), HttpStatus.OK);
     }
 
 
@@ -97,6 +104,7 @@ public class UserController {
 
     @Timer
     @GetMapping("a")
+    @Tag(name = "TEMP")
     @Operation(summary = "사용불가", description = "사용하지마세요")
     public ResponseEntity<AuthEmailResponse> mailSend(@RequestParam Long id, @RequestParam String email){
         return new ResponseEntity<>(signService.sendVerifyMail(id, email), HttpStatus.OK);
