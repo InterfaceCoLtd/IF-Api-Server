@@ -5,12 +5,12 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class UserSignUpRequest {
+public class UserSignRequest {
     private String email;
 
     private String password;
 
-    public UserSignUpRequest(String email, String password) {
+    public UserSignRequest(String email, String password) {
         this.email = email;
         this.password = password;
     }
