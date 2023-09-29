@@ -28,7 +28,7 @@ public class ScheduleController {
     @Timer
     @PostMapping()
     @Operation(summary = "신규 일정 등록", description = "신규 일정을 생성합니다.\n\n항상 시작일이 종료일보다 빨라야합니다. allDay 설정시 시작시간은 0시0분0초, 종료시간은 23시59분59초로 고정됩니다.\n\nType : GROUP(동아리 일정), ACADEMIC(학사 일정), ETC(기타 일정)")
-    public ResponseEntity<Schedule> createSchedule(ScheduleRequest scheduleRequest){
+    public ResponseEntity<Schedule> createSchedule(@RequestBody ScheduleRequest scheduleRequest){
         return new ResponseEntity<>(scheduleService.save(scheduleRequest), HttpStatus.CREATED);
     }
 

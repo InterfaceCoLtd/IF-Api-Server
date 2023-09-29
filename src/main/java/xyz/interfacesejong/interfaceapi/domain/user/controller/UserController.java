@@ -28,13 +28,13 @@ public class UserController {
     @Timer
     @PostMapping()
     @Operation(summary = "신규 유저 등록", description = "신규 유저를 생성합니다.")
-    public ResponseEntity<User> createUser(UserSignRequest signUpRequest){
+    public ResponseEntity<User> createUser(@RequestBody UserSignRequest signUpRequest){
         return new ResponseEntity<>(userService.saveUser(signUpRequest), HttpStatus.CREATED);
     }
 
     @Timer
     @GetMapping()
-    @Operation(summary = "전체 유저 조회", description = "모든 유저를 조회합니다. \n\n 응답 형식 JSON, {\"duplication\"=\"true\" 수정 예정")
+    @Operation(summary = "전체 유저 조회", description = "모든 유저를 조회합니다.")
     public ResponseEntity<List<UserInfoResponse>> findAllUsers(){
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
@@ -49,7 +49,7 @@ public class UserController {
     @Timer
     @PostMapping("auth/sign-in")
     @Operation(summary = "로그인 요청", description = "로그인 요청 기능")
-    public ResponseEntity<BaseResponse> signIn(UserSignRequest signInRequest){
+    public ResponseEntity<BaseResponse> signIn(@RequestBody UserSignRequest signInRequest){
         return new ResponseEntity<>(signService.signIn(signInRequest), HttpStatus.OK);
     }
 
