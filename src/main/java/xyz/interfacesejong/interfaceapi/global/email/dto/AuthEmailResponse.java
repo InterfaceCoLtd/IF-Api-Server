@@ -1,15 +1,17 @@
 package xyz.interfacesejong.interfaceapi.global.email.dto;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class AuthEmailResponse {
-    String authCode;
+    private String result;
 
-    String toMail;
+    private String toMail;
 
-    public AuthEmailResponse(String authCode, String toMail) {
-        this.authCode = authCode;
+    public AuthEmailResponse(String result, String toMail) {
+        this.result = result;
         this.toMail = toMail;
     }
 }

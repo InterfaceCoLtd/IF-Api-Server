@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class SejongStudentAuthService {
+public class SejongStudentAuth {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(SejongStudentAuthService.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(SejongStudentAuth.class);
 
     public SejongStudentAuthResponse getUserAuthInfos(String studentId, String password) throws IOException {
 

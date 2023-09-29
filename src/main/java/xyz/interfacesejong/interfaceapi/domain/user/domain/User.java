@@ -43,11 +43,15 @@ public class User extends BaseTime {
 
     private Boolean enrolled; //인증정보 val
 
+    @Enumerated(EnumType.STRING)
+    private AuthLevelType authLevel;
+
     @Builder
-    public User(Long id, String email, String password){
+    public User(Long id, String email, String password, AuthLevelType authLevel){
         this.id =id;
         this.email = email;
         this.password = password;
+        this.authLevel = authLevel;
     }
 
     public void updateSejongAuthInfo(SejongStudentAuthResponse sejongStudentAuthResponse){
@@ -72,6 +76,10 @@ public class User extends BaseTime {
 
     public void changeDiscordId(String discordId) {
         this.discordId = discordId;
+    }
+
+    public void changeAuthLevel(AuthLevelType authLevel){
+        this.authLevel = authLevel;
     }
 
     public void reRegisterPassword(String password){

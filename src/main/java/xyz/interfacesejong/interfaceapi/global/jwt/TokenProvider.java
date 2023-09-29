@@ -30,8 +30,8 @@ public class TokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(String email){
-        Claims claims = Jwts.claims().setSubject(email);
+    public String generateToken(Long id, String email){
+        Claims claims = Jwts.claims().setSubject(email).setSubject(id.toString());
         Date now = new Date();
 
         String token = Jwts.builder()

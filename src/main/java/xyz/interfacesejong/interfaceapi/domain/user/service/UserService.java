@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import xyz.interfacesejong.interfaceapi.domain.user.domain.AuthLevelType;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.*;
@@ -26,7 +27,7 @@ public class UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private final SejongStudentAuthService sejongStudentAuthService;
+    private final SejongStudentAuth sejongStudentAuth;
 
     private final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
@@ -50,7 +51,8 @@ public class UserService {
 
         User user = userRepository.save(User.builder()
                 .email(signUpRequest.getEmail())
-                .password(bCryptPasswordEncoder.encode(signUpRequest.getPassword())).build());
+                .password(bCryptPasswordEncoder.encode(signUpRequest.getPassword()))
+                .authLevel(AuthLevelType.NEW_ACCOUNT).build());
 
         LOGGER.info("[saveUser] 신규 유저 등록");
         return user;
@@ -58,7 +60,7 @@ public class UserService {
 
     @Transactional
     public Map<String, Boolean> hasEmail(String email){
-        HashMap<String, Boolean> result = new HashMap<String, Boolean>();
+        HashMap<String, Boolean> result = new HashMap<>();
         result.put("duplication",userRepository.existsByEmail(email));
         LOGGER.info("[hasEmail] 이메일 중복 검사");
         return result;
@@ -93,7 +95,9 @@ public class UserService {
             user.changeGeneration(infoRequest.getGeneration());
         }
 
+        user.changeAuthLevel(AuthLevelType.MEMBER_VERIFIED);
         user = userRepository.save(user);
+
         LOGGER.info("[updateGeneration] 기수 업데이트 성공");
         return user;
     }
@@ -165,13 +169,15 @@ public class UserService {
 
         try {
             user.updateSejongAuthInfo(
-                    sejongStudentAuthService.getUserAuthInfos(sejongStudentAuthRequest.getSejongPortalId(), sejongStudentAuthRequest.getSejongPortalPassword())
+                    sejongStudentAuth.getUserAuthInfos(sejongStudentAuthRequest.getSejongPortalId(), sejongStudentAuthRequest.getSejongPortalPassword())
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+        user.changeAuthLevel(AuthLevelType.STUDENT_VERIFIED);
         user = userRepository.save(user);
+
         LOGGER.info("[updateSejongStudentAuth] 세종대 학생 정보 인증 완료");
         return user;
     }

@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.*;
+import xyz.interfacesejong.interfaceapi.domain.user.service.SignService;
 import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
+import xyz.interfacesejong.interfaceapi.global.email.dto.AuthEmailResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final SignService signService;
 
     @Timer
     @PostMapping()
@@ -90,6 +93,13 @@ public class UserController {
     @Operation(summary = "세종대 학생 정보 인증", description = "해당 id 유저의 세종대 학생 정보를 인증한다.\n\n 인증 되는 항목은 이름, 학번, 학년, 전공, 재학여부이다.")
     public ResponseEntity<User> updateSejongStudentAuth(@PathVariable Long id, @RequestBody SejongStudentAuthRequest sejongStudentAuthRequest){
         return new ResponseEntity<>(userService.updateSejongStudentAuth(id, sejongStudentAuthRequest), HttpStatus.OK);
+    }
+
+    @Timer
+    @GetMapping("a")
+    @Operation(summary = "사용불가", description = "사용하지마세요")
+    public ResponseEntity<AuthEmailResponse> mailSend(@RequestParam Long id, @RequestParam String email){
+        return new ResponseEntity<>(signService.sendVerifyMail(id, email), HttpStatus.OK);
     }
 
 }
