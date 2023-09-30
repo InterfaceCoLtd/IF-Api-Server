@@ -27,6 +27,9 @@ public class SignService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final Logger LOGGER = LoggerFactory.getLogger(SignService.class);
+
+
+    /* TODO 이메일 기능 수정
     public AuthEmailResponse sendVerifyMail(Long id, String email){
         String verifyToken = tokenProvider.generateToken(id, email);
         Map<String, Object> variables = new HashMap<>();
@@ -37,7 +40,7 @@ public class SignService {
             throw new RuntimeException(e);
         }
 
-    }
+    }*/
 
     public BaseResponse signIn(UserSignRequest signRequest){
         BaseResponse baseResponse = new BaseResponse();
@@ -65,5 +68,22 @@ public class SignService {
         LOGGER.info("[signIn] {} 로그인 성공", signRequest.getEmail());
         baseResponse.setResponse("SIGN IN SUCCESS");
         return baseResponse;
+    }
+
+    public User simpleSignIn(UserSignRequest signRequest){
+        User user = userRepository.findByEmail(signRequest.getEmail())
+                .orElseThrow(() -> {
+                    LOGGER.info("[simpleSignIn] 이메일 오류");
+                    return new IllegalArgumentException("INVALID ARGUMENT");
+                });
+
+        if (!user.getDeviceId().equals(signRequest.getDeviceId())){
+            LOGGER.info("[simpleSignIn] 기기 번호 오류");
+            System.out.println(user.getDeviceId());
+            throw new IllegalArgumentException("INVALID ARGUMENT");
+        }
+
+        LOGGER.info("[simpleSignIn] 서브 로그인 정보 통과");
+        return user;
     }
 }

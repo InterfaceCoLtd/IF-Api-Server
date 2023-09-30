@@ -6,6 +6,7 @@ import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -46,6 +47,9 @@ public class User extends BaseTime {
     @Enumerated(EnumType.STRING)
     private AuthLevelType authLevel;
 
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID deviceId;
+
     @Builder
     public User(Long id, String email, String password, AuthLevelType authLevel){
         this.id =id;
@@ -84,5 +88,9 @@ public class User extends BaseTime {
 
     public void reRegisterPassword(String password){
         this.password = password;
+    }
+
+    public void changeDeviceId(UUID deviceId){
+        this.deviceId = deviceId;
     }
 }
