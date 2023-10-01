@@ -64,13 +64,14 @@ public class VoteService {
     * 모든 투표 주제 조회
     */
     @Transactional
-    public List<SubjectDTO> findAllSubjects() {
-        List<SubjectDTO> subjects = subjectRepository.findAll().stream()
-                .map(subject -> SubjectDTO.builder()
+    public List<SubjectResponse> findAllSubjects() {
+        List<SubjectResponse> subjects = subjectRepository.findAll().stream()
+                .map(subject -> SubjectResponse.builder()
                         .subject(subject.getSubject())
                         .subjectId(subject.getId())
                         .startDate(subject.getStartDateTime())
                         .endDate(subject.getEndDateTime())
+                        .total(subject.getTotal())
                         .build())
                 .collect(Collectors.toList());
 
@@ -82,8 +83,8 @@ public class VoteService {
     * 진행 중인 투표 주제 조회
     * */
     @Transactional
-    public List<SubjectDTO> findOngoingSubjects(){
-        List<SubjectDTO> subjects = subjectRepository.findAllByOngoing(LocalDateTime.now());
+    public List<SubjectResponse> findOngoingSubjects(){
+        List<SubjectResponse> subjects = subjectRepository.findAllByOngoing(LocalDateTime.now());
 
         LOGGER.info("[findOngoingSubjects] 활성된 투표 조회");
         return subjects;
@@ -92,8 +93,8 @@ public class VoteService {
     * 진행 예정 투표 주제 조회
     * */
     @Transactional
-    public List<SubjectDTO> findUpcomingSubjects(){
-        List<SubjectDTO> subjects = subjectRepository.findAllByUpcoming(LocalDateTime.now());
+    public List<SubjectResponse> findUpcomingSubjects(){
+        List<SubjectResponse> subjects = subjectRepository.findAllByUpcoming(LocalDateTime.now());
 
         LOGGER.info("[findUpcomingSubjects] 예정된 투표 조회");
         return subjects;
@@ -102,8 +103,8 @@ public class VoteService {
     * 만료된 투표 주제 조회
     * */
     @Transactional
-    public List<SubjectDTO> findCompletedSubjects(){
-        List<SubjectDTO> subjects = subjectRepository.findAllByCompleted(LocalDateTime.now());
+    public List<SubjectResponse> findCompletedSubjects(){
+        List<SubjectResponse> subjects = subjectRepository.findAllByCompleted(LocalDateTime.now());
 
         LOGGER.info("[findCompletedSubjects] 만료된 투표 조회");
         return subjects;

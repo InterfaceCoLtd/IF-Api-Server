@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
-public class SubjectDTO {
+public class SubjectResponse {
     private Long subjectId;
 
     private String subject;
@@ -22,7 +22,7 @@ public class SubjectDTO {
     private int total;
 
     @Builder
-    public SubjectDTO(Long subjectId, String subject, LocalDateTime startDate, LocalDateTime endDate, int total) {
+    public SubjectResponse(Long subjectId, String subject, LocalDateTime startDate, LocalDateTime endDate, int total) {
         this.subjectId = subjectId;
         this.subject = subject;
         this.startDate = startDate;

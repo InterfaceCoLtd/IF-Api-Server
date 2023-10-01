@@ -61,7 +61,7 @@ public class VoteController {
     @Timer
     @GetMapping()
     @Operation(summary = "투표 주제 전체 조회", description = "모든 투표 주제를 조회합니다.")
-    ResponseEntity<List<SubjectDTO>> findAllSubjects() {
+    ResponseEntity<List<SubjectResponse>> findAllSubjects() {
         return new ResponseEntity<>(voteService.findAllSubjects(), HttpStatus.OK);
     }
 
@@ -70,7 +70,7 @@ public class VoteController {
     @Timer
     @GetMapping("subjects")
     @Operation(summary = "투표 상태별 조회", description = "투표를 상태 구분에 따라 조회합니다.")
-    ResponseEntity<List<SubjectDTO>> findSubjectsByStatus(@RequestParam Status status){
+    ResponseEntity<List<SubjectResponse>> findSubjectsByStatus(@RequestParam Status status){
         if (status == Status.ONGOING){
             return new ResponseEntity<>(voteService.findOngoingSubjects(), HttpStatus.OK);
         } else if (status == Status.UPCOMING){

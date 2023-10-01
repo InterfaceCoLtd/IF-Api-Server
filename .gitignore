@@ -5,9 +5,8 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-application-mariadb.properties
-application-mail.properties
-application-security.properties
+### 설정 파일 ###
+*.properties
 
 ### STS ###
 .apt_generated
