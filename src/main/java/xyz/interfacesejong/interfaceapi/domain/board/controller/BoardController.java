@@ -72,8 +72,10 @@ public class BoardController {
     //글수정
     @PutMapping("/board/{id}")
     @Operation(summary = "글 업데이트", description = "해당 id의 게시글을 수정합니다.")
-    public ResponseEntity<BoardDto> update(@PathVariable Long id,@ModelAttribute BoardDto boardDto,@RequestParam List<MultipartFile> multipartFileList) {
-        BoardDto updatedBoardDto = boardService.update(id, boardDto, multipartFileList);
+    public ResponseEntity<BoardDto> update(@PathVariable Long id, @ModelAttribute BoardDto boardDto, @RequestParam(required = false) List<MultipartFile> multipartFileList) {
+        BoardDto updatedBoardDto;
+        if(multipartFileList==null) updatedBoardDto = boardService.update(id, boardDto);
+        else updatedBoardDto = boardService.updateFiles(id, boardDto, multipartFileList);
         return ResponseEntity.ok(updatedBoardDto);
     }
 
