@@ -20,7 +20,7 @@ public class Board extends BaseTime {
     @Column
     private String title;
 
-    @Column
+    @Column(length = 1000)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,5 +1,6 @@
 package xyz.interfacesejong.interfaceapi.domain.board.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/board")
+@RequestMapping("/api/boards")
 public class BoardController {
 
     private final BoardService boardService;
@@ -33,7 +34,8 @@ public class BoardController {
     }
 
     // 글작성
-    @PostMapping("/create")
+    @PostMapping()
+    @Operation(summary = "글 작성", description = "새로운 글을 생성합니다.")
     public ResponseEntity<BoardDto> create(@ModelAttribute BoardDto boardDto, @RequestParam(required = false) List<MultipartFile> multipartFileList) throws Exception {
         if(multipartFileList==null)boardService.save(boardDto);
         else boardService.saveFiles(boardDto, multipartFileList);
@@ -42,33 +44,39 @@ public class BoardController {
     }
 
     // 전체 게시물 불러오기
-    @GetMapping("/getAllBoards")
+    @GetMapping()
+    @Operation(summary = "모든 글 조회", description = "모든 글을 조회합니다.")
     public ResponseEntity<List<BoardDto>> getAllBoards() { return ResponseEntity.ok(boardService.getAllBoards()); }
 
     // 작성자 id로 게시물 불러오기
-    @GetMapping("/findByUserId")
-    public ResponseEntity<List<BoardDto>> findByUserId(@RequestParam("userId")Long id) throws Exception {
+    @GetMapping("/user/{id}")
+    @Operation(summary = "작성자 id로 글 조회", description = "작성자 id로 모든 글을 조회합니다.")
+    public ResponseEntity<List<BoardDto>> findByUserId(@PathVariable Long id) throws Exception {
         return ResponseEntity.ok(boardService.findByUserId(id));
     }
 
     // 글 id로 게시물 불러오기
-    @GetMapping("/findById")
-    public ResponseEntity<BoardDto> findById(@RequestParam("id")Long id) throws Exception {
+    @GetMapping("/board/{id}")
+    @Operation(summary = "게시글 조회", description = "글 id로 글을 조회합니다.")
+    public ResponseEntity<BoardDto> findById(@PathVariable Long id) throws Exception {
         return ResponseEntity.ok(boardService.findById(id));
     }
 
     // 글삭제
-    @DeleteMapping("/delete")
-    public ResponseEntity<BoardDto> delete(@RequestParam("id") Long id) throws Exception {
+    @DeleteMapping("/board/{id}")
+    @Operation(summary = "글 삭제", description = "글 id로 게시글을 삭제합니다.")
+    public ResponseEntity<BoardDto> delete(@PathVariable Long id) {
         boardService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     //글수정
-    @PutMapping("/update")
-    public ResponseEntity<BoardDto> update(@ModelAttribute BoardDto boardDto,@RequestParam List<MultipartFile> multipartFileList) throws Exception {
-        BoardDto updatedBoardDto = boardService.update(boardDto, multipartFileList);
-
+    @PutMapping("/board/{id}")
+    @Operation(summary = "글 업데이트", description = "해당 id의 게시글을 수정합니다.")
+    public ResponseEntity<BoardDto> update(@PathVariable Long id, @ModelAttribute BoardDto boardDto, @RequestParam(required = false) List<MultipartFile> multipartFileList) {
+        BoardDto updatedBoardDto;
+        if(multipartFileList==null) updatedBoardDto = boardService.update(id, boardDto);
+        else updatedBoardDto = boardService.updateFiles(id, boardDto, multipartFileList);
         return ResponseEntity.ok(updatedBoardDto);
     }
 
