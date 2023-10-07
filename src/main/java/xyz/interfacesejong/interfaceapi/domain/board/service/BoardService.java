@@ -10,12 +10,12 @@ import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.BoardRepository;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Comment;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.CommentRepository;
-import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardDto;
+import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardRequest;
+import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardResponse;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
+import xyz.interfacesejong.interfaceapi.domain.file.service.FileUtils;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
-import xyz.interfacesejong.interfaceapi.global.aop.Timer;
-import xyz.interfacesejong.interfaceapi.global.util.FileUtils;
 
 
 import javax.persistence.EntityNotFoundException;
@@ -37,101 +37,84 @@ public class BoardService {
     private final FileService fileService;
     private final FileUtils fileUtils;
     private final Logger LOGGER = LoggerFactory.getLogger(BoardService.class);
-    //게시물 저장
+
     @Transactional
-    public void save(BoardDto boardDto) throws Exception {
+    public Board save(BoardRequest boardRequest) {
 
         Board board = Board.builder()
-                .title(boardDto.getTitle())
-                .content(boardDto.getContent())
-                .writer(userRepository.findById(boardDto.getUserId()).orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다."))).build();
+                .title(boardRequest.getTitle())
+                .content(boardRequest.getContent())
+                .writer(userRepository.findById(boardRequest.getUserId()).orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다."))).build();
 
         boardRepository.save(board);
+        return board;
     }
 
     @Transactional
-    public void saveFiles(BoardDto boardDto, List<MultipartFile> multipartFileList) throws Exception {
+    public Board saveFiles(BoardRequest boardRequest, List<MultipartFile> multipartFileList) throws Exception {
         Board board = Board.builder()
-                .title(boardDto.getTitle())
-                .content(boardDto.getContent())
-                .writer(userRepository.findById(boardDto.getUserId()).orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다."))).build();
-
+                .title(boardRequest.getTitle())
+                .content(boardRequest.getContent())
+                .writer(userRepository.findById(boardRequest.getUserId()).orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다."))).build();
         boardRepository.save(board);
 
         List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList);
         fileService.saveFiles(board, uploadFileList);
+        return board;
     }
 
-    // 전체 게시물 불러오기
     @Transactional
-    public List<BoardDto> getAllBoards() {
+    public List<BoardResponse> getAllBoards() {
         List<Board> boardList = boardRepository.findAll();
-        List<BoardDto> boardDtoList = new ArrayList<>();
-        for(Board board : boardList) {
-            boardDtoList.add(new BoardDto(board));
-        }
-
-        return boardDtoList;
+        List<BoardResponse> boardResponseList = new ArrayList<>();
+        boardList.stream().forEach(board -> boardResponseList.add(new BoardResponse(board)));
+        return boardResponseList;
         //LOGGER.info("[findAllBoards] : 모든 게시글 조회");
     }
 
-    // 작성자 id로 게시물 불러오기
     @Transactional
-    public List<BoardDto> findByUserId(Long id) {
-        List<BoardDto> boardDtoList = new ArrayList<>();
-        List<Board> boardList = boardRepository.findAll();
+    public List<BoardResponse> findByUserId(Long id) throws EntityNotFoundException{
+        List<BoardResponse> boardResponseList = new ArrayList<>();
+        List<Board> boardList = boardRepository.findByWriterId(id).get();
+        boardList.stream().forEach(board -> boardResponseList.add(new BoardResponse(board)));
 
-        for(Board board : boardList) {
-            if(board.getWriter().getId().equals(id)) {
-                boardDtoList.add(new BoardDto(board));
-            }
-        }
-
-        return boardDtoList;
+        return boardResponseList;
     }
 
-    // id로 게시물 불러오기
     @Transactional
-    public BoardDto findById(Long id) throws EntityNotFoundException {
-        BoardDto boardDto = BoardDto.builder()
+    public BoardResponse findById(Long id) throws EntityNotFoundException {
+        BoardResponse boardResponse = BoardResponse.builder()
                 .board(boardRepository.findById(id).get()).build();
 
-        return boardDto;
+        return boardResponse;
     }
 
-    // 게시물 삭제
     @Transactional
     public void delete(Long id) throws EntityNotFoundException {
-        Board board=boardRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("해당 게시물이 없습니다."));
-
-        boardRepository.delete(board);
-    }
-
-    // 게시물 수정
-    @Transactional
-    public BoardDto update(Long id, BoardDto updatedBoardDto) throws EntityNotFoundException {
-        Board board = boardRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("해당 게시글이 없습니다."));
-        board.update(updatedBoardDto.getTitle(), updatedBoardDto.getContent());
-
-        return new BoardDto(board);
+        boardRepository.deleteById(id);
     }
 
     @Transactional
-    public BoardDto updateFiles(Long id, BoardDto updatedBoardDto, List<MultipartFile> multipartFileList) throws EntityNotFoundException {
+    public BoardResponse update(Long id, BoardRequest updatedBoardRequest) throws EntityNotFoundException {
         Board board = boardRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("해당 게시글이 없습니다."));
-        board.update(updatedBoardDto.getTitle(), updatedBoardDto.getContent());
+        board.update(updatedBoardRequest.getTitle(), updatedBoardRequest.getContent());
+        fileService.deleteFilesByBoardId(id);
+        return new BoardResponse(board);
+    }
+
+    @Transactional
+    public BoardResponse updateFiles(Long id, BoardRequest updatedBoardRequest, List<MultipartFile> multipartFileList) throws EntityNotFoundException {
+        Board board = boardRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("해당 게시글이 없습니다."));
+        board.update(updatedBoardRequest.getTitle(), updatedBoardRequest.getContent());
 
         fileService.deleteFilesByBoardId(id);
         List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList);
         fileService.saveFiles(board, uploadFileList);
 
-        return new BoardDto(board);
+        return new BoardResponse(board);
     }
 
     //게시글 id로 댓글 리스트 불러오기
-
-
     @Transactional
     public Optional<List<Comment>> getCommentsByBoardId(Long boardId) throws EntityNotFoundException {
         Board board = boardRepository.findById(boardId)

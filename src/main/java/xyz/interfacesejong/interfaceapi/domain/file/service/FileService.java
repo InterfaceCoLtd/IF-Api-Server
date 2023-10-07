@@ -8,7 +8,6 @@ import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.FileRepository;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 import xyz.interfacesejong.interfaceapi.domain.file.dto.UploadFileDto;
-import xyz.interfacesejong.interfaceapi.global.util.FileUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -23,18 +22,17 @@ public class FileService {
     @Transactional
     public void saveFiles(Board board, List<UploadFile> fileList) {
         if(CollectionUtils.isEmpty(fileList)) return;
-
-        for(UploadFile file : fileList) {
-            file.setBoard(board);
-            fileRepository.save(file);
-        }
+        fileList.stream().forEach(uploadFile -> {
+            uploadFile.setBoard(board);
+            fileRepository.save(uploadFile);
+        });
     }
 
     @Transactional
     public UploadFileDto getUploadFile(Long id) {
         UploadFile uploadFile = fileRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 첨부파일이 없습니다"));
-        UploadFileDto uploadFileDto = UploadFileDto.builder().uploadFile(uploadFile).build();
+        UploadFileDto uploadFileDto = new UploadFileDto(uploadFile);
         return uploadFileDto;
     }
 
@@ -43,11 +41,7 @@ public class FileService {
         List<UploadFile> uploadFileList = fileRepository.findByBoardId(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 게시물에 첨부파일이 존재하지 않습니다."));
         List<UploadFileDto> uploadFileDtoList = new ArrayList<>();
-
-        for(UploadFile uploadFile : uploadFileList) {
-            uploadFileDtoList.add(UploadFileDto.builder().uploadFile(uploadFile).build());
-        }
-
+        uploadFileList.stream().forEach(uploadFile -> uploadFileDtoList.add(new UploadFileDto(uploadFile)));
         return uploadFileDtoList;
     }
 
@@ -56,10 +50,9 @@ public class FileService {
         // 게시글 삭제 시 첨부파일 삭제
         List<UploadFile> uploadFileList = fileRepository.findByBoardId(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 게시물에 첨부파일이 존재하지 않습니다"));
-
-        for(UploadFile uploadFile : uploadFileList) {
+        uploadFileList.stream().forEach(uploadFile -> {
             fileUtils.deleteFile(uploadFile);
             fileRepository.delete(uploadFile);
-        }
+        });
     }
 }
