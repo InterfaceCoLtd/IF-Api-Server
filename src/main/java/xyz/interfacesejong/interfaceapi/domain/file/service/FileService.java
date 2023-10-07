@@ -7,7 +7,7 @@ import org.springframework.util.CollectionUtils;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.FileRepository;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
-import xyz.interfacesejong.interfaceapi.domain.file.dto.UploadFileDto;
+import xyz.interfacesejong.interfaceapi.domain.file.dto.UploadFileResponse;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -29,20 +29,20 @@ public class FileService {
     }
 
     @Transactional
-    public UploadFileDto getUploadFile(Long id) {
+    public UploadFileResponse getUploadFile(Long id) {
         UploadFile uploadFile = fileRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 첨부파일이 없습니다"));
-        UploadFileDto uploadFileDto = new UploadFileDto(uploadFile);
-        return uploadFileDto;
+        UploadFileResponse uploadFileResponse = new UploadFileResponse(uploadFile);
+        return uploadFileResponse;
     }
 
     @Transactional
-    public List<UploadFileDto> getAllUploadFiles(Long id) {
+    public List<UploadFileResponse> getAllUploadFiles(Long id) {
         List<UploadFile> uploadFileList = fileRepository.findByBoardId(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 게시물에 첨부파일이 존재하지 않습니다."));
-        List<UploadFileDto> uploadFileDtoList = new ArrayList<>();
-        uploadFileList.stream().forEach(uploadFile -> uploadFileDtoList.add(new UploadFileDto(uploadFile)));
-        return uploadFileDtoList;
+        List<UploadFileResponse> uploadFileResponseList = new ArrayList<>();
+        uploadFileList.stream().forEach(uploadFile -> uploadFileResponseList.add(new UploadFileResponse(uploadFile)));
+        return uploadFileResponseList;
     }
 
     @Transactional

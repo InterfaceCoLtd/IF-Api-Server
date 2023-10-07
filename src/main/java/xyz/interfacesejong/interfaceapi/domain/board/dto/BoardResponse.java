@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @ToString
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardResponse {
     private Long id;
     private String title;

@@ -2,9 +2,9 @@ package xyz.interfacesejong.interfaceapi.domain.file.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
-import xyz.interfacesejong.interfaceapi.domain.file.dto.UploadFileDto;
+import xyz.interfacesejong.interfaceapi.domain.file.dto.UploadFileResponse;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
+import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 
 import java.util.List;
 
@@ -17,12 +17,15 @@ public class FileController {
         this.fileService = fileService;
     }
 
+    @Timer
     @GetMapping("/file/{id}")
-    public ResponseEntity<UploadFileDto> getUploadFile(@PathVariable Long id) {
+    public ResponseEntity<UploadFileResponse> getUploadFile(@PathVariable Long id) {
         return ResponseEntity.ok(fileService.getUploadFile(id));
     }
+
+    @Timer
     @GetMapping("/board/{id}")
-    public ResponseEntity<List<UploadFileDto>> getAllUploadFiles(@PathVariable Long id) throws Exception {
+    public ResponseEntity<List<UploadFileResponse>> getAllUploadFiles(@PathVariable Long id) throws Exception {
         return ResponseEntity.ok(fileService.getAllUploadFiles(id));
     }
 }
