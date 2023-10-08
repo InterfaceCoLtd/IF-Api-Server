@@ -37,7 +37,7 @@ public class UserController {
 
     @Timer
     @PostMapping("auth/sign-in")
-    @Operation(summary = "로그인 요청", description = "로그인 요청 기능")
+    @Operation(summary = "로그인 요청", description = "로그인 요청 기능\n\n 이메일 비밀번호는 필수\n\n 기기 Id 안 보내면 db에 등록 안 되어서 간소 로그인 불가")
     public ResponseEntity<UserSignResponse> signIn(@RequestBody UserSignRequest signInRequest){
         UserSignResponse userSignResponse = signService.signIn(signInRequest);
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -47,7 +47,7 @@ public class UserController {
 
     @Timer
     @PostMapping("auth/simple-sign-in")
-    @Operation(summary = "간소 로그인 요청", description = "간소 로그인, 토큰 발급용 기능\n\n deviceId만 전달")
+    @Operation(summary = "간소 로그인 요청", description = "간소 로그인, 토큰 발급용 기능\n\n deviceId만 전달하면 토큰 발급")
     public ResponseEntity<UserSignResponse> simpleSignIn(@RequestBody UserSignRequest signRequest){
         UserSignResponse userSignResponse = signService.simpleSignIn(signRequest);
         String token = tokenProvider.generateToken(userSignResponse);
