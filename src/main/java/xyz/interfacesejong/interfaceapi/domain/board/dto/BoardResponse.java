@@ -13,19 +13,25 @@ public class BoardResponse {
     private String title;
     private String content;
     private Long userId;
+    private Long scheduleId;
+    private Long subjectId;
 
-    @Builder
     public BoardResponse(Board board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.userId = board.getWriter().getId();
+        this.scheduleId = board.getScheduleId();
+        this.subjectId = board.getSubjectId();
     }
 
-    public BoardResponse(Long id, String title, String content, Long userId) {
+    @Builder
+    public BoardResponse(Long id, String title, String content, Long userId, Long scheduleId, Long subjectId) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.userId = userId;
+        this.scheduleId = scheduleId;
+        this.subjectId = subjectId;
     }
 }

@@ -44,7 +44,9 @@ public class BoardService {
         Board board = Board.builder()
                 .title(boardRequest.getTitle())
                 .content(boardRequest.getContent())
-                .writer(userRepository.findById(boardRequest.getUserId()).orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다."))).build();
+                .writer(userRepository.findById(boardRequest.getUserId()).orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다.")))
+                .scheduleId(boardRequest.getScheduleId())
+                .subjectId(boardRequest.getSubjectId()).build();
 
         boardRepository.save(board);
         return board;
@@ -55,7 +57,9 @@ public class BoardService {
         Board board = Board.builder()
                 .title(boardRequest.getTitle())
                 .content(boardRequest.getContent())
-                .writer(userRepository.findById(boardRequest.getUserId()).orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다."))).build();
+                .writer(userRepository.findById(boardRequest.getUserId()).orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다.")))
+                .subjectId(boardRequest.getSubjectId())
+                .scheduleId(boardRequest.getScheduleId()).build();
         boardRepository.save(board);
 
         List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList);
@@ -83,8 +87,21 @@ public class BoardService {
 
     @Transactional
     public BoardResponse findById(Long id) throws EntityNotFoundException {
-        BoardResponse boardResponse = BoardResponse.builder()
-                .board(boardRepository.findById(id).get()).build();
+        BoardResponse boardResponse = new BoardResponse(boardRepository.findById(id).get());
+
+        return boardResponse;
+    }
+
+    @Transactional
+    public BoardResponse findByScheduleId(Long id) throws EntityNotFoundException {
+        BoardResponse boardResponse = new BoardResponse(boardRepository.findByScheduleId(id).get());
+
+        return boardResponse;
+    }
+
+    @Transactional
+    public BoardResponse findBySubjectId(Long id) throws EntityNotFoundException {
+        BoardResponse boardResponse = new BoardResponse(boardRepository.findBySubjectId(id).get());
 
         return boardResponse;
     }

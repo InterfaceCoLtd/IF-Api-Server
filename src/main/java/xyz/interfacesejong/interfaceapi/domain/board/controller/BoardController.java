@@ -55,6 +55,20 @@ public class BoardController {
     }
 
     @Timer
+    @GetMapping("/schedule/{id}")
+    @Operation(summary = "일정 id로 글 조회", description = "일정 id로 글을 조회합니다")
+    public ResponseEntity<BoardResponse> findByScheduleId(@PathVariable Long id) {
+        return ResponseEntity.ok(boardService.findByScheduleId(id));
+    }
+
+    @Timer
+    @GetMapping("/subject/{id}")
+    @Operation(summary = "투표 주제 id로 글 조회", description = "투표 주제 id로 글을 조회합니다")
+    public ResponseEntity<BoardResponse> findBySubjectId(@PathVariable Long id) {
+        return ResponseEntity.ok(boardService.findBySubjectId(id));
+    }
+
+    @Timer
     @DeleteMapping("/board/{id}")
     @Operation(summary = "글 삭제", description = "글 id로 게시글을 삭제합니다.")
     public ResponseEntity<BoardResponse> delete(@PathVariable Long id) {
