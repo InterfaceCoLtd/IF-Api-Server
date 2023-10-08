@@ -6,12 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
-import xyz.interfacesejong.interfaceapi.domain.board.domain.BoardRepository;
-import xyz.interfacesejong.interfaceapi.domain.board.domain.Comment;
-import xyz.interfacesejong.interfaceapi.domain.board.domain.CommentRepository;
+import xyz.interfacesejong.interfaceapi.domain.board.domain.*;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardRequest;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardResponse;
+import xyz.interfacesejong.interfaceapi.domain.board.dto.TitleDto;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileUtils;
@@ -74,6 +72,11 @@ public class BoardService {
         boardList.stream().forEach(board -> boardResponseList.add(new BoardResponse(board)));
         return boardResponseList;
         //LOGGER.info("[findAllBoards] : 모든 게시글 조회");
+    }
+
+    @Transactional
+    public List<TitleDto> getAllTitles() {
+        return boardRepository.getAllTitles();
     }
 
     @Transactional

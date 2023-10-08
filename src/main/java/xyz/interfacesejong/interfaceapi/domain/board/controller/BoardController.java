@@ -10,6 +10,7 @@ import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Comment;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardRequest;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardResponse;
+import xyz.interfacesejong.interfaceapi.domain.board.dto.TitleDto;
 import xyz.interfacesejong.interfaceapi.domain.board.service.BoardService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 
@@ -39,6 +40,13 @@ public class BoardController {
     @GetMapping()
     @Operation(summary = "모든 글 조회", description = "모든 글을 조회합니다.")
     public ResponseEntity<List<BoardResponse>> getAllBoards() { return ResponseEntity.ok(boardService.getAllBoards()); }
+
+    @Timer
+    @GetMapping("/title")
+    @Operation(summary = "모든 글 제목", description = "글 목록 조회 시 제목 리스트만 반환합니다.")
+    public ResponseEntity<List<TitleDto>> getAllTitles() {
+        return ResponseEntity.ok(boardService.getAllTitles());
+    }
 
     @Timer
     @GetMapping("/user/{id}")
