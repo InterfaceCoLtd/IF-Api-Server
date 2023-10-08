@@ -2,35 +2,36 @@ package xyz.interfacesejong.interfaceapi.domain.board.dto;
 
 import lombok.*;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
-import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
-@Setter
-@NoArgsConstructor
-public class BoardDto {
+@ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class BoardResponse {
     private Long id;
     private String title;
     private String content;
     private Long userId;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
+    private Long scheduleId;
+    private Long subjectId;
 
-    @Builder
-    public BoardDto(Board board) {
+    public BoardResponse(Board board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.userId = board.getWriter().getId();
-        this.createdDate = board.getCreatedDate();
-        this.modifiedDate = board.getModifiedDate();
+        this.scheduleId = board.getScheduleId();
+        this.subjectId = board.getSubjectId();
     }
 
-    public BoardDto(String title, String content, Long userId) {
+    @Builder
+    public BoardResponse(Long id, String title, String content, Long userId, Long scheduleId, Long subjectId) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.userId = userId;
+        this.scheduleId = scheduleId;
+        this.subjectId = subjectId;
     }
 }

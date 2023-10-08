@@ -1,4 +1,4 @@
-package xyz.interfacesejong.interfaceapi.global.util;
+package xyz.interfacesejong.interfaceapi.domain.file.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -40,7 +40,7 @@ public class FileUtils {
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
         // 기본 업로드 위치 + 날짜 디렉터리 생성
-        String uploadDir = rootUploadPath+File.separator+date;
+        String uploadDir = rootUploadPath+ File.separator+date;
         File dir = new File(uploadDir);
         if(!dir.exists()) dir.mkdir();
 

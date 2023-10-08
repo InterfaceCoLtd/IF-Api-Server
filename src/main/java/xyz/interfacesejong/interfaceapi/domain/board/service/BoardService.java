@@ -6,16 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
-import xyz.interfacesejong.interfaceapi.domain.board.domain.BoardRepository;
-import xyz.interfacesejong.interfaceapi.domain.board.domain.Comment;
-import xyz.interfacesejong.interfaceapi.domain.board.domain.CommentRepository;
-import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardDto;
+import xyz.interfacesejong.interfaceapi.domain.board.domain.*;
+import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardRequest;
+import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardResponse;
+import xyz.interfacesejong.interfaceapi.domain.board.dto.TitleDto;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
+import xyz.interfacesejong.interfaceapi.domain.file.service.FileUtils;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
-import xyz.interfacesejong.interfaceapi.global.aop.Timer;
-import xyz.interfacesejong.interfaceapi.global.util.FileUtils;
 
 
 import javax.persistence.EntityNotFoundException;
@@ -37,101 +35,145 @@ public class BoardService {
     private final FileService fileService;
     private final FileUtils fileUtils;
     private final Logger LOGGER = LoggerFactory.getLogger(BoardService.class);
-    //게시물 저장
+
     @Transactional
-    public void save(BoardDto boardDto) throws Exception {
+    public Board save(BoardRequest boardRequest) {
 
         Board board = Board.builder()
-                .title(boardDto.getTitle())
-                .content(boardDto.getContent())
-                .writer(userRepository.findById(boardDto.getUserId()).orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다."))).build();
+                .title(boardRequest.getTitle())
+                .content(boardRequest.getContent())
+                .writer(userRepository.findById(boardRequest.getUserId()).orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다.")))
+                .scheduleId(boardRequest.getScheduleId())
+                .subjectId(boardRequest.getSubjectId()).build();
 
         boardRepository.save(board);
+
+        LOGGER.info("[save] : 게시글 저장, 게시글 ID {}", board.getId());
+        return board;
     }
 
     @Transactional
-    public void saveFiles(BoardDto boardDto, List<MultipartFile> multipartFileList) throws Exception {
+    public Board saveFiles(BoardRequest boardRequest, List<MultipartFile> multipartFileList) {
         Board board = Board.builder()
-                .title(boardDto.getTitle())
-                .content(boardDto.getContent())
-                .writer(userRepository.findById(boardDto.getUserId()).orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다."))).build();
-
+                .title(boardRequest.getTitle())
+                .content(boardRequest.getContent())
+                .writer(userRepository.findById(boardRequest.getUserId()).orElseThrow(() -> {
+                    LOGGER.info("[saveFiles] : 해당 id를 가진 사용자가 없습니다, 사용자 id {}", boardRequest.getUserId());
+                    return new NoSuchElementException();
+                }))
+                .subjectId(boardRequest.getSubjectId())
+                .scheduleId(boardRequest.getScheduleId()).build();
         boardRepository.save(board);
 
         List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList);
         fileService.saveFiles(board, uploadFileList);
+
+        LOGGER.info("[saveFiles] : 게시글 저장 + 첨부파일 저장, 게시글 ID {}, 첨부파일 수 {}", board.getId(), uploadFileList.size());
+        return board;
     }
 
-    // 전체 게시물 불러오기
     @Transactional
-    public List<BoardDto> getAllBoards() {
+    public List<BoardResponse> getAllBoards() {
         List<Board> boardList = boardRepository.findAll();
-        List<BoardDto> boardDtoList = new ArrayList<>();
-        for(Board board : boardList) {
-            boardDtoList.add(new BoardDto(board));
-        }
+        List<BoardResponse> boardResponseList = new ArrayList<>();
+        boardList.stream().forEach(board -> boardResponseList.add(new BoardResponse(board)));
 
-        return boardDtoList;
-        //LOGGER.info("[findAllBoards] : 모든 게시글 조회");
+        LOGGER.info("[findAllBoards] : 모든 게시글 조회");
+        return boardResponseList;
     }
 
-    // 작성자 id로 게시물 불러오기
     @Transactional
-    public List<BoardDto> findByUserId(Long id) {
-        List<BoardDto> boardDtoList = new ArrayList<>();
-        List<Board> boardList = boardRepository.findAll();
-
-        for(Board board : boardList) {
-            if(board.getWriter().getId().equals(id)) {
-                boardDtoList.add(new BoardDto(board));
-            }
-        }
-
-        return boardDtoList;
+    public List<TitleDto> getAllTitles() {
+        LOGGER.info("[getAllTitles] : 모든 게시글의 제목 리스트 반환");
+        return boardRepository.getAllTitles();
     }
 
-    // id로 게시물 불러오기
     @Transactional
-    public BoardDto findById(Long id) throws EntityNotFoundException {
-        BoardDto boardDto = BoardDto.builder()
-                .board(boardRepository.findById(id).get()).build();
+    public List<BoardResponse> findByUserId(Long id) throws EntityNotFoundException{
+        List<BoardResponse> boardResponseList = new ArrayList<>();
+        List<Board> boardList = boardRepository.findByWriterId(id)
+                .orElseThrow(() -> {
+                    LOGGER.info("[findById] : 작성자가 작성한 글이 없습니다, 작성자 id {}", id);
+                    return new EntityNotFoundException("해당 작성자가 작성한 글이 없습니다.");
+                });
+        boardList.stream().forEach(board -> boardResponseList.add(new BoardResponse(board)));
 
-        return boardDto;
+        LOGGER.info("[findByUserId] : 작성자로 글 조회, 작성자 id {}, 게시글 개수 {}", id, boardList.size());
+        return boardResponseList;
     }
 
-    // 게시물 삭제
+    @Transactional
+    public BoardResponse findById(Long id) {
+        BoardResponse boardResponse = new BoardResponse(boardRepository.findById(id)
+                .orElseThrow(() -> {
+                    LOGGER.info("[findById] : 해당 id를 가진 게시글이 없습니다, 게시글 id {}", id);
+                    return new EntityNotFoundException();
+                }));
+
+        LOGGER.info("[findById] : id로 글 조회, 게시글 id {}", id);
+        return boardResponse;
+    }
+
+    @Transactional
+    public BoardResponse findByScheduleId(Long id) throws EntityNotFoundException {
+        BoardResponse boardResponse = new BoardResponse(boardRepository.findByScheduleId(id)
+                .orElseThrow(() -> {
+                    LOGGER.info("[findByScheduleId] : 해당 일정 id를 가진 게시글이 없습니다, 일정 id {}", id);
+                    return new EntityNotFoundException();
+                }));
+
+        LOGGER.info("[findByScheduleId] : 일정 id로 글 조회, 일정 id {}", id);
+        return boardResponse;
+    }
+
+    @Transactional
+    public BoardResponse findBySubjectId(Long id) throws EntityNotFoundException {
+        BoardResponse boardResponse = new BoardResponse(boardRepository.findBySubjectId(id)
+                .orElseThrow(() -> {
+                    LOGGER.info("[findBySubjectId] : 해당 투표 id를 가진 게시글이 없습니다, 투표 id {}", id);
+                    return new EntityNotFoundException();
+                }));
+
+        LOGGER.info("[findBySubjectId] : 투표 id로 글 조회, 투표 id {}", id);
+        return boardResponse;
+    }
+
     @Transactional
     public void delete(Long id) throws EntityNotFoundException {
-        Board board=boardRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("해당 게시물이 없습니다."));
-
-        boardRepository.delete(board);
-    }
-
-    // 게시물 수정
-    @Transactional
-    public BoardDto update(Long id, BoardDto updatedBoardDto) throws EntityNotFoundException {
-        Board board = boardRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("해당 게시글이 없습니다."));
-        board.update(updatedBoardDto.getTitle(), updatedBoardDto.getContent());
-
-        return new BoardDto(board);
+        boardRepository.deleteById(id);
+        LOGGER.info("[delete] : 게시글 id로 글 삭제, 게시글 id {}", id);
     }
 
     @Transactional
-    public BoardDto updateFiles(Long id, BoardDto updatedBoardDto, List<MultipartFile> multipartFileList) throws EntityNotFoundException {
-        Board board = boardRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("해당 게시글이 없습니다."));
-        board.update(updatedBoardDto.getTitle(), updatedBoardDto.getContent());
+    public BoardResponse update(Long id, BoardRequest updatedBoardRequest) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> {
+            LOGGER.info("[update] : 해당 id를 가진 게시글이 없습니다, 게시글 id {}", id);
+            return new EntityNotFoundException();
+        });
+        board.update(updatedBoardRequest.getTitle(), updatedBoardRequest.getContent());
+        fileService.deleteFilesByBoardId(id);
+
+        LOGGER.info("[update] : 게시글을 수정, 게시글 id {}", id);
+        return new BoardResponse(board);
+    }
+
+    @Transactional
+    public BoardResponse updateFiles(Long id, BoardRequest updatedBoardRequest, List<MultipartFile> multipartFileList) throws EntityNotFoundException {
+        Board board = boardRepository.findById(id).orElseThrow(() -> {
+            LOGGER.info("[updateFiles] : 해당 id를 가진 게시글이 없습니다, 게시글 id {}", id);
+            return new EntityNotFoundException();
+        });
+        board.update(updatedBoardRequest.getTitle(), updatedBoardRequest.getContent());
 
         fileService.deleteFilesByBoardId(id);
         List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList);
         fileService.saveFiles(board, uploadFileList);
 
-        return new BoardDto(board);
+        LOGGER.info("[updateFiles] : 게시글+첨부파일 수정, 게시글 id {}", id);
+        return new BoardResponse(board);
     }
 
     //게시글 id로 댓글 리스트 불러오기
-
-
     @Transactional
     public Optional<List<Comment>> getCommentsByBoardId(Long boardId) throws EntityNotFoundException {
         Board board = boardRepository.findById(boardId)

@@ -33,13 +33,22 @@ public class Board extends BaseTime {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    @Column
+    private Long scheduleId;
+
+    @Column
+    private Long subjectId;
+
     @Builder
-    public Board(String title, String content, User writer, List<UploadFile> uploadFiles,List<Comment> comments) {
+    public Board(String title, String content, User writer, List<UploadFile> uploadFiles,List<Comment> comments,
+                 Long scheduleId, Long subjectId) {
         this.title = title;
         this.content = content;
         this.writer = writer;
         this.uploadFiles = uploadFiles;
         this.comments=comments;
+        this.scheduleId = scheduleId;
+        this.subjectId = subjectId;
     }
 
     public void update(String title, String content) {

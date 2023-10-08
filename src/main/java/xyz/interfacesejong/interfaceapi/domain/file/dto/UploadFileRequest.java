@@ -1,24 +1,19 @@
 package xyz.interfacesejong.interfaceapi.domain.file.dto;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 
 @Getter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UploadFileDto {
-    private Long id;
+public class UploadFileRequest {
     private Long boardId;
     private String originalName;
     private String saveName;
     private long size;
     private String savePath;
 
-    @Builder
-    public UploadFileDto(UploadFile uploadFile) {
-        this.id = uploadFile.getId();
+    public UploadFileRequest(UploadFile uploadFile) {
         this.boardId = uploadFile.getBoard().getId();
         this.originalName = uploadFile.getOriginalName();
         this.saveName = uploadFile.getSaveName();
@@ -26,8 +21,8 @@ public class UploadFileDto {
         this.savePath = uploadFile.getSavePath();
     }
 
-    public UploadFileDto(Long id, Long boardId, String originalName, String saveName, long size, String savePath) {
-        this.id = id;
+    @Builder
+    public UploadFileRequest(Long boardId, String originalName, String saveName, long size, String savePath) {
         this.boardId = boardId;
         this.originalName = originalName;
         this.saveName = saveName;
