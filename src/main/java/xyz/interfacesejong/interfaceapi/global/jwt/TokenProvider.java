@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.AuthLevelType;
+import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
+import xyz.interfacesejong.interfaceapi.domain.user.dto.UserSignResponse;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -26,16 +28,17 @@ public class TokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(UUID deviceId, String email, AuthLevelType authLevelType){
+    public String generateToken(UserSignResponse userSignResponse){
 
         Claims claims = Jwts.claims();
-        claims.put("authLevel", authLevelType.toString());
+        claims.put("authLevel", userSignResponse.getAuthLevel().toString());
+        claims.put("email", userSignResponse.getEmail());
+        claims.put("userId", userSignResponse.getId().toString());
         Date now = new Date();
 
         String token = Jwts.builder()
                 .setClaims(claims)
-                .setSubject(email)
-                .setAudience(deviceId.toString())
+                .setAudience(userSignResponse.getDeviceId().toString())
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + VALIDITY_TIME))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
@@ -69,7 +72,7 @@ public class TokenProvider {
     }
 
     public String resolveToken(HttpServletRequest httpServletRequest){
-        return httpServletRequest.getHeader("X-AUTH-TOKEN");
+        return httpServletRequest.getHeader("Authorization");
     }
 
     public AuthLevelType getAuthLevel(String token){

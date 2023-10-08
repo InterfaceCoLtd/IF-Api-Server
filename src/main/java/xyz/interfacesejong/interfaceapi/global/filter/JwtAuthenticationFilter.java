@@ -27,14 +27,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             AuthLevelType authLevelType = tokenProvider.getAuthLevel(token);
 
             if (authLevelType.getLevel() < 3){
-                response.setHeader("X-AUTH-TOKEN", token);
+                response.setHeader("Authorization", token);
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 response.getWriter().write("ACCESS PERMISSION DENIED");
                 log.info("ACCESS PERMISSION DENIED");
                 return;
             }
         }else {
-            response.setHeader("X-AUTH-TOKEN", token);
+            response.setHeader("Authorization", token);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("INVALID TOKEN");
             log.info("INVALID TOKEN");

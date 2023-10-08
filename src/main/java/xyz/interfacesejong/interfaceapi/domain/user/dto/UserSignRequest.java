@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+import java.nio.ByteBuffer;
 import java.util.UUID;
 
 @Getter
@@ -16,4 +17,11 @@ public class UserSignRequest {
 
     private UUID deviceId;
 
+
+    public byte[] uuidToBinary(UUID uuid) {
+        ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[16]);
+        byteBuffer.putLong(uuid.getMostSignificantBits());
+        byteBuffer.putLong(uuid.getLeastSignificantBits());
+        return byteBuffer.array();
+    }
 }

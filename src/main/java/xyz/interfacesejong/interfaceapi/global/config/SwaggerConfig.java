@@ -22,7 +22,7 @@ public class SwaggerConfig {
         SecurityScheme securityScheme = new SecurityScheme()
                 .type(SecurityScheme.Type.APIKEY)
                 .in(SecurityScheme.In.HEADER)
-                .name("X-AUTH-TOKEN");
+                .name("Authorization");
         SecurityRequirement securityRequirement = new SecurityRequirement().addList("JWT");
 
 

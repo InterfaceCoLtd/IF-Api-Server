@@ -38,20 +38,23 @@ public class UserController {
     @Timer
     @PostMapping("auth/sign-in")
     @Operation(summary = "로그인 요청", description = "로그인 요청 기능")
-    public ResponseEntity<BaseResponse> signIn(@RequestBody UserSignRequest signInRequest){
-        return new ResponseEntity<>(signService.signIn(signInRequest), HttpStatus.OK);
+    public ResponseEntity<UserSignResponse> signIn(@RequestBody UserSignRequest signInRequest){
+        UserSignResponse userSignResponse = signService.signIn(signInRequest);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Authorization", tokenProvider.generateToken(userSignResponse));
+        return new ResponseEntity<>(signService.signIn(signInRequest), httpHeaders, HttpStatus.OK);
     }
 
     @Timer
     @PostMapping("auth/simple-sign-in")
-    @Operation(summary = "간소 로그인 요청", description = "간소 로그인, 토큰 발급용 기능\n\n deviceId, Email 필수")
-    public ResponseEntity<User> simpleSignIn(@RequestBody UserSignRequest signRequest){
-        User user = signService.simpleSignIn(signRequest);
-        String token = tokenProvider.generateToken(user.getDeviceId(), user.getEmail(), user.getAuthLevel());
+    @Operation(summary = "간소 로그인 요청", description = "간소 로그인, 토큰 발급용 기능\n\n deviceId만 전달")
+    public ResponseEntity<UserSignResponse> simpleSignIn(@RequestBody UserSignRequest signRequest){
+        UserSignResponse userSignResponse = signService.simpleSignIn(signRequest);
+        String token = tokenProvider.generateToken(userSignResponse);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("X-AUTH-TOKEN", token);
+        httpHeaders.set("Authorization", token);
 
-        return new ResponseEntity<>(user, httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(userSignResponse, httpHeaders, HttpStatus.OK);
 
     }
 
