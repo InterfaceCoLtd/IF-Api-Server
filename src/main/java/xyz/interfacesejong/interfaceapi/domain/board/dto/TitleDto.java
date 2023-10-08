@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class TitleDto {
-    String title;
+    private String title;
 
     public TitleDto(String title) {
         this.title = title;

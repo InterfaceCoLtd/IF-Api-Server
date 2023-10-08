@@ -51,14 +51,14 @@ public class BoardController {
     @Timer
     @GetMapping("/user/{id}")
     @Operation(summary = "작성자 id로 글 조회", description = "작성자 id로 모든 글을 조회합니다.")
-    public ResponseEntity<List<BoardResponse>> findByUserId(@PathVariable Long id) throws Exception {
+    public ResponseEntity<List<BoardResponse>> findByUserId(@PathVariable Long id) {
         return ResponseEntity.ok(boardService.findByUserId(id));
     }
 
     @Timer
     @GetMapping("/board/{id}")
     @Operation(summary = "게시글 조회", description = "글 id로 글을 조회합니다.")
-    public ResponseEntity<BoardResponse> findById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<BoardResponse> findById(@PathVariable Long id) {
         return ResponseEntity.ok(boardService.findById(id));
     }
 
@@ -97,7 +97,7 @@ public class BoardController {
     //게시글 id로 댓글 리스트 불러오기
     @Timer
     @GetMapping("/Comments")
-    public ResponseEntity<Optional<List<Comment>>> findByBoardId(@RequestParam("boardId")Long id) throws Exception{
+    public ResponseEntity<Optional<List<Comment>>> findByBoardId(@RequestParam("boardId")Long id) {
         return ResponseEntity.ok(boardService.getCommentsByBoardId(id));
     }
 
