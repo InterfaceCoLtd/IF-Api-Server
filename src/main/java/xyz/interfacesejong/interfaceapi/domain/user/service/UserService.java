@@ -33,10 +33,8 @@ public class UserService {
     @Transactional
     public List<UserInfoResponse> findAllUsers(){
         List<UserInfoResponse> users = userRepository.findAll().stream()
-                .map(user -> UserInfoResponse.builder()
-                        .email(user.getEmail())
-                        .id(user.getId())
-                        .build()).collect(Collectors.toList());
+                .map(UserInfoResponse::new)
+                .collect(Collectors.toList());
 
         LOGGER.info("[findAllUsers] 모든 유저 조회");
         return users;
@@ -51,7 +49,8 @@ public class UserService {
         User user = userRepository.save(User.builder()
                 .email(signUpRequest.getEmail())
                 .password(bCryptPasswordEncoder.encode(signUpRequest.getPassword()))
-                .authLevel(AuthLevelType.NEW_ACCOUNT).build());
+                .authLevel(AuthLevelType.MEMBER_VERIFIED).build());
+        //TODO 학생권한 부여는 임시 -> NEW ACCOUNT로 변경해야함
 
         LOGGER.info("[saveUser] 신규 유저 등록");
         return user;
@@ -82,18 +81,18 @@ public class UserService {
         return user;
     }
     @Transactional
-    public User updateGeneration(Long id, UserInfoUpdateRequest infoRequest){
+    public User updateGeneration(Long id, UserInfoUpdateRequest infoUpdateRequest){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.info("[updateGeneration] 등록 되지 않은 유저");
                     return new EntityNotFoundException("NON EXISTS USER");
                 });
 
-        if (infoRequest.getGeneration() == null){
+        if (infoUpdateRequest.getGeneration() == null){
             LOGGER.info("[updateGeneration] null 인자 입력");
             throw new IllegalArgumentException("MISSING FIELD");
         }else{
-            user.changeGeneration(infoRequest.getGeneration());
+            user.changeGeneration(infoUpdateRequest.getGeneration());
         }
 
         user.changeAuthLevel(AuthLevelType.MEMBER_VERIFIED);
@@ -103,18 +102,18 @@ public class UserService {
         return user;
     }
     @Transactional
-    public User updatePhoneNumber(Long id, UserInfoUpdateRequest infoRequest){
+    public User updatePhoneNumber(Long id, UserInfoUpdateRequest infoUpdateRequest){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.info("[updatePhoneNumber] 등록 되지 않은 유저");
                     return new EntityNotFoundException("NON EXISTS USER");
                 });
 
-        if (infoRequest.getPhoneNumber() == null){
+        if (infoUpdateRequest.getPhoneNumber() == null){
             LOGGER.info("[updatePhoneNumber] null 인자 입력");
             throw new IllegalArgumentException("MISSING FIELD");
         }else {
-            user.changePhoneNumber(infoRequest.getPhoneNumber());
+            user.changePhoneNumber(infoUpdateRequest.getPhoneNumber());
         }
 
         user = userRepository.save(user);
@@ -122,18 +121,18 @@ public class UserService {
         return user;
     }
     @Transactional
-    public User updateGithubId(Long id, UserInfoUpdateRequest infoRequest){
+    public User updateGithubId(Long id, UserInfoUpdateRequest infoUpdateRequest){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.info("[updateGithubId] 등록 되지 않은 유저");
                     return new EntityNotFoundException("NON EXISTS USER");
                 });
 
-        if (infoRequest.getGithubId() == null){
+        if (infoUpdateRequest.getGithubId() == null){
             LOGGER.info("[updateGithubId] null 인자 입력");
             throw new IllegalArgumentException("MISSING FIELD");
         }else {
-            user.changeGithubId(infoRequest.getGithubId());
+            user.changeGithubId(infoUpdateRequest.getGithubId());
         }
 
         user = userRepository.save(user);
@@ -141,22 +140,42 @@ public class UserService {
         return user;
     }
     @Transactional
-    public User updateDiscordId(Long id, UserInfoUpdateRequest infoRequest){
+    public User updateDiscordId(Long id, UserInfoUpdateRequest infoUpdateRequest){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
                     LOGGER.info("[updateDiscordId] 등록 되지 않은 유저");
                     return new EntityNotFoundException("NON EXISTS USER");
                 });
         
-        if (infoRequest.getDiscordId() == null){
+        if (infoUpdateRequest.getDiscordId() == null){
             LOGGER.info("[updateDiscordId] null 인자 입력");
             throw new IllegalArgumentException("MISSING FIELD");
         }else {
-            user.changeDiscordId(infoRequest.getDiscordId());
+            user.changeDiscordId(infoUpdateRequest.getDiscordId());
         }
 
         user = userRepository.save(user);
         LOGGER.info("[updateDiscordId] discord 계정 업데이트 성공");
+        return user;
+    }
+
+    @Transactional
+    public User updateDeviceId(Long id, UserInfoUpdateRequest infoUpdateRequest){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> {
+                    LOGGER.info("[updateDeviceId] 등록 되지 않은 유저");
+                    return new EntityNotFoundException("NON EXISTS USER");
+                });
+
+        if (infoUpdateRequest.getDeviceId() == null){
+            LOGGER.info("[updateDeviceId] null 인자 입력");
+            throw new IllegalArgumentException("MISSING FIELD");
+        }else {
+            user.changeDeviceId(infoUpdateRequest.getDeviceId());
+        }
+
+        user = userRepository.save(user);
+        LOGGER.info("[updateDeviceId] device Id 갱신 성공");
         return user;
     }
 
@@ -182,6 +201,8 @@ public class UserService {
         LOGGER.info("[updateSejongStudentAuth] 세종대 학생 정보 인증 완료");
         return user;
     }
+
+
 
 
 }

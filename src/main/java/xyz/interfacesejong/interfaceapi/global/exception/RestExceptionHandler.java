@@ -3,6 +3,7 @@ package xyz.interfacesejong.interfaceapi.global.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import xyz.interfacesejong.interfaceapi.global.exception.dto.BaseExceptionResponse;
@@ -38,6 +39,11 @@ public class RestExceptionHandler {
     public ResponseEntity<BaseExceptionResponse> messagingException(MessagingException exception){
         log.info("{} : {}",exception.getClass().getSimpleName(), exception.getMessage());
         return new ResponseEntity<>(new BaseExceptionResponse(exception.getMessage()), HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(AuthenticationServiceException.class)
+    public ResponseEntity<BaseExceptionResponse> authenticationServiceException(AuthenticationServiceException exception){
+        log.info("{} : {}",exception.getClass().getSimpleName(), exception.getMessage());
+        return new ResponseEntity<>(new BaseExceptionResponse(exception.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
 }

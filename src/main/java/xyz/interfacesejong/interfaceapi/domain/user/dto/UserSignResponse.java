@@ -1,16 +1,19 @@
 package xyz.interfacesejong.interfaceapi.domain.user.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.AuthLevelType;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 
-import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.util.UUID;
 
-@Data
-public class UserInfoResponse {
+@Getter
+@ToString
+@RequiredArgsConstructor
+public class UserSignResponse {
     private Long id;
 
     private String email; //val
@@ -36,24 +39,9 @@ public class UserInfoResponse {
     @Enumerated(EnumType.STRING)
     private AuthLevelType authLevel;
 
-    @Builder
+    private byte[] deviceId;
 
-    public UserInfoResponse(Long id, String email, Integer generation, String phoneNumber, String githubId, String discordId, String username, Integer studentId, String major, Integer grade, Boolean enrolled, AuthLevelType authLevel) {
-        this.id = id;
-        this.email = email;
-        this.generation = generation;
-        this.phoneNumber = phoneNumber;
-        this.githubId = githubId;
-        this.discordId = discordId;
-        this.username = username;
-        this.studentId = studentId;
-        this.major = major;
-        this.grade = grade;
-        this.enrolled = enrolled;
-        this.authLevel = authLevel;
-    }
-
-    public UserInfoResponse(User user) {
+    public UserSignResponse(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.generation = user.getGeneration();
@@ -66,5 +54,8 @@ public class UserInfoResponse {
         this.grade = user.getGrade();
         this.enrolled = user.getEnrolled();
         this.authLevel = user.getAuthLevel();
+        this.deviceId = user.getDeviceId();
     }
 }
+
+

@@ -3,6 +3,7 @@ package xyz.interfacesejong.interfaceapi.domain.user.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import xyz.interfacesejong.interfaceapi.domain.user.service.SignService;
 import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 import xyz.interfacesejong.interfaceapi.global.email.dto.AuthEmailResponse;
+import xyz.interfacesejong.interfaceapi.global.jwt.TokenProvider;
 import xyz.interfacesejong.interfaceapi.global.util.BaseResponse;
 
 import java.util.List;
@@ -24,12 +26,36 @@ public class UserController {
 
     private final UserService userService;
     private final SignService signService;
+    private final TokenProvider tokenProvider;
 
     @Timer
     @PostMapping()
     @Operation(summary = "신규 유저 등록", description = "신규 유저를 생성합니다.")
     public ResponseEntity<User> createUser(@RequestBody UserSignRequest signUpRequest){
         return new ResponseEntity<>(userService.saveUser(signUpRequest), HttpStatus.CREATED);
+    }
+
+    @Timer
+    @PostMapping("auth/sign-in")
+    @Operation(summary = "로그인 요청", description = "로그인 요청 기능")
+    public ResponseEntity<UserSignResponse> signIn(@RequestBody UserSignRequest signInRequest){
+        UserSignResponse userSignResponse = signService.signIn(signInRequest);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Authorization", tokenProvider.generateToken(userSignResponse));
+        return new ResponseEntity<>(signService.signIn(signInRequest), httpHeaders, HttpStatus.OK);
+    }
+
+    @Timer
+    @PostMapping("auth/simple-sign-in")
+    @Operation(summary = "간소 로그인 요청", description = "간소 로그인, 토큰 발급용 기능\n\n deviceId만 전달")
+    public ResponseEntity<UserSignResponse> simpleSignIn(@RequestBody UserSignRequest signRequest){
+        UserSignResponse userSignResponse = signService.simpleSignIn(signRequest);
+        String token = tokenProvider.generateToken(userSignResponse);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Authorization", token);
+
+        return new ResponseEntity<>(userSignResponse, httpHeaders, HttpStatus.OK);
+
     }
 
     @Timer
@@ -45,14 +71,6 @@ public class UserController {
     public ResponseEntity<BaseResponse> checkEmailDuplication(@RequestParam String email){
         return new ResponseEntity<>(userService.hasEmail(email), HttpStatus.OK);
     }
-
-    @Timer
-    @PostMapping("auth/sign-in")
-    @Operation(summary = "로그인 요청", description = "로그인 요청 기능")
-    public ResponseEntity<BaseResponse> signIn(@RequestBody UserSignRequest signInRequest){
-        return new ResponseEntity<>(signService.signIn(signInRequest), HttpStatus.OK);
-    }
-
 
     //비밀번호
     @Timer
@@ -94,6 +112,13 @@ public class UserController {
         return new ResponseEntity<>(userService.updateDiscordId(id, infoUpdateRequest), HttpStatus.OK);
     }
 
+    // 기기정보
+    @Timer
+    @PutMapping("user/{id}/device-id")
+    public ResponseEntity<User> updateDeviceId(@PathVariable Long id, @RequestBody UserInfoUpdateRequest infoUpdateRequest){
+        return new ResponseEntity<>(userService.updateDeviceId(id, infoUpdateRequest), HttpStatus.OK);
+    }
+
     // 학생정보인증
     @Timer
     @PutMapping("user/{id}/sejong-auth")
@@ -102,12 +127,14 @@ public class UserController {
         return new ResponseEntity<>(userService.updateSejongStudentAuth(id, sejongStudentAuthRequest), HttpStatus.OK);
     }
 
-    @Timer
+
+
+    /*@Timer
     @GetMapping("a")
     @Tag(name = "TEMP")
     @Operation(summary = "사용불가", description = "사용하지마세요")
     public ResponseEntity<AuthEmailResponse> mailSend(@RequestParam Long id, @RequestParam String email){
         return new ResponseEntity<>(signService.sendVerifyMail(id, email), HttpStatus.OK);
-    }
+    }*/
 
 }
