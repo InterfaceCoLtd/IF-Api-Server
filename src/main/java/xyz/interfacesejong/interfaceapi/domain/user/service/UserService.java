@@ -33,10 +33,8 @@ public class UserService {
     @Transactional
     public List<UserInfoResponse> findAllUsers(){
         List<UserInfoResponse> users = userRepository.findAll().stream()
-                .map(user -> UserInfoResponse.builder()
-                        .email(user.getEmail())
-                        .id(user.getId())
-                        .build()).collect(Collectors.toList());
+                .map(UserInfoResponse::new)
+                .collect(Collectors.toList());
 
         LOGGER.info("[findAllUsers] 모든 유저 조회");
         return users;

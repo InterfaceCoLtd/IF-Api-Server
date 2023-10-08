@@ -3,7 +3,6 @@ package xyz.interfacesejong.interfaceapi.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,16 +12,8 @@ import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserSignRequest;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserSignResponse;
 import xyz.interfacesejong.interfaceapi.global.email.EmailSender;
-import xyz.interfacesejong.interfaceapi.global.email.dto.AuthEmailResponse;
 import xyz.interfacesejong.interfaceapi.global.jwt.TokenProvider;
-import xyz.interfacesejong.interfaceapi.global.util.BaseResponse;
 
-import javax.mail.MessagingException;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
