@@ -18,10 +18,12 @@ import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -37,7 +39,7 @@ public class BoardService {
     private final Logger LOGGER = LoggerFactory.getLogger(BoardService.class);
 
     @Transactional
-    public Board save(BoardRequest boardRequest) {
+    public BoardResponse save(BoardRequest boardRequest) {
 
         Board board = Board.builder()
                 .title(boardRequest.getTitle())
@@ -49,11 +51,11 @@ public class BoardService {
         boardRepository.save(board);
 
         LOGGER.info("[save] : 게시글 저장, 게시글 ID {}", board.getId());
-        return board;
+        return new BoardResponse(board);
     }
 
     @Transactional
-    public Board saveFiles(BoardRequest boardRequest, List<MultipartFile> multipartFileList) {
+    public BoardResponse saveFiles(BoardRequest boardRequest, List<MultipartFile> multipartFileList) {
         Board board = Board.builder()
                 .title(boardRequest.getTitle())
                 .content(boardRequest.getContent())
@@ -65,19 +67,38 @@ public class BoardService {
                 .scheduleId(boardRequest.getScheduleId()).build();
         boardRepository.save(board);
 
-        List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList);
+        BoardResponse boardResponse = new BoardResponse(board);
+
+        List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList, boardResponse);
+        boardResponse.setFileNames(uploadFileList.stream()
+                        .map(UploadFile::getSaveName)
+                .collect(Collectors.toList()));
         fileService.saveFiles(board, uploadFileList);
 
         LOGGER.info("[saveFiles] : 게시글 저장 + 첨부파일 저장, 게시글 ID {}, 첨부파일 수 {}", board.getId(), uploadFileList.size());
-        return board;
+        return boardResponse;
     }
 
     @Transactional
     public List<BoardResponse> getAllBoards() {
         List<Board> boardList = boardRepository.findAll();
-        List<BoardResponse> boardResponseList = new ArrayList<>();
-        boardList.stream().forEach(board -> boardResponseList.add(new BoardResponse(board)));
 
+        List<BoardResponse> boardResponseList = boardList.stream()
+                        .map(board -> {
+                                    BoardResponse boardResponse = new BoardResponse(board);
+                                    List<String> fileNames = new ArrayList<>();
+                                    for (int i = 1; i <= board.getFileCount(); i++) {
+                                        String newName = new StringBuilder()
+                                                .append(boardResponse.getCreateDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"))).append("_")
+                                                .append(boardResponse.getId().toString()).append("_")
+                                                .append(boardResponse.getUserId().toString()).append("_")
+                                                .append(i)
+                                                .toString();
+                                        fileNames.add(newName);
+                                    }
+                                    boardResponse.setFileNames(fileNames);
+                                    return boardResponse;
+                                }).collect(Collectors.toList());
         LOGGER.info("[findAllBoards] : 모든 게시글 조회");
         return boardResponseList;
     }
@@ -165,12 +186,14 @@ public class BoardService {
         });
         board.update(updatedBoardRequest.getTitle(), updatedBoardRequest.getContent());
 
+        BoardResponse boardResponse = new BoardResponse(board);
+
         fileService.deleteFilesByBoardId(id);
-        List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList);
+        List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList, boardResponse);
         fileService.saveFiles(board, uploadFileList);
 
         LOGGER.info("[updateFiles] : 게시글+첨부파일 수정, 게시글 id {}", id);
-        return new BoardResponse(board);
+        return boardResponse;
     }
 
     //게시글 id로 댓글 리스트 불러오기

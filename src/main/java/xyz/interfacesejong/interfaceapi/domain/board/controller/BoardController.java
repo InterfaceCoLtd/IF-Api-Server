@@ -1,8 +1,12 @@
 package xyz.interfacesejong.interfaceapi.domain.board.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,10 +33,13 @@ public class BoardController {
     }
 
     //@Timer
-    @PostMapping()
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "글 작성", description = "새로운 글을 생성합니다.")
-    public ResponseEntity<Board> create(@ModelAttribute BoardRequest boardRequest, @RequestParam(required = false) List<MultipartFile> multipartFileList) throws Exception {
-        if(multipartFileList==null) return ResponseEntity.ok(boardService.save(boardRequest));
+    @Parameter(name = "title", in = ParameterIn.QUERY)
+    @Parameter(name = "content", in = ParameterIn.QUERY)
+    @Parameter(name = "userId", in = ParameterIn.QUERY)
+    public ResponseEntity<BoardResponse> create(@Parameter(hidden = true) @ModelAttribute BoardRequest boardRequest, @RequestParam(required = false) List<MultipartFile> multipartFileList) throws Exception {
+        if (multipartFileList==null) return ResponseEntity.ok(boardService.save(boardRequest));
         else return ResponseEntity.ok(boardService.saveFiles(boardRequest, multipartFileList));
     }
 

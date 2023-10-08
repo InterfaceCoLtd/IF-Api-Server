@@ -4,6 +4,8 @@ import lombok.*;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @ToString
@@ -15,6 +17,9 @@ public class BoardResponse {
     private Long userId;
     private Long scheduleId;
     private Long subjectId;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
+    private List<String> fileNames = new ArrayList<>();
 
     public BoardResponse(Board board) {
         this.id = board.getId();
@@ -23,6 +28,8 @@ public class BoardResponse {
         this.userId = board.getWriter().getId();
         this.scheduleId = board.getScheduleId();
         this.subjectId = board.getSubjectId();
+        this.createDate = board.getCreatedDate();
+        this.updateDate = board.getModifiedDate();
     }
 
     @Builder
@@ -34,4 +41,10 @@ public class BoardResponse {
         this.scheduleId = scheduleId;
         this.subjectId = subjectId;
     }
+
+    public void setFileNames(List<String> fileNames) {
+        this.fileNames = fileNames;
+    }
+
+
 }

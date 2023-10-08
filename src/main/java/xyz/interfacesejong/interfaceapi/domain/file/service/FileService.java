@@ -1,6 +1,7 @@
 package xyz.interfacesejong.interfaceapi.domain.file.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -21,11 +22,12 @@ public class FileService {
     private final FileUtils fileUtils;
     @Transactional
     public void saveFiles(Board board, List<UploadFile> fileList) {
-        if(CollectionUtils.isEmpty(fileList)) return;
-        fileList.stream().forEach(uploadFile -> {
-            uploadFile.setBoard(board);
-            fileRepository.save(uploadFile);
-        });
+        if (CollectionUtils.isEmpty(fileList)) return;
+        fileList.stream()
+                .forEach(uploadFile -> {
+                    uploadFile.setBoard(board);
+                    fileRepository.save(uploadFile);
+                });
     }
 
     @Transactional
@@ -55,4 +57,5 @@ public class FileService {
             fileRepository.delete(uploadFile);
         });
     }
+
 }
