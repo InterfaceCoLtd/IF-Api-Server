@@ -83,6 +83,7 @@ public class BoardController {
     //게시글 id로 댓글 리스트 불러오기
     @Timer
     @GetMapping("/comments")
+    @Operation(summary = "댓글 조회", description = "해당 id의 게시글의 댓글리스트를 조회합니다.")
     public ResponseEntity<Optional<List<Comment>>> findByBoardId(@RequestParam("boardId")Long id) throws Exception{
         return ResponseEntity.ok(boardService.getCommentsByBoardId(id));
     }
@@ -90,19 +91,19 @@ public class BoardController {
     //댓글 저장
     @Timer
     @PostMapping("/comment/{id}")
+    @Operation(summary = "댓글 저장", description = "해당 id의 댓글을 저장합니다.")
     public ResponseEntity<Comment> saveComment(
             @PathVariable Long commentId,
-            @RequestParam("boardId") Long boardId,
-            @RequestParam("userId") Long userId,
-            @RequestParam("content") String content) throws Exception {
-
-        boardService.saveComment(boardId, userId, content);
+            @RequestBody Comment comment) throws Exception {
+        boardService.saveComment(comment.getBoard().getId(), comment.getWriter().getId(), comment.getContent());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
     // 게시물에 댓글 삭제
     @Timer
     @DeleteMapping("/comment/{id}")
+    @Operation(summary = "댓글 삭제", description = "해당 id의 댓글을 삭제합니다.")
     public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
         boardService.deleteComment(commentId);
         return new ResponseEntity<>(HttpStatus.OK);

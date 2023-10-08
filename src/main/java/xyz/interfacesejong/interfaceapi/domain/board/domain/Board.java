@@ -30,7 +30,7 @@ public class Board extends BaseTime {
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<UploadFile> uploadFiles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
     @Builder

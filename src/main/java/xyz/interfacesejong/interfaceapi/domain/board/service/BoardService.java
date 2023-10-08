@@ -1,7 +1,6 @@
 package xyz.interfacesejong.interfaceapi.domain.board.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardDto;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
-import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 import xyz.interfacesejong.interfaceapi.global.util.FileUtils;
 
 
@@ -28,7 +26,6 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-@Slf4j
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -103,8 +100,10 @@ public class BoardService {
     @Transactional
     public void delete(Long id) throws EntityNotFoundException {
         Board board=boardRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("해당 게시물이 없습니다."));
-
+                .orElseThrow(() -> {
+                    LOGGER.info("[delete] 해당 게시물을 찾을 수 없음");
+                    return new EntityNotFoundException("해당 게시물이 없습니다.");
+                });
         boardRepository.delete(board);
     }
 
@@ -130,41 +129,51 @@ public class BoardService {
     }
 
     //게시글 id로 댓글 리스트 불러오기
-
-
     @Transactional
     public Optional<List<Comment>> getCommentsByBoardId(Long boardId) throws EntityNotFoundException {
         Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 게시물이 없습니다."));
+                .orElseThrow(() ->{
+                    LOGGER.info("[getCommentsByBoardId] 해당 게시물을 찾을 수 없음");
+                    return new EntityNotFoundException("해당 게시물이 없습니다.");
+                });
 
-        log.info("[getCommentsByBoardId] 댓글 리스트 조회,게시글 ID: {}", boardId);
+        LOGGER.info("[getCommentsByBoardId] 댓글 리스트 조회,게시글 ID: {}", boardId);
         return commentRepository.findByBoardId(boardId);
     }
 
     //댓글 저장
     @Transactional
-    public void saveComment(Long boardId, Long userId, String content) throws Exception {
+    public void saveComment(Long boardId, Long userId, String content) throws EntityNotFoundException {
         Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 게시물이 없습니다."));
+                .orElseThrow(() -> {
+                    LOGGER.info("[saveComment] 해당 게시물을 찾을 수 없음");
+                    return new EntityNotFoundException("해당 게시물이 없습니다.");
+                });
 
         Comment comment = Comment.builder()
                 .content(content)
                 .writer(userRepository.findById(userId)
-                        .orElseThrow(() -> new NoSuchElementException("해당 사용자가 없습니다.")))
+                        .orElseThrow(() -> {
+                            LOGGER.info("[saveComment] 해당 사용자를 찾을 수 없음");
+                            return new NoSuchElementException("해당 사용자가 없습니다.");
+                        }))
                 .board(board)
                 .build();
         commentRepository.save(comment);
-        log.info("[saveComment] 댓글 저장, 게시글 ID: {}, 댓글 ID: {}", boardId, comment.getId());
+        LOGGER.info("[saveComment] 댓글 저장, 게시글 ID: {}, 댓글 ID: {}", boardId, comment.getId());
     }
 
     //댓글 삭제
     @Transactional
     public void deleteComment(Long commentId){
         Comment comment= (Comment) commentRepository.findByBoardId(commentId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 댓글이 없습니다."));
+                .orElseThrow(() ->{
+                    LOGGER.info("[deleteComment] 해당 댓글을 찾을 수 없음");
+                    return new EntityNotFoundException("해당 댓글이 없습니다.");
+                });
 
         commentRepository.delete(comment);
-        log.info("[deleteComment] 댓글이 삭제되었습니다. 댓글 ID: {}", commentId);
+        LOGGER.info("[deleteComment] 댓글이 삭제되었습니다. 댓글 ID: {}", commentId);
     }
 
 }
