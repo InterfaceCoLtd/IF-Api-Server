@@ -54,6 +54,11 @@ public class SignService {
             throw new AuthenticationServiceException("UNAUTHENTICATED MAIL ACCOUNT");
         }
 
+        if (signRequest.getDeviceId() != null){
+            user.changeDeviceId(signRequest.getDeviceId());
+            user = userRepository.save(user);
+        }
+
         LOGGER.info("[signIn] {} 로그인 성공", signRequest.getEmail());
         return new UserSignResponse(user);
     }
