@@ -82,14 +82,14 @@ public class BoardController {
 
     //게시글 id로 댓글 리스트 불러오기
     @Timer
-    @GetMapping("/Comments")
+    @GetMapping("/comments")
     public ResponseEntity<Optional<List<Comment>>> findByBoardId(@RequestParam("boardId")Long id) throws Exception{
         return ResponseEntity.ok(boardService.getCommentsByBoardId(id));
     }
 
     //댓글 저장
     @Timer
-    @PostMapping("/Comment/{id}")
+    @PostMapping("/comment/{id}")
     public ResponseEntity<Comment> saveComment(
             @PathVariable Long commentId,
             @RequestParam("boardId") Long boardId,
@@ -102,7 +102,7 @@ public class BoardController {
 
     // 게시물에 댓글 삭제
     @Timer
-    @DeleteMapping("/Comment/{id}")
+    @DeleteMapping("/comment/{id}")
     public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
         boardService.deleteComment(commentId);
         return new ResponseEntity<>(HttpStatus.OK);
