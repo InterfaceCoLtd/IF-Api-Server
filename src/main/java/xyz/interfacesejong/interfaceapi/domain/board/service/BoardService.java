@@ -6,14 +6,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleResponse;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.service.ScheduleService;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.*;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardRequest;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardResponse;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.TitleDto;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
+import xyz.interfacesejong.interfaceapi.domain.file.dto.UploadFileResponse;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileUtils;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
+import xyz.interfacesejong.interfaceapi.domain.vote.domain.VoteSubject;
 
 
 import javax.persistence.EntityNotFoundException;
@@ -36,6 +40,7 @@ public class BoardService {
     private final CommentRepository commentRepository;
     private final FileService fileService;
     private final FileUtils fileUtils;
+    private final ScheduleService scheduleService;
     private final Logger LOGGER = LoggerFactory.getLogger(BoardService.class);
 
     @Transactional
@@ -49,6 +54,10 @@ public class BoardService {
                 .subjectId(boardRequest.getSubjectId()).build();
 
         boardRepository.save(board);
+
+        if (boardRequest.getScheduleId() != null){
+            scheduleService.updateBoardId(board.getScheduleId(), board.getId());
+        }
 
         LOGGER.info("[save] : 게시글 저장, 게시글 ID {}", board.getId());
         return new BoardResponse(board);
@@ -81,26 +90,17 @@ public class BoardService {
 
     @Transactional
     public List<BoardResponse> getAllBoards() {
-        List<Board> boardList = boardRepository.findAll();
+        List<BoardResponse> boardResponses = boardRepository.findAll()
+                .stream()
+                .map(board -> {
+                    BoardResponse boardResponse = new BoardResponse(board);
+                    boardResponse.setFileNames(fileService.getAllUploadFiles(board.getId())
+                            .stream().map(UploadFileResponse::getSaveName).collect(Collectors.toList()));
+                    return boardResponse;
+                }).collect(Collectors.toList());
 
-        List<BoardResponse> boardResponseList = boardList.stream()
-                        .map(board -> {
-                                    BoardResponse boardResponse = new BoardResponse(board);
-                                    List<String> fileNames = new ArrayList<>();
-                                    for (int i = 1; i <= board.getFileCount(); i++) {
-                                        String newName = new StringBuilder()
-                                                .append(boardResponse.getCreateDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"))).append("_")
-                                                .append(boardResponse.getId().toString()).append("_")
-                                                .append(boardResponse.getUserId().toString()).append("_")
-                                                .append(i)
-                                                .toString();
-                                        fileNames.add(newName);
-                                    }
-                                    boardResponse.setFileNames(fileNames);
-                                    return boardResponse;
-                                }).collect(Collectors.toList());
         LOGGER.info("[findAllBoards] : 모든 게시글 조회");
-        return boardResponseList;
+        return boardResponses;
     }
 
     @Transactional

@@ -38,6 +38,8 @@ public class BoardController {
     @Parameter(name = "title", in = ParameterIn.QUERY)
     @Parameter(name = "content", in = ParameterIn.QUERY)
     @Parameter(name = "userId", in = ParameterIn.QUERY)
+    @Parameter(name = "scheduleId", in = ParameterIn.QUERY)
+    @Parameter(name = "subjectId", in = ParameterIn.QUERY)
     public ResponseEntity<BoardResponse> create(@Parameter(hidden = true) @ModelAttribute BoardRequest boardRequest, @RequestParam(required = false) List<MultipartFile> multipartFileList) throws Exception {
         if (multipartFileList==null) return ResponseEntity.ok(boardService.save(boardRequest));
         else return ResponseEntity.ok(boardService.saveFiles(boardRequest, multipartFileList));

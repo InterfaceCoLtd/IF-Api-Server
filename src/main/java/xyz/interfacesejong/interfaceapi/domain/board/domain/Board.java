@@ -39,12 +39,10 @@ public class Board extends BaseTime {
     @Column
     private Long subjectId;
 
-    @Column
-    private Integer fileCount;
 
     @Builder
     public Board(String title, String content, User writer, List<UploadFile> uploadFiles,List<Comment> comments,
-                 Long scheduleId, Long subjectId, Integer fileCount) {
+                 Long scheduleId, Long subjectId) {
         this.title = title;
         this.content = content;
         this.writer = writer;
@@ -52,7 +50,6 @@ public class Board extends BaseTime {
         this.comments = comments;
         this.scheduleId = scheduleId;
         this.subjectId = subjectId;
-        this.fileCount = fileCount;
     }
 
     public void update(String title, String content) {
