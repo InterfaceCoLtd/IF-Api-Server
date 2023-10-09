@@ -105,7 +105,8 @@ public class ScheduleService extends BaseTime {
                         .startDate(schedule.getStartDate())
                         .endDate(schedule.getEndDate())
                         .allDay(schedule.isAllDay())
-                        .type(schedule.getType()).build())
+                        .type(schedule.getType())
+                        .boardId(schedule.getBoardId()).build())
                 .collect(Collectors.toList());
 
         LOGGER.info("[findScheduleAll] 모든 일정 조회");
@@ -129,6 +130,19 @@ public class ScheduleService extends BaseTime {
 
         LOGGER.info("[findById] {} 일정 조회", id);
         return scheduleResponse;
+    }
+    
+    @Transactional
+    public void updateBoardId(Long id, Long boardId){
+        Schedule schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> {
+                    LOGGER.info("[updateBoardId] 잘못된 일정 아이디");
+                    return new EntityNotFoundException("NON EXIST SCHEDULE");
+                });
+        schedule.updateBoardId(boardId);
+        scheduleRepository.save(schedule);
+
+        LOGGER.info("[updateBoardId] 일정에 공지 등록");
     }
 
     /* TODO 수정 서비스 구현해야 함

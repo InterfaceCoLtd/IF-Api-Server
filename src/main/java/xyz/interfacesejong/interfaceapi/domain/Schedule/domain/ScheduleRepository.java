@@ -11,13 +11,13 @@ import java.util.List;
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     @Query("SELECT new xyz.interfacesejong.interfaceapi.domain.Schedule.dto" +
-            ".ScheduleResponse(s.id, s.title, s.description, s.startDate, s.endDate, s.allDay, s.type)" +
+            ".ScheduleResponse(s.id, s.title, s.description, s.startDate, s.endDate, s.allDay, s.type, s.boardId)" +
             " FROM Schedule s WHERE :dateTime >= s.startDate AND :dateTime <= s.endDate " +
             " ORDER BY s.startDate, s.endDate" )
     List<ScheduleResponse> findByDateTimeBetween(@Param("dateTime") LocalDateTime dateTime);
 
     @Query("SELECT new xyz.interfacesejong.interfaceapi.domain.Schedule.dto" +
-            ".ScheduleResponse(s.id, s.title, s.description, s.startDate, s.endDate, s.allDay, s.type)" +
+            ".ScheduleResponse(s.id, s.title, s.description, s.startDate, s.endDate, s.allDay, s.type, s.boardId)" +
             "FROM Schedule s WHERE " +
             "(s.startDate <= :startOfMonth AND s.endDate >= :endOfMonth) OR " +
             "(s.startDate >= :startOfMonth AND s.endDate <= :endOfMonth) OR " +
