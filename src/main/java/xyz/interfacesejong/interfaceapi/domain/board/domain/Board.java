@@ -20,7 +20,7 @@ public class Board extends BaseTime {
     @Column
     private String title;
 
-    @Column(length = 1000)
+    @Column(length = 2000)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -39,6 +39,7 @@ public class Board extends BaseTime {
     @Column
     private Long subjectId;
 
+
     @Builder
     public Board(String title, String content, User writer, List<UploadFile> uploadFiles,List<Comment> comments,
                  Long scheduleId, Long subjectId) {
@@ -46,7 +47,7 @@ public class Board extends BaseTime {
         this.content = content;
         this.writer = writer;
         this.uploadFiles = uploadFiles;
-        this.comments=comments;
+        this.comments = comments;
         this.scheduleId = scheduleId;
         this.subjectId = subjectId;
     }

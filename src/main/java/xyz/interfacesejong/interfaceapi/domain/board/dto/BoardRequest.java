@@ -33,4 +33,5 @@ public class BoardRequest {
         this.scheduleId = scheduleId;
         this.subjectId = subjectId;
     }
+
 }

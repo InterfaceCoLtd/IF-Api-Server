@@ -33,8 +33,10 @@ public class Schedule extends BaseTime {
 
     private ScheduleType type;
 
+    private Long boardId;
+
     @Builder
-    public Schedule(Long id, String title, String description, LocalDateTime startDate, LocalDateTime endDate, boolean allDay, ScheduleType type) {
+    public Schedule(Long id, String title, String description, LocalDateTime startDate, LocalDateTime endDate, boolean allDay, ScheduleType type, Long boardId) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -42,5 +44,10 @@ public class Schedule extends BaseTime {
         this.endDate = endDate;
         this.allDay = allDay;
         this.type = type;
+        this.boardId = boardId;
+    }
+
+    public void updateBoardId(Long boardId) {
+        this.boardId = boardId;
     }
 }

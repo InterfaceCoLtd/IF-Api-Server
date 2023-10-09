@@ -6,22 +6,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleResponse;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.service.ScheduleService;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.*;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardRequest;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardResponse;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.TitleDto;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
+import xyz.interfacesejong.interfaceapi.domain.file.dto.UploadFileResponse;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileUtils;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
+import xyz.interfacesejong.interfaceapi.domain.vote.domain.VoteSubject;
 
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -34,10 +40,11 @@ public class BoardService {
     private final CommentRepository commentRepository;
     private final FileService fileService;
     private final FileUtils fileUtils;
+    private final ScheduleService scheduleService;
     private final Logger LOGGER = LoggerFactory.getLogger(BoardService.class);
 
     @Transactional
-    public Board save(BoardRequest boardRequest) {
+    public BoardResponse save(BoardRequest boardRequest) {
 
         Board board = Board.builder()
                 .title(boardRequest.getTitle())
@@ -48,12 +55,16 @@ public class BoardService {
 
         boardRepository.save(board);
 
+        if (boardRequest.getScheduleId() != null){
+            scheduleService.updateBoardId(board.getScheduleId(), board.getId());
+        }
+
         LOGGER.info("[save] : 게시글 저장, 게시글 ID {}", board.getId());
-        return board;
+        return new BoardResponse(board);
     }
 
     @Transactional
-    public Board saveFiles(BoardRequest boardRequest, List<MultipartFile> multipartFileList) {
+    public BoardResponse saveFiles(BoardRequest boardRequest, List<MultipartFile> multipartFileList) {
         Board board = Board.builder()
                 .title(boardRequest.getTitle())
                 .content(boardRequest.getContent())
@@ -65,21 +76,31 @@ public class BoardService {
                 .scheduleId(boardRequest.getScheduleId()).build();
         boardRepository.save(board);
 
-        List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList);
+        BoardResponse boardResponse = new BoardResponse(board);
+
+        List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList, boardResponse);
+        boardResponse.setFileNames(uploadFileList.stream()
+                        .map(UploadFile::getSaveName)
+                .collect(Collectors.toList()));
         fileService.saveFiles(board, uploadFileList);
 
         LOGGER.info("[saveFiles] : 게시글 저장 + 첨부파일 저장, 게시글 ID {}, 첨부파일 수 {}", board.getId(), uploadFileList.size());
-        return board;
+        return boardResponse;
     }
 
     @Transactional
     public List<BoardResponse> getAllBoards() {
-        List<Board> boardList = boardRepository.findAll();
-        List<BoardResponse> boardResponseList = new ArrayList<>();
-        boardList.stream().forEach(board -> boardResponseList.add(new BoardResponse(board)));
+        List<BoardResponse> boardResponses = boardRepository.findAll()
+                .stream()
+                .map(board -> {
+                    BoardResponse boardResponse = new BoardResponse(board);
+                    boardResponse.setFileNames(fileService.getAllUploadFiles(board.getId())
+                            .stream().map(UploadFileResponse::getSaveName).collect(Collectors.toList()));
+                    return boardResponse;
+                }).collect(Collectors.toList());
 
         LOGGER.info("[findAllBoards] : 모든 게시글 조회");
-        return boardResponseList;
+        return boardResponses;
     }
 
     @Transactional
@@ -165,12 +186,14 @@ public class BoardService {
         });
         board.update(updatedBoardRequest.getTitle(), updatedBoardRequest.getContent());
 
+        BoardResponse boardResponse = new BoardResponse(board);
+
         fileService.deleteFilesByBoardId(id);
-        List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList);
+        List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList, boardResponse);
         fileService.saveFiles(board, uploadFileList);
 
         LOGGER.info("[updateFiles] : 게시글+첨부파일 수정, 게시글 id {}", id);
-        return new BoardResponse(board);
+        return boardResponse;
     }
 
     //게시글 id로 댓글 리스트 불러오기
