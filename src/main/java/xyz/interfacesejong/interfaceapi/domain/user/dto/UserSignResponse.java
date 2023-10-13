@@ -39,7 +39,7 @@ public class UserSignResponse {
     @Enumerated(EnumType.STRING)
     private AuthLevelType authLevel;
 
-    private byte[] deviceId;
+    private UUID deviceId;
 
     public UserSignResponse(User user) {
         this.id = user.getId();

@@ -37,7 +37,6 @@ public class UserInfoResponse {
     private AuthLevelType authLevel;
 
     @Builder
-
     public UserInfoResponse(Long id, String email, Integer generation, String phoneNumber, String githubId, String discordId, String username, Integer studentId, String major, Integer grade, Boolean enrolled, AuthLevelType authLevel) {
         this.id = id;
         this.email = email;

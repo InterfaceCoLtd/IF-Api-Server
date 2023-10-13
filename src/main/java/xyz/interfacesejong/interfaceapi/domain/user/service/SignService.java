@@ -55,8 +55,10 @@ public class SignService {
         }
 
         if (signRequest.getDeviceId() != null){
+            userRepository.updateDeviceIdToNull(signRequest.getDeviceId());
+            userRepository.flush();
             user.changeDeviceId(signRequest.getDeviceId());
-            user = userRepository.save(user);
+            userRepository.updateDeviceIdByUserId(user.getId(), signRequest.getDeviceId());
         }
 
         LOGGER.info("[signIn] {} 로그인 성공", signRequest.getEmail());
@@ -65,7 +67,7 @@ public class SignService {
 
     public UserSignResponse simpleSignIn(UserSignRequest signRequest){
 
-        User user = userRepository.findByDeviceId(signRequest.uuidToBinary(signRequest.getDeviceId()))
+        User user = userRepository.findByDeviceId(signRequest.getDeviceId())
                 .orElseThrow(() -> {
                     LOGGER.info("[simpleSignIn] 잘못된 기기 정보");
                     return new IllegalArgumentException("NOT REGISTER DEVICE ID");

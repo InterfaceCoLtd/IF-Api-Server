@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleResponse;
 import xyz.interfacesejong.interfaceapi.domain.Schedule.service.ScheduleService;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.*;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardRequest;
@@ -17,12 +16,10 @@ import xyz.interfacesejong.interfaceapi.domain.file.dto.UploadFileResponse;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileUtils;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
-import xyz.interfacesejong.interfaceapi.domain.vote.domain.VoteSubject;
 
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
