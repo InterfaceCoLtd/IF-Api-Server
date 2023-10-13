@@ -5,7 +5,6 @@ import xyz.interfacesejong.interfaceapi.domain.user.dto.SejongStudentAuthRespons
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
 import javax.persistence.*;
-import java.nio.ByteBuffer;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -49,7 +48,7 @@ public class User extends BaseTime {
     private AuthLevelType authLevel;
 
     @Column(columnDefinition = "BINARY(16)")
-    private byte[] deviceId;
+    private UUID deviceId;
 
     @Builder
     public User(Long id, String email, String password, AuthLevelType authLevel){
@@ -92,13 +91,7 @@ public class User extends BaseTime {
     }
 
     public void changeDeviceId(UUID deviceId){
-        this.deviceId = uuidToBinary(deviceId);
+        this.deviceId = deviceId;
     }
 
-    public byte[] uuidToBinary(UUID uuid) {
-        ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[16]);
-        byteBuffer.putLong(uuid.getMostSignificantBits());
-        byteBuffer.putLong(uuid.getLeastSignificantBits());
-        return byteBuffer.array();
-    }
 }

@@ -42,7 +42,7 @@ public class UserController {
         UserSignResponse userSignResponse = signService.signIn(signInRequest);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Authorization", tokenProvider.generateToken(userSignResponse));
-        return new ResponseEntity<>(signService.signIn(signInRequest), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(userSignResponse, httpHeaders, HttpStatus.OK);
     }
 
     @Timer
