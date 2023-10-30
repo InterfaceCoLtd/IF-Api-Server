@@ -12,7 +12,6 @@ import xyz.interfacesejong.interfaceapi.domain.user.dto.*;
 import xyz.interfacesejong.interfaceapi.domain.user.service.SignService;
 import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
-import xyz.interfacesejong.interfaceapi.global.email.dto.AuthEmailResponse;
 import xyz.interfacesejong.interfaceapi.global.jwt.TokenProvider;
 import xyz.interfacesejong.interfaceapi.global.util.BaseResponse;
 

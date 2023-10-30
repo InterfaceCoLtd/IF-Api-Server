@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.AuthLevelType;
-import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserSignResponse;
 
 import javax.annotation.PostConstruct;
@@ -82,7 +81,7 @@ public class TokenProvider {
                     .build()
                     .parseClaimsJws(token);
 
-             return AuthLevelType.valueOf(claims.getBody().get("authLevel").toString());
+            return AuthLevelType.valueOf(claims.getBody().get("authLevel").toString());
         } catch (Exception e){
             return null;
         }
