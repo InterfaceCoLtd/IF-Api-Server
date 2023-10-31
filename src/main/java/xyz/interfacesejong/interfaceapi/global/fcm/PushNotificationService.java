@@ -22,7 +22,7 @@ import java.io.IOException;
 public class PushNotificationService {
     @Value("${fcm.key.path}")
     private String FCM_PRIVATE_KEY_PATH;
-    private String TEMP_TOKEN = "fdU05p97pQFT5nMgqxoIKE:APA91bFnyJ-20ncrAC-jAqi1SQxVb1s-fyil-885EkvEvXndwiJk0drI-HaD91PgTCc-bxzfMtv0KwytMY84pqNXLXfWIFlqgJPM2EkULCwEvCOO0v_wBEJ_k8nd8rTDzkh10SgXsb9n";
+    private String TEMP_TOKEN = "f3SGgCfruUIxjqhbtFEcg4:APA91bFIVm1q9baJDsxvV0GBIU66tcHYLNrnjmjZgAq46AxMNC6cSJxc4c2YgduRbQ8ESyciqevor7KJiBlmOmKUNSZfie7TL4jmnJ6-zq45rVJjzz-Np-m_Tzogiz98YPsblIS3dDJ1";
     private final Logger LOGGER = LoggerFactory.getLogger(PushNotificationService.class);
 
     @PostConstruct
@@ -49,10 +49,13 @@ public class PushNotificationService {
         Message message = Message.builder()
                 .setToken(TEMP_TOKEN)
                 .setNotification(Notification.builder()
-                        .setTitle("title")
-                        .setBody("body").build())
+                        .setTitle("test notification")
+                        .setBody("test body").build())
                 .build();
+        LOGGER.info("[sendMessage] create message");
 
         firebaseMessaging.send(message);
+        LOGGER.info("[sendMessage] send message");
     }
+
 }
