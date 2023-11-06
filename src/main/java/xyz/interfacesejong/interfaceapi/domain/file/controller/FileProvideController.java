@@ -24,7 +24,7 @@ public class FileProvideController {
 
     FileService fileService;
 
-    private static final String IMAGES_DIR = "C:\\CODE\\IF\\image\\20231008\\";
+    private static final String IMAGES_DIR = "/home/ec2-user/image/20231010";
     @GetMapping("image/{src-url}")
     public ResponseEntity<InputStreamResource> getImage(@PathVariable(value = "src-url") String srcUrl) throws FileNotFoundException {
         Path imagePath = Paths.get(IMAGES_DIR + srcUrl);
