@@ -44,6 +44,9 @@ public class User extends BaseTime {
 
     private Boolean enrolled; //인증정보 val
 
+    @Column(columnDefinition = "VARCHAR(255)")
+    private String fcmToken;
+
     @Enumerated(EnumType.STRING)
     private AuthLevelType authLevel;
 
@@ -92,6 +95,10 @@ public class User extends BaseTime {
 
     public void changeDeviceId(UUID deviceId){
         this.deviceId = deviceId;
+    }
+
+    public void changeFcmToken(String fcmToken){
+        this.fcmToken = fcmToken;
     }
 
 }

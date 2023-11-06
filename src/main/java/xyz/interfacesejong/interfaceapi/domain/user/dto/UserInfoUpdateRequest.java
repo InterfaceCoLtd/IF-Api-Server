@@ -12,5 +12,6 @@ public class UserInfoUpdateRequest {
     private String phoneNumber;
     private String githubId;
     private String discordId;
+    private String fcmToken;
     private UUID deviceId;
 }

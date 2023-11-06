@@ -114,8 +114,16 @@ public class UserController {
     // 기기정보
     @Timer
     @PutMapping("user/{id}/device-id")
+    @Operation(summary = "기기정보 변경", description = "해당 id 유저의 device 아이디를 변경한다. device 아이디는 UUID 형식이다.")
     public ResponseEntity<User> updateDeviceId(@PathVariable Long id, @RequestBody UserInfoUpdateRequest infoUpdateRequest){
         return new ResponseEntity<>(userService.updateDeviceId(id, infoUpdateRequest), HttpStatus.OK);
+    }
+    // fcm 토큰 정보
+    @Timer
+    @PutMapping("user/{id}/fcm-token")
+    @Operation(summary = "fcmToken 변경", description = "해당 id 유저의 fcm token을 변경한다.")
+    public ResponseEntity<User> updateFcmToken(@PathVariable Long id, @RequestBody UserInfoUpdateRequest infoUpdateRequest){
+        return new ResponseEntity<>(userService.updateFcmToken(id, infoUpdateRequest), HttpStatus.OK);
     }
 
     // 학생정보인증

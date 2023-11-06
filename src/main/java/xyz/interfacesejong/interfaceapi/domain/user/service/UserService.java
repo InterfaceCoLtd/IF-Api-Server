@@ -146,7 +146,7 @@ public class UserService {
                     LOGGER.info("[updateDiscordId] 등록 되지 않은 유저");
                     return new EntityNotFoundException("NON EXISTS USER");
                 });
-        
+
         if (infoUpdateRequest.getDiscordId() == null){
             LOGGER.info("[updateDiscordId] null 인자 입력");
             throw new IllegalArgumentException("MISSING FIELD");
@@ -156,6 +156,25 @@ public class UserService {
 
         user = userRepository.save(user);
         LOGGER.info("[updateDiscordId] discord 계정 업데이트 성공");
+        return user;
+    }
+    @Transactional
+    public User updateFcmToken(Long id, UserInfoUpdateRequest infoUpdateRequest){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> {
+                    LOGGER.info("[updateFcmToken] 등록 되지 않은 유저");
+                    return new EntityNotFoundException("NON EXISTS USER");
+                });
+
+        if (infoUpdateRequest.getFcmToken() == null){
+            LOGGER.info("[updateFcmToken] null 인자 입력");
+            throw new IllegalArgumentException("MISSING FIELD");
+        }else {
+            user.changeFcmToken(infoUpdateRequest.getFcmToken());
+        }
+
+        user = userRepository.save(user);
+        LOGGER.info("[updateFcmToken] FcmToken 업데이트 성공");
         return user;
     }
 
