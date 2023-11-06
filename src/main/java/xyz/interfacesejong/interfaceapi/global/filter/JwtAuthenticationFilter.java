@@ -1,6 +1,7 @@
 package xyz.interfacesejong.interfaceapi.global.filter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.filter.OncePerRequestFilter;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.AuthLevelType;
 import xyz.interfacesejong.interfaceapi.global.jwt.TokenProvider;
@@ -20,7 +21,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
         String token = tokenProvider.resolveToken(request);
 
         if (token != null && tokenProvider.isValidatedToken(token)){
@@ -41,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        response.setHeader("X-AUTH-TOKEN", token);
+        response.setHeader("Authorization", token);
         filterChain.doFilter(request, response);
     }
 }

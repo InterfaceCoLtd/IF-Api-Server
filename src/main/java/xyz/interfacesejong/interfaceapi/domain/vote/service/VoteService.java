@@ -10,6 +10,7 @@ import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
 import xyz.interfacesejong.interfaceapi.domain.vote.domain.*;
 import xyz.interfacesejong.interfaceapi.domain.vote.dto.*;
+import xyz.interfacesejong.interfaceapi.global.fcm.PushNotificationService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -27,6 +28,7 @@ public class VoteService {
     private final VoteVoterRepository voterRepository;
 
     private final UserRepository userRepository;
+    private final PushNotificationService notificationService;
 
     private final Logger LOGGER = LoggerFactory.getLogger(VoteService.class);
 
@@ -55,6 +57,8 @@ public class VoteService {
                                 .option(option.getOption())
                                 .count(option.getCount()).build())
                         .collect(Collectors.toList()));
+
+        notificationService.sendFcmVoteAddedNotification(createResponse.getSubject().getId());
 
         LOGGER.info("[save] 신규 투표 생성");
         return createResponse;
