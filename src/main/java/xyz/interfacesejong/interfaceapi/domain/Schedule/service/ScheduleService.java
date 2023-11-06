@@ -1,5 +1,6 @@
 package xyz.interfacesejong.interfaceapi.domain.Schedule.service;
 
+import com.google.firebase.messaging.Notification;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,9 @@ public class ScheduleService extends BaseTime {
                     .type(scheduleRequest.getType()).build());
         }
 
-        notificationService.sendFcmScheduleAddedNotification(schedule.getId());
+        notificationService.sendFcmScheduleAddedNotification(schedule.getId(), Notification.builder()
+                .setTitle(schedule.getTitle())
+                .setBody(schedule.getDescription()).build());
 
         LOGGER.info("[save] 일정 저장 완료");
         return schedule;
