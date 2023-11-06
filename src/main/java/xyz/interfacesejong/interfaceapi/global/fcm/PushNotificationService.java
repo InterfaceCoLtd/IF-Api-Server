@@ -3,10 +3,8 @@ package xyz.interfacesejong.interfaceapi.global.fcm;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.*;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +14,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,20 @@ public class PushNotificationService {
     private String FCM_PRIVATE_KEY_PATH;
     private String TEMP_TOKEN = "f3SGgCfruUIxjqhbtFEcg4:APA91bFIVm1q9baJDsxvV0GBIU66tcHYLNrnjmjZgAq46AxMNC6cSJxc4c2YgduRbQ8ESyciqevor7KJiBlmOmKUNSZfie7TL4jmnJ6-zq45rVJjzz-Np-m_Tzogiz98YPsblIS3dDJ1";
     private final Logger LOGGER = LoggerFactory.getLogger(PushNotificationService.class);
+
+    private final ApnsConfig apnsConfig = ApnsConfig.builder()
+            .putHeader("apns-priority", "10")
+            .setAps(Aps.builder()
+                    .setBadge(1)
+                    .setSound("default")
+                    .build())
+            .build();
+    private final AndroidConfig androidConfig = AndroidConfig.builder()
+            .setPriority(AndroidConfig.Priority.HIGH)
+            .setNotification(AndroidNotification.builder()
+                    .setSound("default")
+                    .build())
+            .build();
 
     @PostConstruct
     public void init(){
@@ -43,19 +59,66 @@ public class PushNotificationService {
         }
     }
 
-    public void sendMessage() throws FirebaseMessagingException {
+    public void sendFcmScheduleAddedNotification(Long id){
+        Notification notification = Notification.builder()
+                .setTitle("신규 일정 추가 TEST")
+                .setBody("일정 추가 내용~TEST").build();
+
+        Map<String, String> data = new HashMap<>();
+        data.put("type","Schedule");
+        data.put("scheduleId",id.toString());
+
+        sendTopicMessage(notification, data, "member");
+    }
+    public void sendFcmVoteAddedNotification(Long id){
+        Notification notification = Notification.builder()
+                .setTitle("신규 투표 추가 TEST")
+                .setBody("투표 추가 내용~TEST").build();
+
+        Map<String, String> data = new HashMap<>();
+        data.put("type","Vote");
+        data.put("voteSubjectId",id.toString());
+
+        sendTopicMessage(notification, data, "member");
+    }
+    public void sendFcmNoticeAddedNotification(Long id){
+        Notification notification = Notification.builder()
+                .setTitle("신규 공지 추가 TEST")
+                .setBody("일정 공지 내용~TEST").build();
+
+        Map<String, String> data = new HashMap<>();
+        data.put("type","Notice");
+        data.put("boardId",id.toString());
+
+        sendTopicMessage(notification, data, "member");
+    }
+
+
+    private void sendTopicMessage(Notification notification, Map<String, String> data, String topic) {
         FirebaseMessaging firebaseMessaging = FirebaseMessaging.getInstance();
 
         Message message = Message.builder()
-                .setToken(TEMP_TOKEN)
-                .setNotification(Notification.builder()
-                        .setTitle("test notification")
-                        .setBody("test body").build())
+                .setTopic(topic)
+                .setNotification(notification)
+                .putAllData(data)
+                .setApnsConfig(apnsConfig)
+                .setAndroidConfig(androidConfig)
                 .build();
-        LOGGER.info("[sendMessage] create message");
+        LOGGER.info("[sendTopicMessage] create message {}", new Gson().toJson(message));
 
-        firebaseMessaging.send(message);
-        LOGGER.info("[sendMessage] send message");
+        /*ExecutorService executorService = Executors.newFixedThreadPool(10);
+        firebaseMessaging.sendAsync(message).addListener(() -> {
+            LOGGER.info("[sendTopicMessage] Message sent to 'member' topic");
+        }, executorService);*/
+
+
+        try {
+            String response = firebaseMessaging.send(message);
+            LOGGER.info("[sendTopicMessage] send message {}", response);
+        } catch (FirebaseMessagingException exception){
+            LOGGER.info("[sendTopicMessage] exception {}", exception.getMessage());
+        }
     }
+
 
 }

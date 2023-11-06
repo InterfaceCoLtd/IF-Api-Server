@@ -12,14 +12,6 @@ public class InterfaceApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(InterfaceApiApplication.class, args);
-
-        PushNotificationService service = new PushNotificationService();
-
-        try {
-            service.sendMessage();
-        } catch (FirebaseMessagingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }
