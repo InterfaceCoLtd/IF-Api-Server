@@ -59,10 +59,7 @@ public class PushNotificationService {
         }
     }
 
-    public void sendFcmScheduleAddedNotification(Long id){
-        Notification notification = Notification.builder()
-                .setTitle("신규 일정 추가 TEST")
-                .setBody("일정 추가 내용~TEST").build();
+    public void sendFcmScheduleAddedNotification(Long id, Notification notification){
 
         Map<String, String> data = new HashMap<>();
         data.put("type","Schedule");
@@ -70,10 +67,7 @@ public class PushNotificationService {
 
         sendTopicMessage(notification, data, "member");
     }
-    public void sendFcmVoteAddedNotification(Long id){
-        Notification notification = Notification.builder()
-                .setTitle("신규 투표 추가 TEST")
-                .setBody("투표 추가 내용~TEST").build();
+    public void sendFcmVoteAddedNotification(Long id, Notification notification){
 
         Map<String, String> data = new HashMap<>();
         data.put("type","Vote");
@@ -81,10 +75,7 @@ public class PushNotificationService {
 
         sendTopicMessage(notification, data, "member");
     }
-    public void sendFcmNoticeAddedNotification(Long id){
-        Notification notification = Notification.builder()
-                .setTitle("신규 공지 추가 TEST")
-                .setBody("일정 공지 내용~TEST").build();
+    public void sendFcmNoticeAddedNotification(Long id, Notification notification){
 
         Map<String, String> data = new HashMap<>();
         data.put("type","Notice");

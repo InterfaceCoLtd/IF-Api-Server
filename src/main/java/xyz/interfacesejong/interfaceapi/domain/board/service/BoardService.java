@@ -1,5 +1,6 @@
 package xyz.interfacesejong.interfaceapi.domain.board.service;
 
+import com.google.firebase.messaging.Notification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -60,7 +61,16 @@ public class BoardService {
             scheduleService.updateBoardId(board.getScheduleId(), board.getId());
         }
 
-        notificationService.sendFcmNoticeAddedNotification(board.getId());
+        String body;
+        if (board.getContent().length() <= 10){
+            body = board.getContent();
+        }else {
+            body = board.getContent().substring(0, 10);
+        }
+
+        notificationService.sendFcmNoticeAddedNotification(board.getId(), Notification.builder()
+                .setTitle(board.getTitle())
+                .setBody(body).build());
 
         LOGGER.info("[save] : 게시글 저장, 게시글 ID {}", board.getId());
         return new BoardResponse(board);
