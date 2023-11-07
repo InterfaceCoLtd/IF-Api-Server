@@ -8,6 +8,9 @@ build/
 ### 설정 파일 ###
 *.properties
 
+### 보안 키 ###
+interfaceapp-a232c-firebase-adminsdk-srkiw-7d04618425.json
+
 ### STS ###
 .apt_generated
 .classpath
