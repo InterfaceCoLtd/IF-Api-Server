@@ -11,13 +11,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import xyz.interfacesejong.interfaceapi.global.fcm.dto.MessageRequest;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Service
 @RequiredArgsConstructor
@@ -84,6 +85,55 @@ public class PushNotificationService {
         sendTopicMessage(notification, data, "member");
     }
 
+    public void sendCustomNotification(MessageRequest request, Long userId, String topic, String token){
+        FirebaseMessaging firebaseMessaging = FirebaseMessaging.getInstance();
+
+        List<String> registrationTokens = new ArrayList<>();
+        registrationTokens.add(token);
+        if (userId!= null){
+            userId = null; // TODO userId token 코드 추가
+        }
+
+        if (!topic.isEmpty()){
+            Message message = Message.builder()
+                    .setTopic(topic)
+                    .setNotification(Notification.builder()
+                            .setTitle(request.getTitle())
+                            .setBody(request.getBody()).build())
+                    .putData("type", "Custom")
+                    .setApnsConfig(apnsConfig)
+                    .setAndroidConfig(androidConfig)
+                    .build();
+            LOGGER.info("[sendCustomNotification] create message {}", new Gson().toJson(message));
+
+            try {
+                String response = firebaseMessaging.send(message);
+                LOGGER.info("[sendCustomNotification] send message {}", response);
+            } catch (FirebaseMessagingException exception){
+                LOGGER.info("[sendCustomNotification] exception {}", exception.getMessage());
+            }
+        }
+
+        if (token != null){
+            MulticastMessage multicastMessage = MulticastMessage.builder()
+                    .addAllTokens(registrationTokens)
+                    .setNotification(Notification.builder()
+                            .setTitle(request.getTitle())
+                            .setBody(request.getBody()).build())
+                    .putData("type", "Custom")
+                    .setApnsConfig(apnsConfig)
+                    .setAndroidConfig(androidConfig)
+                    .build();
+
+            try {
+                BatchResponse batchResponse = firebaseMessaging.sendEachForMulticast(multicastMessage);
+                LOGGER.info("[sendCustomNotification] send message {}, {} success", batchResponse.getResponses(), batchResponse.getSuccessCount());
+            } catch (FirebaseMessagingException exception){
+                LOGGER.info("[sendCustomNotification] exception {}", exception.getMessage());
+            }
+        }
+    }
+
 
     private void sendTopicMessage(Notification notification, Map<String, String> data, String topic) {
         FirebaseMessaging firebaseMessaging = FirebaseMessaging.getInstance();
@@ -96,12 +146,6 @@ public class PushNotificationService {
                 .setAndroidConfig(androidConfig)
                 .build();
         LOGGER.info("[sendTopicMessage] create message {}", new Gson().toJson(message));
-
-        /*ExecutorService executorService = Executors.newFixedThreadPool(10);
-        firebaseMessaging.sendAsync(message).addListener(() -> {
-            LOGGER.info("[sendTopicMessage] Message sent to 'member' topic");
-        }, executorService);*/
-
 
         try {
             String response = firebaseMessaging.send(message);

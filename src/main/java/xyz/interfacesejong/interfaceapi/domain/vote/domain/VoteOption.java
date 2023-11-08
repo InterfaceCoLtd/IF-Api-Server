@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,7 +30,7 @@ public class VoteOption extends BaseTime {
     private VoteSubject voteSubject;
 
     @OneToMany(mappedBy = "voteOption", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<VoteVoter> voteVoters;
+    private List<VoteVoter> voteVoters = new ArrayList<>();;
 
     @Builder
     public VoteOption(Long id, String option, int count, VoteSubject voteSubject, List<VoteVoter> voteVoters) {
