@@ -90,6 +90,9 @@ public class PushNotificationService {
 
         List<String> registrationTokens = new ArrayList<>();
         registrationTokens.add(token);
+        if (userId!= null){
+            userId = null; // TODO userId token 코드 추가
+        }
 
         if (!topic.isEmpty()){
             Message message = Message.builder()
@@ -111,7 +114,7 @@ public class PushNotificationService {
             }
         }
 
-        if (userId != null){
+        if (token != null){
             MulticastMessage multicastMessage = MulticastMessage.builder()
                     .addAllTokens(registrationTokens)
                     .setNotification(Notification.builder()
