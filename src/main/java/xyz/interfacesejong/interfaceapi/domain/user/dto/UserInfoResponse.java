@@ -23,6 +23,8 @@ public class UserInfoResponse {
 
     private String discordId; //var
 
+    private String fcmToken; // var
+
     private String username; //인증정보 val
 
     private Integer studentId; //인증정보 val
@@ -33,16 +35,18 @@ public class UserInfoResponse {
 
     private Boolean enrolled; //인증정보 val
 
+
     @Enumerated(EnumType.STRING)
     private AuthLevelType authLevel;
 
     @Builder
-    public UserInfoResponse(Long id, String email, Integer generation, String phoneNumber, String githubId, String discordId, String username, Integer studentId, String major, Integer grade, Boolean enrolled, AuthLevelType authLevel) {
+    public UserInfoResponse(Long id, String email, Integer generation, String phoneNumber, String githubId, String discordId, String fcmToken, String username, Integer studentId, String major, Integer grade, Boolean enrolled, AuthLevelType authLevel) {
         this.id = id;
         this.email = email;
         this.generation = generation;
         this.phoneNumber = phoneNumber;
         this.githubId = githubId;
+        this.fcmToken = fcmToken;
         this.discordId = discordId;
         this.username = username;
         this.studentId = studentId;
@@ -65,5 +69,6 @@ public class UserInfoResponse {
         this.grade = user.getGrade();
         this.enrolled = user.getEnrolled();
         this.authLevel = user.getAuthLevel();
+        this.fcmToken = user.getFcmToken();
     }
 }
