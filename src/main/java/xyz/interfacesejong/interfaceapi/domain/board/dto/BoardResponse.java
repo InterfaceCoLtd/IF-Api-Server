@@ -1,6 +1,7 @@
 package xyz.interfacesejong.interfaceapi.domain.board.dto;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
 
 import java.time.LocalDateTime;
@@ -17,7 +18,9 @@ public class BoardResponse {
     private Long userId;
     private Long scheduleId;
     private Long subjectId;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime createDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime updateDate;
     private List<String> fileNames = new ArrayList<>();
 
