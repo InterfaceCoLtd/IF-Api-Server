@@ -67,13 +67,9 @@ public class UserController {
     }
 
     @Timer
-    @DeleteMapping()
-    public ResponseEntity<Void> deleteUser(UserSignRequest request){
-        try {
-            userService.deleteUser(request);
-        }catch (EntityNotFoundException exception){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    @DeleteMapping("user/{id}/email/{email}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id, @PathVariable String email){
+        userService.deleteUser(id, email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

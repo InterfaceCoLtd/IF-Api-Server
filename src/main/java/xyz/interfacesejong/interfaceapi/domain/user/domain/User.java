@@ -101,4 +101,20 @@ public class User extends BaseTime {
         this.fcmToken = fcmToken;
     }
 
+    public void resetData(){
+        this.authLevel = AuthLevelType.DELETE_ACCOUNT;
+        this.deviceId = null;
+        this.fcmToken = null;
+        this.email = null;
+        this.generation = null;
+        this.phoneNumber = null;
+        this.githubId = null;
+        this.discordId = null;
+        this.username = null;
+        this.studentId = null;
+        this.major = null;
+        this.grade = null;
+        this.enrolled = null;
+    }
+
 }

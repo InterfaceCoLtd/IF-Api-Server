@@ -3,7 +3,6 @@ package xyz.interfacesejong.interfaceapi.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +32,7 @@ public class UserService {
 
     @Transactional
     public List<UserInfoResponse> findAllUsers(){
-        List<UserInfoResponse> users = userRepository.findAll().stream()
+        List<UserInfoResponse> users = userRepository.findByAuthLevelNot(AuthLevelType.DELETE_ACCOUNT).stream()
                 .map(UserInfoResponse::new)
                 .collect(Collectors.toList());
 
@@ -58,13 +57,17 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(UserSignRequest request){
-        try {
-            userRepository.deleteByEmail(request.getEmail());
-        }catch (EmptyResultDataAccessException exception){
-            LOGGER.info("[deleteUser] 등록되지 않은 유저");
-            throw new EntityNotFoundException("NON EXISTS USER");
-        }
+    public void deleteUser(Long userId, String email){
+        User user = userRepository.findById(userId)
+                .orElseThrow(()->{
+                    LOGGER.info("[deleteUser] 등록되지 않은 계정");
+                    return new EntityNotFoundException("NON EXISTS");
+                });
+
+        user.resetData();
+        user.reRegisterPassword(bCryptPasswordEncoder.encode("0000000000000000"));
+
+        userRepository.save(user);
     }
 
     @Transactional
