@@ -59,9 +59,7 @@ public class VoteService {
                                 .count(option.getCount()).build())
                         .collect(Collectors.toList()));
 
-        notificationService.sendFcmVoteAddedNotification(createResponse.getSubject().getId(), Notification.builder()
-                .setTitle(createResponse.getSubject().getSubject())
-                .setBody("신규 투표 추가-TEST").build());
+        notificationService.sendFcmVoteAddedNotification(createResponse.getSubject().getId(), createResponse.getSubject().getSubject(), "신규 투표 추가-TEST");
 
         LOGGER.info("[save] 신규 투표 생성");
         return createResponse;
