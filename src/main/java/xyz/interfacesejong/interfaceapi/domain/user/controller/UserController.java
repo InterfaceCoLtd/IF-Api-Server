@@ -15,6 +15,8 @@ import xyz.interfacesejong.interfaceapi.global.aop.Timer;
 import xyz.interfacesejong.interfaceapi.global.jwt.TokenProvider;
 import xyz.interfacesejong.interfaceapi.global.util.BaseResponse;
 
+import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -62,6 +64,17 @@ public class UserController {
     @Operation(summary = "전체 유저 조회", description = "모든 유저를 조회합니다.")
     public ResponseEntity<List<UserInfoResponse>> findAllUsers(){
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
+    }
+
+    @Timer
+    @DeleteMapping()
+    public ResponseEntity<Void> deleteUser(UserSignRequest request){
+        try {
+            userService.deleteUser(request);
+        }catch (EntityNotFoundException exception){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Timer
