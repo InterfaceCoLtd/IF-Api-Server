@@ -10,6 +10,8 @@ build/
 
 ### 보안 키 ###
 interfaceapp-a232c-firebase-adminsdk-srkiw-7d04618425.json
+.well-known
+Apple-App-Site-Association
 
 ### STS ###
 .apt_generated
