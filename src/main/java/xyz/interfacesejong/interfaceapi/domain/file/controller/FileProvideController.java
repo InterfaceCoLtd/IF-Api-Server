@@ -1,15 +1,15 @@
 package xyz.interfacesejong.interfaceapi.domain.file.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,18 +18,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Controller
-@RequestMapping("api/")
 @RequiredArgsConstructor
+@Slf4j
 public class FileProvideController {
 
-    FileService fileService;
+    @Value("${uploadPath}")
+    private String IMAGES_DIR = "C:/CODE/IF/image/";
+    @GetMapping("image/{boardId}/{src-url}")
+    @Operation(summary = "image 제공", description = "image 제공")
+    public ResponseEntity<InputStreamResource> getImage(@PathVariable String boardId, @PathVariable(value = "src-url") String srcUrl) throws FileNotFoundException {
+        log.info("[getImage] {}", srcUrl);
 
-    private static final String IMAGES_DIR = "C:\\CODE\\IF\\image\\20231008\\";
-    @GetMapping("image/{src-url}")
-    public ResponseEntity<InputStreamResource> getImage(@PathVariable(value = "src-url") String srcUrl) throws FileNotFoundException {
-        Path imagePath = Paths.get(IMAGES_DIR + srcUrl);
+        Path imagePath = Paths.get(IMAGES_DIR + "/" + boardId + "/" + srcUrl);
 
         if (!Files.exists(imagePath) || Files.isDirectory(imagePath)) {
+            log.info("[getImage] invalid image path {}", imagePath);
             return ResponseEntity.notFound().build();
         }
 

@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Comment;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardRequest;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardResponse;
@@ -40,7 +39,7 @@ public class BoardController {
     @Parameter(name = "userId", in = ParameterIn.QUERY)
     @Parameter(name = "scheduleId", in = ParameterIn.QUERY)
     @Parameter(name = "subjectId", in = ParameterIn.QUERY)
-    public ResponseEntity<BoardResponse> create(@Parameter(hidden = true) @ModelAttribute BoardRequest boardRequest, @RequestParam(required = false) List<MultipartFile> multipartFileList) throws Exception {
+    public ResponseEntity<BoardResponse> create(@Parameter(hidden = true) @ModelAttribute BoardRequest boardRequest, @RequestParam(required = false) List<MultipartFile> multipartFileList){
         if (multipartFileList==null) return ResponseEntity.ok(boardService.save(boardRequest));
         else return ResponseEntity.ok(boardService.saveFiles(boardRequest, multipartFileList));
     }

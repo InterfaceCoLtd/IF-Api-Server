@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardRequest;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardResponse;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 
@@ -13,16 +12,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 public class FileUtils {
     @Value("${uploadPath}")
-    String rootUploadPath;
+    private String rootUploadPath;
 
     // 다중 파일 업로드
     public List<UploadFile> uploadFiles(List<MultipartFile> multipartFiles, BoardResponse boardResponse) {
@@ -43,10 +40,11 @@ public class FileUtils {
         String saveName = createSaveFileName(multipartFile.getOriginalFilename(), boardResponse, idx);
         String date = boardResponse.getCreateDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
-        // 기본 업로드 위치 + 날짜 디렉터리 생성
-        String uploadDir = rootUploadPath + File.separator + date;
+        // 기본 업로드 위치 + 게시글 PK 디렉터리 생성
+        String uploadDir = rootUploadPath + File.separator + boardResponse.getId();
         File dir = new File(uploadDir);
-        if(!dir.exists()) dir.mkdir();
+        if(!dir.exists())
+            dir.mkdir();
 
         // 파일 업로드
         Path path = Paths.get(uploadDir).toAbsolutePath().normalize();
@@ -61,7 +59,7 @@ public class FileUtils {
 
         return UploadFile.builder()
                 .originalName(multipartFile.getOriginalFilename())
-                .saveName(saveName)
+                .saveName("https://api.interfacesejong.xyz/image/" + boardResponse.getId() + "/" + saveName)
                 .size(multipartFile.getSize())
                 .savePath(savePath).build();
     }
