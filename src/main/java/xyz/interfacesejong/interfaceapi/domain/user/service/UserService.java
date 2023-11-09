@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.AuthLevelType;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
@@ -13,7 +14,6 @@ import xyz.interfacesejong.interfaceapi.global.util.BaseResponse;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +32,7 @@ public class UserService {
 
     @Transactional
     public List<UserInfoResponse> findAllUsers(){
-        List<UserInfoResponse> users = userRepository.findAll().stream()
+        List<UserInfoResponse> users = userRepository.findByAuthLevelNot(AuthLevelType.DELETE_ACCOUNT).stream()
                 .map(UserInfoResponse::new)
                 .collect(Collectors.toList());
 
@@ -41,19 +41,33 @@ public class UserService {
     }
 
     @Transactional
-    public User saveUser(UserSignRequest signUpRequest){
-        if (userRepository.existsByEmail(signUpRequest.getEmail())){
+    public User saveUser(UserSignRequest request){
+        if (userRepository.existsByEmail(request.getEmail())){
             throw new EntityExistsException("ALREADY EXISTS USER");
         }
 
         User user = userRepository.save(User.builder()
-                .email(signUpRequest.getEmail())
-                .password(bCryptPasswordEncoder.encode(signUpRequest.getPassword()))
+                .email(request.getEmail())
+                .password(bCryptPasswordEncoder.encode(request.getPassword()))
                 .authLevel(AuthLevelType.MEMBER_VERIFIED).build());
         //TODO 학생권한 부여는 임시 -> NEW ACCOUNT로 변경해야함
 
         LOGGER.info("[saveUser] 신규 유저 등록");
         return user;
+    }
+
+    @Transactional
+    public void deleteUser(Long userId, String email){
+        User user = userRepository.findById(userId)
+                .orElseThrow(()->{
+                    LOGGER.info("[deleteUser] 등록되지 않은 계정");
+                    return new EntityNotFoundException("NON EXISTS");
+                });
+
+        user.resetData();
+        user.reRegisterPassword(bCryptPasswordEncoder.encode("0000000000000000"));
+
+        userRepository.save(user);
     }
 
     @Transactional
