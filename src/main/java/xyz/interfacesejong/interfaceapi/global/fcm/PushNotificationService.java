@@ -11,6 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import xyz.interfacesejong.interfaceapi.global.fcm.domain.ContentType;
+import xyz.interfacesejong.interfaceapi.global.fcm.domain.MessageForm;
+import xyz.interfacesejong.interfaceapi.global.fcm.domain.MessageFormRepository;
+import xyz.interfacesejong.interfaceapi.global.fcm.domain.MessageStreamRepository;
 import xyz.interfacesejong.interfaceapi.global.fcm.dto.MessageRequest;
 
 import javax.annotation.PostConstruct;
@@ -25,7 +30,9 @@ import java.util.Map;
 public class PushNotificationService {
     @Value("${fcm.key.path}")
     private String FCM_PRIVATE_KEY_PATH;
-    private String TEMP_TOKEN = "f3SGgCfruUIxjqhbtFEcg4:APA91bFIVm1q9baJDsxvV0GBIU66tcHYLNrnjmjZgAq46AxMNC6cSJxc4c2YgduRbQ8ESyciqevor7KJiBlmOmKUNSZfie7TL4jmnJ6-zq45rVJjzz-Np-m_Tzogiz98YPsblIS3dDJ1";
+
+    private final MessageStreamRepository streamRepository;
+    private final MessageFormRepository formRepository;
     private final Logger LOGGER = LoggerFactory.getLogger(PushNotificationService.class);
 
     private final ApnsConfig apnsConfig = ApnsConfig.builder()
@@ -60,29 +67,29 @@ public class PushNotificationService {
         }
     }
 
-    public void sendFcmScheduleAddedNotification(Long id, Notification notification){
+    public void sendFcmScheduleAddedNotification(Long id, String title, String body){
 
         Map<String, String> data = new HashMap<>();
-        data.put("type","Schedule");
-        data.put("scheduleId",id.toString());
+        data.put("contentType",ContentType.SCHEDULE.name());
+        data.put("contentId",id.toString());
 
-        sendTopicMessage(notification, data, "member");
+        sendTopicMessage(title, body, data, "member");
     }
-    public void sendFcmVoteAddedNotification(Long id, Notification notification){
+    public void sendFcmVoteAddedNotification(Long id, String title, String body){
 
         Map<String, String> data = new HashMap<>();
-        data.put("type","Vote");
-        data.put("voteSubjectId",id.toString());
+        data.put("contentType",ContentType.VOTE.name());
+        data.put("contentId",id.toString());
 
-        sendTopicMessage(notification, data, "member");
+        sendTopicMessage(title, body, data, "member");
     }
-    public void sendFcmNoticeAddedNotification(Long id, Notification notification){
+    public void sendFcmNoticeAddedNotification(Long id, String title, String body){
 
         Map<String, String> data = new HashMap<>();
-        data.put("type","Notice");
-        data.put("boardId",id.toString());
+        data.put("contentType", ContentType.NOTICE.name());
+        data.put("contentId",id.toString());
 
-        sendTopicMessage(notification, data, "member");
+        sendTopicMessage(title, body, data, "member");
     }
 
     public void sendCustomNotification(MessageRequest request, Long userId, String topic, String token){
@@ -100,7 +107,7 @@ public class PushNotificationService {
                     .setNotification(Notification.builder()
                             .setTitle(request.getTitle())
                             .setBody(request.getBody()).build())
-                    .putData("type", "Custom")
+                    .putData("contentType", ContentType.CUSTOM.name())
                     .setApnsConfig(apnsConfig)
                     .setAndroidConfig(androidConfig)
                     .build();
@@ -120,7 +127,7 @@ public class PushNotificationService {
                     .setNotification(Notification.builder()
                             .setTitle(request.getTitle())
                             .setBody(request.getBody()).build())
-                    .putData("type", "Custom")
+                    .putData("contentType", ContentType.CUSTOM.name())
                     .setApnsConfig(apnsConfig)
                     .setAndroidConfig(androidConfig)
                     .build();
@@ -135,12 +142,13 @@ public class PushNotificationService {
     }
 
 
-    private void sendTopicMessage(Notification notification, Map<String, String> data, String topic) {
+    private void sendTopicMessage(String title, String body, Map<String, String> data, String topic) {
         FirebaseMessaging firebaseMessaging = FirebaseMessaging.getInstance();
-
         Message message = Message.builder()
                 .setTopic(topic)
-                .setNotification(notification)
+                .setNotification(Notification.builder()
+                        .setTitle(title)
+                        .setBody(body).build())
                 .putAllData(data)
                 .setApnsConfig(apnsConfig)
                 .setAndroidConfig(androidConfig)
@@ -154,6 +162,15 @@ public class PushNotificationService {
             LOGGER.info("[sendTopicMessage] exception {}", exception.getMessage());
         }
     }
+
+    @Transactional
+    public void saveMessageForm(String title, String body, Map<String, String> data, String topic, String token){
+        formRepository.save(MessageForm.builder()
+                .title(title)
+                .body(body)
+                .build());
+    }
+
 
 
 }

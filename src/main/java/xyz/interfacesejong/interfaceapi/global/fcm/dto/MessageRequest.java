@@ -10,4 +10,7 @@ import lombok.RequiredArgsConstructor;
 public class MessageRequest {
     private String title;
     private String body;
+    private String topic;
+    private String contentType;
+    private Long contentId;
 }

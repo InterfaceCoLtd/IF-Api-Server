@@ -68,9 +68,7 @@ public class BoardService {
             body = board.getContent().substring(0, 10);
         }
 
-        notificationService.sendFcmNoticeAddedNotification(board.getId(), Notification.builder()
-                .setTitle(board.getTitle())
-                .setBody(body).build());
+        notificationService.sendFcmNoticeAddedNotification(board.getId(), board.getTitle(), body);
 
         LOGGER.info("[save] : 게시글 저장, 게시글 ID {}", board.getId());
         return new BoardResponse(board);

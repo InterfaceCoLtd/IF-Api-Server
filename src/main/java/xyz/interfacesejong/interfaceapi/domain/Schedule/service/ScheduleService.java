@@ -59,9 +59,7 @@ public class ScheduleService extends BaseTime {
                     .type(scheduleRequest.getType()).build());
         }
 
-        notificationService.sendFcmScheduleAddedNotification(schedule.getId(), Notification.builder()
-                .setTitle(schedule.getTitle())
-                .setBody(schedule.getDescription()).build());
+        notificationService.sendFcmScheduleAddedNotification(schedule.getId(), schedule.getTitle(), schedule.getDescription());
 
         LOGGER.info("[save] 일정 저장 완료");
         return schedule;
