@@ -149,6 +149,10 @@ public class BoardService {
                     return new EntityNotFoundException();
                 }));
 
+        LOGGER.info("[getUploadFilesSaveNamesByBoardId] 게시글 조회");
+        
+        boardResponse.setFileNames(fileService.getUploadFilesSaveNamesByBoardId(id));
+
         LOGGER.info("[findById] : id로 글 조회, 게시글 id {}", id);
         return boardResponse;
     }
