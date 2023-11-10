@@ -1,5 +1,6 @@
 package xyz.interfacesejong.interfaceapi.domain.user.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -40,6 +41,12 @@ public class UserSignResponse {
     private AuthLevelType authLevel;
 
     private UUID deviceId;
+
+    public UserSignResponse(Long id, String email, AuthLevelType authLevel) {
+        this.id = id;
+        this.email = email;
+        this.authLevel = authLevel;
+    }
 
     public UserSignResponse(User user) {
         this.id = user.getId();

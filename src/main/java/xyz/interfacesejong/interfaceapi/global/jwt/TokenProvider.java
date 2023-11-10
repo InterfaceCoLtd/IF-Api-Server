@@ -30,18 +30,28 @@ public class TokenProvider {
     public String generateToken(UserSignResponse userSignResponse){
 
         Claims claims = Jwts.claims();
-        claims.put("authLevel", userSignResponse.getAuthLevel().toString());
+        claims.put("authLevel", userSignResponse.getAuthLevel().name());
         claims.put("email", userSignResponse.getEmail());
         claims.put("userId", userSignResponse.getId().toString());
         Date now = new Date();
 
-        String token = Jwts.builder()
-                .setClaims(claims)
-                .setAudience(userSignResponse.getDeviceId().toString())
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + VALIDITY_TIME))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact();
+        String token;
+        if (userSignResponse.getDeviceId() != null){
+            token = Jwts.builder()
+                    .setClaims(claims)
+                    .setAudience(userSignResponse.getDeviceId().toString())
+                    .setIssuedAt(now)
+                    .setExpiration(new Date(now.getTime() + VALIDITY_TIME))
+                    .signWith(SignatureAlgorithm.HS256, secretKey)
+                    .compact();
+        }else {
+            token = Jwts.builder()
+                    .setClaims(claims)
+                    .setIssuedAt(now)
+                    .setExpiration(new Date(now.getTime() + VALIDITY_TIME))
+                    .signWith(SignatureAlgorithm.HS256, secretKey)
+                    .compact();
+        }
 
         LOGGER.info("[generateToken] {}", token);
         return token;
@@ -82,6 +92,18 @@ public class TokenProvider {
                     .parseClaimsJws(token);
 
             return AuthLevelType.valueOf(claims.getBody().get("authLevel").toString());
+        } catch (Exception e){
+            return null;
+        }
+    }
+
+    public Long getUserId(String token){
+        try {
+            Jws<Claims> claims = Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(token);
+            return Long.parseLong(claims.getBody().get("userId").toString());
         } catch (Exception e){
             return null;
         }

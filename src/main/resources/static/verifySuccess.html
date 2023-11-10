@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css'>
+    <style>
+        div.backLayer {
+            /* Rectangle 247 */
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            
+            display: flex;
+            justify-content: center;
+            
+            background: #D8DFFF;
+        }
+        
+        .card {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.05);
+            
+            backdrop-filter: blur(25px) saturate(100%);
+            -webkit-backdrop-filter: blur(10px) saturate(100%);
+            
+            background-color: rgba(255, 255, 255, 0.2);
+            
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            
+            /* margin: 10 10 10 10; */
+        }
+        
+        #logo {
+            display: flex;
+            width: 100vw;
+            height: 80vh;
+        }
+        ::placeholder {
+            color: #919191;
+        }
+        
+        label > p {
+            display: flex;
+            color: #657eff;
+            font-family: Pretendard, "Noto Sans KR", sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            
+            margin: 24px 0 4px 0;
+        }
+        
+        p > a {
+            color: #657eff;
+            text-decoration: none;
+        }
+    </style>
+    <title>interface login page</title>
+</head>
+<body>
+<div class="backLayer">
+    <a href="#">
+        <img id="logo" alt="interface-logo" src="https://api.interfacesejong.xyz/image/logo/IF_LOGO_LABEL_BLACK.svg" />
+    </a>
+    <div class="card" style="width: 33vw; height: 20vh; top: 60%">
+        <label>
+            <p style="font-size: 1.5rem">가입을 환영합니다!</p>
+        </label>
+    </div>
+</div>
+</body>

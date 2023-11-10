@@ -6,13 +6,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.AuthLevelType;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserSignRequest;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserSignResponse;
 import xyz.interfacesejong.interfaceapi.global.email.EmailSender;
+import xyz.interfacesejong.interfaceapi.global.email.dto.AuthEmailResponse;
 import xyz.interfacesejong.interfaceapi.global.jwt.TokenProvider;
+
+import javax.mail.MessagingException;
+import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 
 @Service
@@ -25,18 +33,42 @@ public class SignService {
     private final Logger LOGGER = LoggerFactory.getLogger(SignService.class);
 
 
-    /* TODO 이메일 기능 수정
-    public AuthEmailResponse sendVerifyMail(Long id, String email){
-        String verifyToken = tokenProvider.generateToken(id, email);
+    public AuthEmailResponse sendVerifyMail(UserSignResponse response){
+        String verifyToken = tokenProvider.generateToken(response);
         Map<String, Object> variables = new HashMap<>();
         variables.put("authCode", verifyToken);
         try {
-            return emailSender.sendMessage(email, variables, "verifyEmailTemplate");
+            return emailSender.sendMessage(response.getEmail(), variables, "verifyEmailTemplate");
         } catch (MessagingException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
 
-    }*/
+
+    @Transactional
+    public Boolean verifyUser(String token){
+        Long userId;
+        if (tokenProvider.isValidatedToken(token)){
+            userId = tokenProvider.getUserId(token);
+        }else {
+            return false;
+        }
+
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (!userOptional.isPresent()) {
+            LOGGER.info("[verifyUser] 등록되지 않은 유저");
+            return false;
+        }
+
+        User user = userOptional.get();
+
+        user.changeAuthLevel(AuthLevelType.MAIL_VERIFIED);
+        userRepository.save(user);
+        LOGGER.info("[verifyUser] userId {} mail 인증 완료", userId);
+        return true;
+    }
 
     public UserSignResponse signIn(UserSignRequest signRequest){
         User user = userRepository.findByEmail(signRequest.getEmail())
