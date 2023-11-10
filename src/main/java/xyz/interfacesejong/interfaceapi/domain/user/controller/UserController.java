@@ -3,15 +3,19 @@ package xyz.interfacesejong.interfaceapi.domain.user.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xyz.interfacesejong.interfaceapi.domain.user.domain.AuthLevelType;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.*;
 import xyz.interfacesejong.interfaceapi.domain.user.service.SignService;
 import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
+import xyz.interfacesejong.interfaceapi.global.email.dto.AuthEmailResponse;
 import xyz.interfacesejong.interfaceapi.global.jwt.TokenProvider;
 import xyz.interfacesejong.interfaceapi.global.util.BaseResponse;
 
@@ -32,8 +36,20 @@ public class UserController {
     @Timer
     @PostMapping()
     @Operation(summary = "신규 유저 등록", description = "신규 유저를 생성합니다.")
-    public ResponseEntity<User> createUser(@RequestBody UserSignRequest signUpRequest){
-        return new ResponseEntity<>(userService.saveUser(signUpRequest), HttpStatus.CREATED);
+    public ResponseEntity<UserSignResponse> createUser(@RequestBody UserSignRequest request){
+        User user = userService.saveUser(request);
+        UserSignResponse response = new UserSignResponse(user);
+        signService.sendVerifyMail(response);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @Timer
+    @GetMapping("verify")
+    public Resource verifyUserAccount(@RequestParam String code){
+        if (signService.verifyUser(code)){
+            return new ClassPathResource("static/verifySuccess.html");
+        }
+        return new ClassPathResource("static/verifyFail.html");
     }
 
     @Timer
@@ -68,6 +84,7 @@ public class UserController {
 
     @Timer
     @DeleteMapping("user/{id}/email/{email}")
+    @Operation(summary = "계정 삭제", description = "해당하는 id와 email이 일치하는 계정 정보를 delete 상태로 변경후, 모든 데이터를 null로 변경합니다.\n\n pk와 레코드는 그대로 남아있습니다.")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id, @PathVariable String email){
         userService.deleteUser(id, email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -143,14 +160,5 @@ public class UserController {
         return new ResponseEntity<>(userService.updateSejongStudentAuth(id, sejongStudentAuthRequest), HttpStatus.OK);
     }
 
-
-
-    /*@Timer
-    @GetMapping("a")
-    @Tag(name = "TEMP")
-    @Operation(summary = "사용불가", description = "사용하지마세요")
-    public ResponseEntity<AuthEmailResponse> mailSend(@RequestParam Long id, @RequestParam String email){
-        return new ResponseEntity<>(signService.sendVerifyMail(id, email), HttpStatus.OK);
-    }*/
 
 }

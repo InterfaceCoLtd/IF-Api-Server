@@ -52,6 +52,7 @@ public class UserService {
                 .authLevel(AuthLevelType.MEMBER_VERIFIED).build());
         //TODO 학생권한 부여는 임시 -> NEW ACCOUNT로 변경해야함
 
+
         LOGGER.info("[saveUser] 신규 유저 등록");
         return user;
     }
