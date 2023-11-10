@@ -53,7 +53,7 @@ public class FileService {
     public List<String > getUploadFilesSaveNamesByBoardId(Long id){
         if (!fileRepository.existsByBoard_Id(id)){
             log.info("[getUploadFilesSaveNamesByBoardId] 존재하지 않는 boardId");
-            throw new EntityNotFoundException("INVALID BOARD ID");
+            return new ArrayList<>();
         }
         List<String> saveNames = fileRepository.findSaveNames(id);
         log.info("[getUploadFilesSaveNamesByBoardId] 연관된 파일명 추출 완료");
