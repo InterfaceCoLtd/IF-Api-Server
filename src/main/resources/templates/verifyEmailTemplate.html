@@ -12,7 +12,7 @@
 
 <div style="max-width: 600px; text-align: center; margin: 50px auto; background-color: #ffffff; padding: 20px; border-radius: 5px; box-shadow: 0px 2px 10px rgba(0,0,0,0.1);">
     <div style="text-align: center;">
-        <img src="https://api.interfacesejong.xyz/image/logo/IF_LOGO_LABEL_BLACK.svg" alt="Interface Logo" style="max-width: 200px;">
+        <img src="https://api.interfacesejong.xyz/image/logo/IF_LOGO_LABEL_BLACK.png" alt="Interface Logo" style="max-width: 200px;">
     </div>
     <h2 style="text-align: center; color: #657eff; margin-top: 0; font-weight: bolder">Interface Auth Code</h2>
     <p style="color: #666666; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
@@ -20,7 +20,7 @@
     </p>
     
     <div style="text-align: center; margin-bottom: 30px;">
-            <a href="http://api.interfacesejong.xyz/users/verify?$code={authCode}" style="text-decoration: none; display: inline-block; padding: 10px 20px; border-radius: 5px; background-color: #657eff; color: #ffffff; font-size: 18px; letter-spacing: 0.1em">
+            <a th:href="@{'http://example.com/verify?code=' + ${authCode}}" href="#" style="text-decoration: none; display: inline-block; padding: 10px 20px; border-radius: 5px; background-color: #657eff; color: #ffffff; font-size: 18px; letter-spacing: 0.1em">
                 인증하기
             </a>
     </div>

@@ -48,6 +48,7 @@ public class EmailSender {
 
         Context context = new Context();
         context.setVariables(variables);
+        LOGGER.info("[create Message] auth code {}", variables.get("authCode"));
         String htmlContent = templateEngine.process(templateFileName, context);
 
 

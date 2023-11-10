@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.AuthLevelType;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
@@ -40,7 +41,12 @@ public class SignService {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
 
+
+    @Transactional
+    public void verifyUser(String token){
+        return;
     }
 
     public UserSignResponse signIn(UserSignRequest signRequest){
