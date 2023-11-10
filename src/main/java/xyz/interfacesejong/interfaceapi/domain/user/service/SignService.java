@@ -20,6 +20,7 @@ import javax.mail.MessagingException;
 import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Service
@@ -46,23 +47,27 @@ public class SignService {
 
 
     @Transactional
-    public void verifyUser(String token){
+    public Boolean verifyUser(String token){
         Long userId;
         if (tokenProvider.isValidatedToken(token)){
             userId = tokenProvider.getUserId(token);
         }else {
-            throw new IllegalArgumentException("INVALID TOKEN");
+            return false;
         }
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(()->{
-                    LOGGER.info("[verifyUser] 등록되지 않은 유저");
-                    return new EntityNotFoundException("NON EXISTS EXCEPTION");
-                });
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (!userOptional.isPresent()) {
+            LOGGER.info("[verifyUser] 등록되지 않은 유저");
+            return false;
+        }
+
+        User user = userOptional.get();
 
         user.changeAuthLevel(AuthLevelType.MAIL_VERIFIED);
         userRepository.save(user);
         LOGGER.info("[verifyUser] userId {} mail 인증 완료", userId);
+        return true;
     }
 
     public UserSignResponse signIn(UserSignRequest signRequest){

@@ -3,6 +3,8 @@ package xyz.interfacesejong.interfaceapi.domain.user.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,9 +45,11 @@ public class UserController {
 
     @Timer
     @GetMapping("verify")
-    public ResponseEntity<Void> verifyUser(@RequestParam String code){
-        signService.verifyUser(code);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public Resource verifyUserAccount(@RequestParam String code){
+        if (signService.verifyUser(code)){
+            return new ClassPathResource("static/verifySuccess.html");
+        }
+        return new ClassPathResource("static/verifyFail.html");
     }
 
     @Timer

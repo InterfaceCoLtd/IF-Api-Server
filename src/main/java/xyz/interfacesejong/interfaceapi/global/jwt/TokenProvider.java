@@ -103,7 +103,7 @@ public class TokenProvider {
                     .setSigningKey(secretKey)
                     .build()
                     .parseClaimsJws(token);
-            return (Long) claims.getBody().get("userId");
+            return Long.parseLong(claims.getBody().get("userId").toString());
         } catch (Exception e){
             return null;
         }
