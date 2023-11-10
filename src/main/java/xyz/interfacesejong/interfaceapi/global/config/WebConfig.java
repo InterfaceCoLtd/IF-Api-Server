@@ -12,16 +12,6 @@ import xyz.interfacesejong.interfaceapi.global.util.LoggingInterceptor;
 public class WebConfig implements WebMvcConfigurer {
     private final LoggingInterceptor loggingInterceptor;
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOriginPatterns("http://localhost:63342")
-//                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-//                .allowedHeaders("*")
-//                .allowCredentials(true)
-//                .maxAge(3600);
-//    }
-
     @Override
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(loggingInterceptor);
