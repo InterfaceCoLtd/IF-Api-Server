@@ -1,0 +1,14 @@
+{
+  "applinks": {
+      "apps": [],
+      "details": [
+          {
+              "appID": "FNC65X95VM.com.InterfaceTeam.Interface",
+              "paths": [ "/api/*" ]
+          }
+      ]
+  },
+  "webcredentials": {
+      "apps": [ "FNC65X95VM.com.InterfaceTeam.Interface" ]
+  }
+}

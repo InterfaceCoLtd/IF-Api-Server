@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+
+    List<User> findByAuthLevelNot(AuthLevelType authLevel);
     Optional<User> findByEmail(String email);
 
     Optional<User> findById(Long userId);

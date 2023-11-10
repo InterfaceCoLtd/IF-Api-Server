@@ -17,13 +17,11 @@ import xyz.interfacesejong.interfaceapi.domain.file.dto.UploadFileResponse;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileUtils;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
-import xyz.interfacesejong.interfaceapi.domain.vote.domain.VoteSubject;
 import xyz.interfacesejong.interfaceapi.global.fcm.PushNotificationService;
 
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -47,7 +45,6 @@ public class BoardService {
 
     @Transactional
     public BoardResponse save(BoardRequest boardRequest) {
-
         Board board = Board.builder()
                 .title(boardRequest.getTitle())
                 .content(boardRequest.getContent())
@@ -55,12 +52,15 @@ public class BoardService {
                 .scheduleId(boardRequest.getScheduleId())
                 .subjectId(boardRequest.getSubjectId()).build();
 
+        // 게시글 저장
         boardRepository.save(board);
 
+        // 일정 연결
         if (boardRequest.getScheduleId() != null){
             scheduleService.updateBoardId(board.getScheduleId(), board.getId());
         }
 
+        //fcm 메세지 저장
         String body;
         if (board.getContent().length() <= 10){
             body = board.getContent();
@@ -68,9 +68,7 @@ public class BoardService {
             body = board.getContent().substring(0, 10);
         }
 
-        notificationService.sendFcmNoticeAddedNotification(board.getId(), Notification.builder()
-                .setTitle(board.getTitle())
-                .setBody(body).build());
+        notificationService.sendFcmNoticeAddedNotification(board.getId(), board.getTitle(), body);
 
         LOGGER.info("[save] : 게시글 저장, 게시글 ID {}", board.getId());
         return new BoardResponse(board);
@@ -87,14 +85,21 @@ public class BoardService {
                 }))
                 .subjectId(boardRequest.getSubjectId())
                 .scheduleId(boardRequest.getScheduleId()).build();
+        // 게시글 저장
         boardRepository.save(board);
 
+        // 게시글 응답
         BoardResponse boardResponse = new BoardResponse(board);
 
+        // 모든 파일 PC에 저장
         List<UploadFile> uploadFileList = fileUtils.uploadFiles(multipartFileList, boardResponse);
+        
+        //응답에 파일 이름 추가
         boardResponse.setFileNames(uploadFileList.stream()
                         .map(UploadFile::getSaveName)
                 .collect(Collectors.toList()));
+        
+        // 모든 파일 DB에 저장
         fileService.saveFiles(board, uploadFileList);
 
         LOGGER.info("[saveFiles] : 게시글 저장 + 첨부파일 저장, 게시글 ID {}, 첨부파일 수 {}", board.getId(), uploadFileList.size());
