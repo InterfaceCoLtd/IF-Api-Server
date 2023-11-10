@@ -1,6 +1,7 @@
 package xyz.interfacesejong.interfaceapi.domain.file.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FileService {
 
     private final FileRepository fileRepository;
@@ -45,6 +47,18 @@ public class FileService {
         List<UploadFileResponse> uploadFileResponseList = new ArrayList<>();
         uploadFileList.stream().forEach(uploadFile -> uploadFileResponseList.add(new UploadFileResponse(uploadFile)));
         return uploadFileResponseList;
+    }
+
+    @Transactional
+    public List<String > getUploadFilesSaveNamesByBoardId(Long id){
+        if (!fileRepository.existsByBoard_Id(id)){
+            log.info("[getUploadFilesSaveNamesByBoardId] 존재하지 않는 boardId");
+            throw new EntityNotFoundException("INVALID BOARD ID");
+        }
+        List<String> saveNames = fileRepository.findSaveNames(id);
+        log.info("[getUploadFilesSaveNamesByBoardId] 연관된 파일명 추출 완료");
+
+        return saveNames;
     }
 
     @Transactional
