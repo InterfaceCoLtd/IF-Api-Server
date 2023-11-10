@@ -27,7 +27,6 @@ public class FileProvideController {
     @GetMapping("image/{boardId}/{src-url}")
     @Operation(summary = "image 제공", description = "image 제공")
     public ResponseEntity<InputStreamResource> getImage(@PathVariable String boardId, @PathVariable(value = "src-url") String srcUrl) throws FileNotFoundException {
-        log.info("[getImage] {}", srcUrl);
 
         Path imagePath = Paths.get(IMAGES_DIR + "/" + boardId + "/" + srcUrl);
 
