@@ -17,6 +17,7 @@ import xyz.interfacesejong.interfaceapi.global.email.dto.AuthEmailResponse;
 import xyz.interfacesejong.interfaceapi.global.jwt.TokenProvider;
 
 import javax.mail.MessagingException;
+import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +47,22 @@ public class SignService {
 
     @Transactional
     public void verifyUser(String token){
-        return;
+        Long userId;
+        if (tokenProvider.isValidatedToken(token)){
+            userId = tokenProvider.getUserId(token);
+        }else {
+            throw new IllegalArgumentException("INVALID TOKEN");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(()->{
+                    LOGGER.info("[verifyUser] 등록되지 않은 유저");
+                    return new EntityNotFoundException("NON EXISTS EXCEPTION");
+                });
+
+        user.changeAuthLevel(AuthLevelType.MAIL_VERIFIED);
+        userRepository.save(user);
+        LOGGER.info("[verifyUser] userId {} mail 인증 완료", userId);
     }
 
     public UserSignResponse signIn(UserSignRequest signRequest){

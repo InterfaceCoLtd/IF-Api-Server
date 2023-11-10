@@ -96,4 +96,16 @@ public class TokenProvider {
             return null;
         }
     }
+
+    public Long getUserId(String token){
+        try {
+            Jws<Claims> claims = Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(token);
+            return (Long) claims.getBody().get("userId");
+        } catch (Exception e){
+            return null;
+        }
+    }
 }
