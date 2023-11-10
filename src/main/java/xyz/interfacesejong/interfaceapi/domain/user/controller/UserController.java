@@ -42,6 +42,13 @@ public class UserController {
     }
 
     @Timer
+    @GetMapping("verify")
+    public ResponseEntity<Void> verifyUser(@RequestParam String code){
+        signService.verifyUser(code);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Timer
     @PostMapping("auth/sign-in")
     @Operation(summary = "로그인 요청", description = "로그인 요청 기능\n\n 이메일 비밀번호는 필수\n\n 기기 Id 안 보내면 db에 등록 안 되어서 간소 로그인 불가")
     public ResponseEntity<UserSignResponse> signIn(@RequestBody UserSignRequest signInRequest){
