@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.Comment;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardRequest;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardResponse;
+import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardSliceResponse;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.TitleDto;
 import xyz.interfacesejong.interfaceapi.domain.board.service.BoardService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
@@ -48,6 +50,15 @@ public class BoardController {
     @GetMapping()
     @Operation(summary = "모든 글 조회", description = "모든 글을 조회합니다.")
     public ResponseEntity<List<BoardResponse>> getAllBoards() { return ResponseEntity.ok(boardService.getAllBoards()); }
+
+    @Timer
+    @GetMapping("paged")
+    @Operation(summary = "최근 글 page 단위로 조회", description = "최근 size개의 글을 page 단위로 조회합니다.\n\n size가 10일 때, page0은 1~10, page1은 11~20.. page i는 (i * 10 + 1) ~ (i * 10 + 10) 번 게시글을 가져옵니다.")
+    public ResponseEntity<BoardSliceResponse> getBoardPages(@RequestParam(value = "page", defaultValue = "0") int page,
+                                            @RequestParam(value = "size", defaultValue = "10") int size){
+        return new ResponseEntity<>(boardService.findRecentBoards(page, size), HttpStatus.OK);
+    }
+
 
     @Timer
     @GetMapping("/title")

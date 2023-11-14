@@ -1,5 +1,7 @@
 package xyz.interfacesejong.interfaceapi.domain.board.domain;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.TitleDto;
@@ -16,4 +18,6 @@ public interface BoardRepository extends JpaRepository<Board, Id> {
     Optional<Board> findBySubjectId(Long id);
     @Query("SELECT new xyz.interfacesejong.interfaceapi.domain.board.dto.TitleDto(B.title) FROM Board as B")
     List<TitleDto> getAllTitles();
+
+    Slice<Board> findByOrderByIdDesc(Pageable pageable);
 }
