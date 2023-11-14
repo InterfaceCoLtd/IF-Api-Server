@@ -25,10 +25,7 @@ import xyz.interfacesejong.interfaceapi.global.fcm.PushNotificationService;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -111,7 +108,7 @@ public class BoardService {
 
     @Transactional
     public List<BoardResponse> getAllBoards() {
-        List<BoardResponse> boardResponses = boardRepository.findAll()
+        List<BoardResponse> boardResponses = boardRepository.findAllByOrderByIdDesc()
                 .stream()
                 .map(board -> {
                     BoardResponse boardResponse = new BoardResponse(board);
@@ -119,6 +116,7 @@ public class BoardService {
                             .stream().map(UploadFileResponse::getSaveName).collect(Collectors.toList()));
                     return boardResponse;
                 }).collect(Collectors.toList());
+
 
         LOGGER.info("[findAllBoards] : 모든 게시글 조회");
         return boardResponses;
