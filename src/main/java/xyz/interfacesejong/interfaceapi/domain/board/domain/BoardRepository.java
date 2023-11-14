@@ -19,5 +19,7 @@ public interface BoardRepository extends JpaRepository<Board, Id> {
     @Query("SELECT new xyz.interfacesejong.interfaceapi.domain.board.dto.TitleDto(B.title) FROM Board as B")
     List<TitleDto> getAllTitles();
 
+    List<Board> findAllByOrderByIdDesc();
+
     Slice<Board> findByOrderByIdDesc(Pageable pageable);
 }
