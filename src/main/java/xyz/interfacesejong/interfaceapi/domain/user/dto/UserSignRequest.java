@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import java.nio.ByteBuffer;
 import java.util.UUID;
 
 @Getter

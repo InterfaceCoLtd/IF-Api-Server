@@ -53,7 +53,9 @@ public class BoardController {
 
     @Timer
     @GetMapping("paged")
-    @Operation(summary = "최근 글 page 단위로 조회", description = "최근 size개의 글을 page 단위로 조회합니다.\n\n size가 10일 때, page0은 1~10, page1은 11~20.. page i는 (i * 10 + 1) ~ (i * 10 + 10) 번 게시글을 가져옵니다.")
+    @Operation(summary = "최근 글 page 단위로 조회", description = "최근 size개의 글을 page 단위로 조회합니다.\n\n" +
+            "size가 10일 때, page0은 1~10, page1은 11~20.. page i는 (i * 10 + 1) ~ (i * 10 + 10) 번 게시글을 가져옵니다.\n\n" +
+            "첫번째 페이지는 first가 true, 마지막 페이지는 lsat가 true로 설정됩니다.")
     public ResponseEntity<BoardSliceResponse> getBoardPages(@RequestParam(value = "page", defaultValue = "0") int page,
                                             @RequestParam(value = "size", defaultValue = "10") int size){
         return new ResponseEntity<>(boardService.findRecentBoards(page, size), HttpStatus.OK);
