@@ -5,12 +5,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.interfacesejong.interfaceapi.domain.Schedule.service.ScheduleService;
 import xyz.interfacesejong.interfaceapi.domain.board.domain.*;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardRequest;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardResponse;
+import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardSliceResponse;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.TitleDto;
 import xyz.interfacesejong.interfaceapi.domain.file.domain.UploadFile;
 import xyz.interfacesejong.interfaceapi.domain.file.dto.UploadFileResponse;
@@ -119,6 +122,18 @@ public class BoardService {
 
         LOGGER.info("[findAllBoards] : 모든 게시글 조회");
         return boardResponses;
+    }
+
+    @Transactional
+    public BoardSliceResponse findRecentBoards(int page, int size){
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Slice<BoardResponse> boardResponses = boardRepository.findByOrderByIdDesc(pageRequest)
+                .map(BoardResponse::new);
+        BoardSliceResponse boardSliceResponse = new BoardSliceResponse(boardResponses.getContent(), boardResponses.isFirst(), boardResponses.isLast());
+
+        LOGGER.info("[findRecentBoards] 최근 게시글 {} 번째 page 조회", page);
+
+        return boardSliceResponse;
     }
 
     @Transactional
