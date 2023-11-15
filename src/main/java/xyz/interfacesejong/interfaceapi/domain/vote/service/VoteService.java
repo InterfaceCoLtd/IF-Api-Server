@@ -126,16 +126,17 @@ public class VoteService {
                 .orElseThrow(() -> new EntityNotFoundException("NON EXIST SUBJECT"));
 
         OptionResponse optionResponse = OptionResponse.builder()
-                        .subject(subject.getSubject())
-                        .endDateTime(subject.getEndDateTime())
-                        .options(subject.getVoteOptions().stream()
-                                .map(voteOption -> OptionDTO.builder()
-                                        .optionId(voteOption.getId())
-                                        .option(voteOption.getOption())
-                                        .count(voteOption.getCount())
-                                        .build())
-                                .collect(Collectors.toList()))
-                        .build();
+                .subject(subject.getSubject())
+                .startDateTime(subject.getStartDateTime())
+                .endDateTime(subject.getEndDateTime())
+                .options(subject.getVoteOptions().stream()
+                        .map(voteOption -> OptionDTO.builder()
+                                .optionId(voteOption.getId())
+                                .option(voteOption.getOption())
+                                .count(voteOption.getCount())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build();
 
         LOGGER.info("[findBySubjectId] {} 조회 투표 ", id);
         return optionResponse;
