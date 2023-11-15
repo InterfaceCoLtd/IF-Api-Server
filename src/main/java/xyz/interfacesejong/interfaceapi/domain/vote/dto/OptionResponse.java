@@ -13,13 +13,17 @@ public class OptionResponse {
     private String subject;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime startDateTime;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime endDateTime;
 
     private List<OptionDTO> options;
 
     @Builder
-    public OptionResponse(String subject, List<OptionDTO> options, LocalDateTime endDateTime) {
+    public OptionResponse(String subject, List<OptionDTO> options, LocalDateTime startDateTime ,LocalDateTime endDateTime) {
         this.subject = subject;
+        this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.options = options;
     }
