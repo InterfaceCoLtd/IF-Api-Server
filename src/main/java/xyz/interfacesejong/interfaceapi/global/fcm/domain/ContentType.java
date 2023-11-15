@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ContentType {
+    NONE("미등록"),
     NOTICE("공지사항 등록"),
     SCHEDULE("일정 등록"),
     VOTE("투표 등록"),

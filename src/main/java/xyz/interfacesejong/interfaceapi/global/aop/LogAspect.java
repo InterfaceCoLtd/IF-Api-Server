@@ -13,36 +13,36 @@ import java.lang.reflect.Method;
 
 @Component
 @Aspect
-public class    LogAspect {
+public class LogAspect {
     private final static Logger LOGGER = LoggerFactory.getLogger(LogAspect.class);
 
     @Pointcut("execution(* xyz.interfacesejong.interfaceapi..*Controller.*(..))")
-    public void controller(){
+    public void controller() {
     }
 
     @Pointcut("@annotation(xyz.interfacesejong.interfaceapi.global.aop.Timer)")
-    public void timer(){
+    public void timer() {
     }
 
     @Around("controller() && timer()")
-    public Object timerAOP(ProceedingJoinPoint joinPoint) throws Throwable{
+    public Object timerAOP(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
 
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
         Object[] args = joinPoint.getArgs();
         StringBuilder params = new StringBuilder("Parameters : ");
-        if (args.length == 0){
+        if (args.length == 0) {
             params.append("null");
-        }else {
-            for (Object arg : args){
+        } else {
+            for (Object arg : args) {
                 params.append(arg.toString()).append(", ");
             }
         }
 
-        if (method.getName().equals("updateSejongStudentAuth")){
+        if (method.getName().equals("updateSejongStudentAuth")) {
             LOGGER.info("[{}] {}", method.getName(), args[0].toString());
-        }else{
+        } else {
             LOGGER.info("[{}] {}", method.getName(), params);
         }
 

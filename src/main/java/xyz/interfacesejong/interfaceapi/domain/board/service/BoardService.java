@@ -20,7 +20,9 @@ import xyz.interfacesejong.interfaceapi.domain.file.dto.UploadFileResponse;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileUtils;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
+import xyz.interfacesejong.interfaceapi.global.aop.PushNotification;
 import xyz.interfacesejong.interfaceapi.global.fcm.PushNotificationService;
+import xyz.interfacesejong.interfaceapi.global.fcm.domain.ContentType;
 
 
 import javax.persistence.EntityNotFoundException;
@@ -40,10 +42,10 @@ public class BoardService {
     private final FileService fileService;
     private final FileUtils fileUtils;
     private final ScheduleService scheduleService;
-    private final PushNotificationService notificationService;
     private final Logger LOGGER = LoggerFactory.getLogger(BoardService.class);
 
     @Transactional
+    @PushNotification(topic = ContentType.NOTICE)
     public BoardResponse save(BoardRequest boardRequest) {
         Board board = Board.builder()
                 .title(boardRequest.getTitle())
@@ -67,8 +69,6 @@ public class BoardService {
         }else {
             body = board.getContent().substring(0, 10);
         }
-
-        notificationService.sendFcmNoticeAddedNotification(board.getId(), board.getTitle(), body);
 
         LOGGER.info("[save] : 게시글 저장, 게시글 ID {}", board.getId());
         return new BoardResponse(board);
