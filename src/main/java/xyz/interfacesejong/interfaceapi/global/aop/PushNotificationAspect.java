@@ -45,8 +45,8 @@ public class PushNotificationAspect {
 
             notificationService.sendFcmNoticeAddedNotification(
                     boardResponse.getId(),
+                    "신규 공지사항 등록",
                     boardResponse.getTitle(),
-                    boardResponse.getContent().substring(0, 40),
                     topic.name()
             );
         } else if (response instanceof ScheduleResponse) {
@@ -54,8 +54,8 @@ public class PushNotificationAspect {
 
             notificationService.sendFcmScheduleAddedNotification(
                     scheduleResponse.getId(),
+                    "신규 일정 등록",
                     scheduleResponse.getTitle(),
-                    scheduleResponse.getDescription(),
                     topic.name()
             );
         } else if (response instanceof CreateResponse) {
@@ -63,8 +63,8 @@ public class PushNotificationAspect {
 
             notificationService.sendFcmVoteAddedNotification(
                     createResponse.getSubject().getId(),
+                    "신규 투표 등록",
                     createResponse.getSubject().getSubject(),
-                    "",
                     topic.name()
             );
         }

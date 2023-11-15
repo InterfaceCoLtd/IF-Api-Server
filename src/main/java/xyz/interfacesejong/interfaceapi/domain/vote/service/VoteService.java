@@ -1,6 +1,5 @@
 package xyz.interfacesejong.interfaceapi.domain.vote.service;
 
-import com.google.firebase.messaging.Notification;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,6 @@ import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
 import xyz.interfacesejong.interfaceapi.domain.vote.domain.*;
 import xyz.interfacesejong.interfaceapi.domain.vote.dto.*;
 import xyz.interfacesejong.interfaceapi.global.aop.PushNotification;
-import xyz.interfacesejong.interfaceapi.global.fcm.PushNotificationService;
 import xyz.interfacesejong.interfaceapi.global.fcm.domain.ContentType;
 
 import javax.persistence.EntityExistsException;

@@ -1,6 +1,5 @@
 package xyz.interfacesejong.interfaceapi.domain.Schedule.service;
 
-import com.google.firebase.messaging.Notification;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,10 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.Schedule;
 import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.ScheduleRepository;
-import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleResponse;
 import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleRequest;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleResponse;
 import xyz.interfacesejong.interfaceapi.global.aop.PushNotification;
-import xyz.interfacesejong.interfaceapi.global.fcm.PushNotificationService;
 import xyz.interfacesejong.interfaceapi.global.fcm.domain.ContentType;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
