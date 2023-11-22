@@ -13,6 +13,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import xyz.interfacesejong.interfaceapi.domain.subscription.service.SubscriptionService;
 import xyz.interfacesejong.interfaceapi.global.fcm.domain.ContentType;
 import xyz.interfacesejong.interfaceapi.global.fcm.domain.MessageForm;
 import xyz.interfacesejong.interfaceapi.global.fcm.domain.MessageFormRepository;
@@ -34,6 +35,7 @@ public class PushNotificationService {
 
     private final MessageStreamRepository streamRepository;
     private final MessageFormRepository formRepository;
+    private final SubscriptionService subscriptionService;
     private final Logger LOGGER = LoggerFactory.getLogger(PushNotificationService.class);
 
     private final ApnsConfig apnsConfig = ApnsConfig.builder()
@@ -113,12 +115,14 @@ public class PushNotificationService {
 
         try {
             String response = firebaseMessaging.send(message);
+            subscriptionService.increaseBadgeCountForTopic(topic);
             LOGGER.info("[sendTopicMessage] send message {}", response);
         } catch (FirebaseMessagingException exception) {
             LOGGER.info("[sendTopicMessage] exception {}", exception.getMessage());
         }
     }
 
+    //TODO 정확하게 기능을 정리해야함
     public void sendCustomNotification(MessageRequest request, Long userId, String topic, String token) {
         FirebaseMessaging firebaseMessaging = FirebaseMessaging.getInstance();
 
