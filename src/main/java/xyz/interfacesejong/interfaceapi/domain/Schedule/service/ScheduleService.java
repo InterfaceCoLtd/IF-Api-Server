@@ -1,6 +1,5 @@
 package xyz.interfacesejong.interfaceapi.domain.Schedule.service;
 
-import com.google.firebase.messaging.Notification;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.Schedule;
 import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.ScheduleRepository;
-import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleResponse;
 import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleRequest;
-import xyz.interfacesejong.interfaceapi.global.fcm.PushNotificationService;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleResponse;
+import xyz.interfacesejong.interfaceapi.global.aop.PushNotification;
+import xyz.interfacesejong.interfaceapi.global.fcm.domain.ContentType;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
 import javax.persistence.EntityNotFoundException;
@@ -26,15 +26,13 @@ import java.util.stream.Collectors;
 public class ScheduleService extends BaseTime {
 
     private final ScheduleRepository scheduleRepository;
-
-    private final PushNotificationService notificationService;
-
     private final Logger LOGGER = LoggerFactory.getLogger(ScheduleService.class);
 
     /*
     * 일정 생성
     * */
     @Transactional
+    @PushNotification(topic = ContentType.SCHEDULE)
     public Schedule save(ScheduleRequest scheduleRequest){
         if (!scheduleRequest.getStartDate().isBefore(scheduleRequest.getEndDate())){
             LOGGER.info("[save] 잘못된 시간 순서");
@@ -58,8 +56,6 @@ public class ScheduleService extends BaseTime {
                     .allDay(scheduleRequest.isAllDay())
                     .type(scheduleRequest.getType()).build());
         }
-
-        notificationService.sendFcmScheduleAddedNotification(schedule.getId(), schedule.getTitle(), schedule.getDescription());
 
         LOGGER.info("[save] 일정 저장 완료");
         return schedule;

@@ -226,7 +226,9 @@ public class UserService {
                     sejongStudentAuth.getUserAuthInfos(sejongStudentAuthRequest.getSejongPortalId(), sejongStudentAuthRequest.getSejongPortalPassword())
             );
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException("FAIL PARSE ERROR");
+        } catch (IllegalArgumentException exception){
+            throw new IllegalArgumentException("INVALID ARGUMENT");
         }
 
         user.changeAuthLevel(AuthLevelType.STUDENT_VERIFIED);
