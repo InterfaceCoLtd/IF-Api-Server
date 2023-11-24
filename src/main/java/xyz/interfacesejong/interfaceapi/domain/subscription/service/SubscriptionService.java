@@ -27,7 +27,6 @@ public class SubscriptionService {
      * User 회원 가입시 후속으로 호출
      * */
     @Transactional
-    @Async
     public void createSubscriptionRecord(User user){
         Subscription subscription = new Subscription(user);
         subscriptionRepository.save(subscription);
