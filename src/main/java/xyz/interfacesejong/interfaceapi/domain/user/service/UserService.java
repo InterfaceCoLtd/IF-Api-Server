@@ -66,7 +66,7 @@ public class UserService {
                 });
 
         user.resetData();
-        user.reRegisterPassword(bCryptPasswordEncoder.encode("0000000000000000"));
+        user.resetPassword(bCryptPasswordEncoder.encode("0000000000000000"));
 
         userRepository.save(user);
     }
@@ -82,17 +82,17 @@ public class UserService {
     }
 
     @Transactional
-    public User reRegisterPassword(Long id, UserNewPasswordRequest newPasswordRequest){
+    public User resetPassword(Long id, UserNewPasswordRequest newPasswordRequest){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
-                    LOGGER.info("[reRegisterPassword] 등록 되지 않은 유저");
+                    LOGGER.info("[resetPassword] 등록 되지 않은 유저");
                     return new EntityNotFoundException("NON EXISTS USER");
                 });
 
-        user.reRegisterPassword(bCryptPasswordEncoder.encode(newPasswordRequest.getNewPassword()));
+        user.resetPassword(bCryptPasswordEncoder.encode(newPasswordRequest.getNewPassword()));
         user = userRepository.save(user);
 
-        LOGGER.info("[reRegisterPassword] {} 신규 비밀번호 등록", id);
+        LOGGER.info("[resetPassword] {} 신규 비밀번호 등록", id);
         return user;
     }
     @Transactional
@@ -171,25 +171,6 @@ public class UserService {
 
         user = userRepository.save(user);
         LOGGER.info("[updateDiscordId] discord 계정 업데이트 성공");
-        return user;
-    }
-    @Transactional
-    public User updateFcmToken(Long id, UserInfoUpdateRequest infoUpdateRequest){
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> {
-                    LOGGER.info("[updateFcmToken] 등록 되지 않은 유저");
-                    return new EntityNotFoundException("NON EXISTS USER");
-                });
-
-        if (infoUpdateRequest.getFcmToken() == null){
-            LOGGER.info("[updateFcmToken] null 인자 입력");
-            throw new IllegalArgumentException("MISSING FIELD");
-        }else {
-            user.changeFcmToken(infoUpdateRequest.getFcmToken());
-        }
-
-        user = userRepository.save(user);
-        LOGGER.info("[updateFcmToken] FcmToken 업데이트 성공");
         return user;
     }
 

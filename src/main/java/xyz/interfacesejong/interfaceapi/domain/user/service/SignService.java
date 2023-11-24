@@ -3,6 +3,7 @@ package xyz.interfacesejong.interfaceapi.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,9 @@ import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserSignRequest;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.UserSignResponse;
 import xyz.interfacesejong.interfaceapi.global.email.EmailSender;
-import xyz.interfacesejong.interfaceapi.global.email.dto.AuthEmailResponse;
 import xyz.interfacesejong.interfaceapi.global.jwt.TokenProvider;
 
 import javax.mail.MessagingException;
-import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -33,13 +32,15 @@ public class SignService {
     private final Logger LOGGER = LoggerFactory.getLogger(SignService.class);
 
 
-    public AuthEmailResponse sendVerifyMail(UserSignResponse response){
+    @Transactional
+    @Async
+    public void sendVerifyMail(UserSignResponse response){
         String verifyToken = tokenProvider.generateToken(response);
         Map<String, Object> variables = new HashMap<>();
         variables.put("authCode", verifyToken);
         try {
-            return emailSender.sendMessage(response.getEmail(), variables, "verifyEmailTemplate");
-        } catch (MessagingException e) {
+            emailSender.sendMessage(response.getEmail(), variables, "verifyEmailTemplate");
+        } catch (MessagingException e) { //TODO 예외 처리 수정
             e.printStackTrace();
             throw new RuntimeException(e);
         }
