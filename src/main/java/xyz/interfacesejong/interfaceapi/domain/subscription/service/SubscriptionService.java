@@ -182,4 +182,9 @@ public class SubscriptionService {
         LOGGER.info("[getBadgeCountByUserId] 유저{} 의 구독 정보 확인", id);
         return response;
     }
+
+    @Transactional
+    public List<Long> findUserIdsByTopic(String topic){
+        return subscriptionRepository.findIdsByTopic(topic);
+    }
 }
