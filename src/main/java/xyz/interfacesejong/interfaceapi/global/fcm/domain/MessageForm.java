@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -25,6 +22,7 @@ public class MessageForm extends BaseTime {
 
     private String topic;
 
+    @Column(columnDefinition = "VARCHAR(255)")
     private String contentType;
 
     private Long contentId;
