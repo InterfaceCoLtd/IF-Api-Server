@@ -5,7 +5,6 @@ import lombok.Data;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.AuthLevelType;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 
-import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
@@ -69,6 +68,5 @@ public class UserInfoResponse {
         this.grade = user.getGrade();
         this.enrolled = user.getEnrolled();
         this.authLevel = user.getAuthLevel();
-        this.fcmToken = user.getFcmToken();
     }
 }

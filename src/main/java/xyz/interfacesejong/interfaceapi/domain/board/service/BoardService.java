@@ -1,6 +1,5 @@
 package xyz.interfacesejong.interfaceapi.domain.board.service;
 
-import com.google.firebase.messaging.Notification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -10,7 +9,10 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.interfacesejong.interfaceapi.domain.Schedule.service.ScheduleService;
-import xyz.interfacesejong.interfaceapi.domain.board.domain.*;
+import xyz.interfacesejong.interfaceapi.domain.board.domain.Board;
+import xyz.interfacesejong.interfaceapi.domain.board.domain.BoardRepository;
+import xyz.interfacesejong.interfaceapi.domain.board.domain.Comment;
+import xyz.interfacesejong.interfaceapi.domain.board.domain.CommentRepository;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardRequest;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardResponse;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardSliceResponse;
@@ -20,12 +22,15 @@ import xyz.interfacesejong.interfaceapi.domain.file.dto.UploadFileResponse;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileService;
 import xyz.interfacesejong.interfaceapi.domain.file.service.FileUtils;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.UserRepository;
-import xyz.interfacesejong.interfaceapi.global.fcm.PushNotificationService;
-
+import xyz.interfacesejong.interfaceapi.global.aop.PushNotification;
+import xyz.interfacesejong.interfaceapi.global.fcm.domain.ContentType;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -40,10 +45,10 @@ public class BoardService {
     private final FileService fileService;
     private final FileUtils fileUtils;
     private final ScheduleService scheduleService;
-    private final PushNotificationService notificationService;
     private final Logger LOGGER = LoggerFactory.getLogger(BoardService.class);
 
     @Transactional
+    @PushNotification(topic = ContentType.NOTICE)
     public BoardResponse save(BoardRequest boardRequest) {
         Board board = Board.builder()
                 .title(boardRequest.getTitle())
@@ -59,16 +64,6 @@ public class BoardService {
         if (boardRequest.getScheduleId() != null){
             scheduleService.updateBoardId(board.getScheduleId(), board.getId());
         }
-
-        //fcm 메세지 저장
-        String body;
-        if (board.getContent().length() <= 10){
-            body = board.getContent();
-        }else {
-            body = board.getContent().substring(0, 10);
-        }
-
-        notificationService.sendFcmNoticeAddedNotification(board.getId(), board.getTitle(), body);
 
         LOGGER.info("[save] : 게시글 저장, 게시글 ID {}", board.getId());
         return new BoardResponse(board);

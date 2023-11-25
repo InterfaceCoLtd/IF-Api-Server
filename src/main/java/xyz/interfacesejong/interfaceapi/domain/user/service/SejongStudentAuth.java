@@ -19,15 +19,16 @@ public class SejongStudentAuth {
 
     private final Logger LOGGER = LoggerFactory.getLogger(SejongStudentAuth.class);
 
-    public SejongStudentAuthResponse getUserAuthInfos(String studentId, String password) throws IOException {
+    public SejongStudentAuthResponse getUserAuthInfos(String studentId, String password) throws IOException, IllegalArgumentException {
 
         String jsessionId = setJsessionId();
         sendPostToSejong(studentId, password, jsessionId);
 
+
         return sendGetToSejong(jsessionId);
     }
 
-    private String setJsessionId() throws IOException {
+    private String setJsessionId() throws IOException, IllegalArgumentException {
 
         OkHttpClient client = new OkHttpClient().newBuilder().build();
 
@@ -68,7 +69,7 @@ public class SejongStudentAuth {
         return null;
     }
 
-    private void sendPostToSejong(String studentId, String password, String jsessionId) throws IOException{
+    private void sendPostToSejong(String studentId, String password, String jsessionId) throws IOException, IllegalArgumentException{
 
         OkHttpClient client = new OkHttpClient().newBuilder().build();
 
@@ -88,7 +89,7 @@ public class SejongStudentAuth {
 
     }
 
-    private SejongStudentAuthResponse sendGetToSejong(String jsessionId) throws IOException {
+    private SejongStudentAuthResponse sendGetToSejong(String jsessionId) throws IOException, IllegalArgumentException {
 
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
@@ -119,12 +120,19 @@ public class SejongStudentAuth {
             dataList.add(element.text());
         }
 
-        return SejongStudentAuthResponse.builder()
-                .major(dataList.get(0))
-                .studentId(dataList.get(1))
-                .studentName(dataList.get(2))
-                .grade(dataList.get(3))
-                .enrolled(dataList.get(4))
-                .build();
+        try{
+            SejongStudentAuthResponse authResponse = SejongStudentAuthResponse.builder()
+                    .major(dataList.get(0))
+                    .studentId(dataList.get(1))
+                    .studentName(dataList.get(2))
+                    .grade(dataList.get(3))
+                    .enrolled(dataList.get(4))
+                    .build();
+
+            return authResponse;
+        }catch (RuntimeException exception){
+            throw new IllegalArgumentException("INVALID ARGUMENT");
+        }
+
     }
 }

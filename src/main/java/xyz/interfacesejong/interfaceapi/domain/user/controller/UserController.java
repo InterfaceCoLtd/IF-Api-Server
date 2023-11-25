@@ -9,18 +9,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.interfacesejong.interfaceapi.domain.user.domain.AuthLevelType;
+import xyz.interfacesejong.interfaceapi.domain.subscription.service.SubscriptionService;
 import xyz.interfacesejong.interfaceapi.domain.user.domain.User;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.*;
 import xyz.interfacesejong.interfaceapi.domain.user.service.SignService;
 import xyz.interfacesejong.interfaceapi.domain.user.service.UserService;
 import xyz.interfacesejong.interfaceapi.global.aop.Timer;
-import xyz.interfacesejong.interfaceapi.global.email.dto.AuthEmailResponse;
 import xyz.interfacesejong.interfaceapi.global.jwt.TokenProvider;
 import xyz.interfacesejong.interfaceapi.global.util.BaseResponse;
 
-import javax.persistence.EntityNotFoundException;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -32,6 +29,7 @@ public class UserController {
     private final UserService userService;
     private final SignService signService;
     private final TokenProvider tokenProvider;
+    private final SubscriptionService subscriptionService;
 
     @Timer
     @PostMapping()
@@ -39,6 +37,11 @@ public class UserController {
     public ResponseEntity<UserSignResponse> createUser(@RequestBody UserSignRequest request){
         User user = userService.saveUser(request);
         UserSignResponse response = new UserSignResponse(user);
+
+        // 구독 레코드 생성
+        subscriptionService.createSubscriptionRecord(user);
+
+        // 인증 메일 발송
         signService.sendVerifyMail(response);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -102,7 +105,7 @@ public class UserController {
     @PutMapping("user/{id}/password")
     @Operation(summary = "비밀번호 변경", description = "해당 id 유저의 비밀번호를 변경한다.")
     public ResponseEntity<User> generateNewPassword(@PathVariable Long id, @RequestBody UserNewPasswordRequest newPasswordRequest){
-        return new ResponseEntity<>(userService.reRegisterPassword(id, newPasswordRequest), HttpStatus.OK);
+        return new ResponseEntity<>(userService.resetPassword(id, newPasswordRequest), HttpStatus.OK);
     }
 
     //기수
@@ -143,13 +146,6 @@ public class UserController {
     @Operation(summary = "기기정보 변경", description = "해당 id 유저의 device 아이디를 변경한다. device 아이디는 UUID 형식이다.")
     public ResponseEntity<User> updateDeviceId(@PathVariable Long id, @RequestBody UserInfoUpdateRequest infoUpdateRequest){
         return new ResponseEntity<>(userService.updateDeviceId(id, infoUpdateRequest), HttpStatus.OK);
-    }
-    // fcm 토큰 정보
-    @Timer
-    @PutMapping("user/{id}/fcm-token")
-    @Operation(summary = "fcmToken 변경", description = "해당 id 유저의 fcm token을 변경한다.")
-    public ResponseEntity<User> updateFcmToken(@PathVariable Long id, @RequestBody UserInfoUpdateRequest infoUpdateRequest){
-        return new ResponseEntity<>(userService.updateFcmToken(id, infoUpdateRequest), HttpStatus.OK);
     }
 
     // 학생정보인증

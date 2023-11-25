@@ -3,15 +3,14 @@ package xyz.interfacesejong.interfaceapi.global.fcm.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MessageStream extends BaseTime {
     @Id
@@ -20,6 +19,11 @@ public class MessageStream extends BaseTime {
 
     private Long userId;
 
-    private Long messageId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private MessageForm form;
 
+    public MessageStream(Long userId, MessageForm form) {
+        this.userId = userId;
+        this.form = form;
+    }
 }

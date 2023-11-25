@@ -1,6 +1,7 @@
 package xyz.interfacesejong.interfaceapi.domain.user.domain;
 
 import lombok.*;
+import xyz.interfacesejong.interfaceapi.domain.subscription.domain.Subscription;
 import xyz.interfacesejong.interfaceapi.domain.user.dto.SejongStudentAuthResponse;
 import xyz.interfacesejong.interfaceapi.global.util.BaseTime;
 
@@ -44,14 +45,14 @@ public class User extends BaseTime {
 
     private Boolean enrolled; //인증정보 val
 
-    @Column(columnDefinition = "VARCHAR(255)")
-    private String fcmToken;
-
     @Enumerated(EnumType.STRING)
     private AuthLevelType authLevel;
 
     @Column(columnDefinition = "BINARY(16)")
     private UUID deviceId;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Subscription subscription;
 
     @Builder
     public User(Long id, String email, String password, AuthLevelType authLevel){
@@ -89,7 +90,7 @@ public class User extends BaseTime {
         this.authLevel = authLevel;
     }
 
-    public void reRegisterPassword(String password){
+    public void resetPassword(String password){
         this.password = password;
     }
 
@@ -97,14 +98,9 @@ public class User extends BaseTime {
         this.deviceId = deviceId;
     }
 
-    public void changeFcmToken(String fcmToken){
-        this.fcmToken = fcmToken;
-    }
-
     public void resetData(){
         this.authLevel = AuthLevelType.DELETE_ACCOUNT;
         this.deviceId = null;
-        this.fcmToken = null;
         this.email = null;
         this.generation = null;
         this.phoneNumber = null;

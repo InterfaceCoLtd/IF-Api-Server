@@ -25,12 +25,12 @@ public class MessageForm extends BaseTime {
 
     private String topic;
 
-    private ContentType contentType;
+    private String contentType;
 
     private Long contentId;
 
     @Builder
-    public MessageForm(String title, String body, String topic, ContentType contentType, Long contentId) {
+    public MessageForm(String title, String body, String topic, String contentType, Long contentId) {
         this.title = title;
         this.body = body;
         this.topic = topic;
