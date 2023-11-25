@@ -90,7 +90,7 @@ public class SubscriptionController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("{userId}/Topic")
+    @GetMapping("{userId}/topic")
     @Timer
     @Operation(summary = "Topic 구독 상태 반환",
             description = "해당 id를 가지는 유저의 구독중인 Topic 정보를 반환한다",
@@ -99,7 +99,7 @@ public class SubscriptionController {
                     @ApiResponse(responseCode = "404", description = "존재 하지 않는 userId",
                             content = @Content(schema = @Schema(implementation = BaseExceptionResponse.class)))
             })
-    private ResponseEntity<SubscriptionResponse> getSubscriptionTopic(@PathVariable Long userId){
+    public ResponseEntity<SubscriptionResponse> getSubscriptionTopic(@PathVariable Long userId){
         SubscriptionResponse response = subscriptionService.getSubscriptionByUserId(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
