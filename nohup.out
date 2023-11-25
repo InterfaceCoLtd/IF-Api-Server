@@ -1,0 +1,462 @@
+
+[2m2023-11-11 02:50:48.961[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [signIn] Parameters : UserSignRequest(email=interfaceAOS@sju.ac.kr, password=interface518, deviceId=null), 
+[2m2023-11-11 02:50:49.061[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [signIn] interfaceAOS@sju.ac.kr 로그인 성공
+[2m2023-11-11 02:50:49.078[0;39m [31mERROR[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mo.a.c.c.C.[.[.[/].[dispatcherServlet]   [0;39m [2m:[0;39m Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException] with root cause
+
+java.lang.NullPointerException: null
+	at xyz.interfacesejong.interfaceapi.global.jwt.TokenProvider.generateToken(TokenProvider.java:40) ~[classes!/:na]
+	at xyz.interfacesejong.interfaceapi.domain.user.controller.UserController.signIn(UserController.java:45) ~[classes!/:na]
+	at xyz.interfacesejong.interfaceapi.domain.user.controller.UserController$$FastClassBySpringCGLIB$$5393578d.invoke(<generated>) ~[classes!/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218) ~[spring-core-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:793) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at xyz.interfacesejong.interfaceapi.global.aop.LogAspect.timerAOP(LogAspect.java:49) ~[classes!/:na]
+	at jdk.internal.reflect.GeneratedMethodAccessor147.invoke(Unknown Source) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:175) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at xyz.interfacesejong.interfaceapi.domain.user.controller.UserController$$EnhancerBySpringCGLIB$$e8fd1e14.signIn(<generated>) ~[classes!/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1072) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:965) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:555) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.servlet.resource.ResourceUrlEncodingFilter.doFilter(ResourceUrlEncodingFilter.java:67) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:214) ~[spring-security-web-5.7.10.jar!/:5.7.10]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:186) ~[spring-security-web-5.7.10.jar!/:5.7.10]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1790) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at java.base/java.lang.Thread.run(Thread.java:829) ~[na:na]
+
+[2m2023-11-11 02:50:51.290[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [signIn] Parameters : UserSignRequest(email=interfaceAOS@sju.ac.kr, password=interface518, deviceId=null), 
+[2m2023-11-11 02:50:51.397[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [signIn] interfaceAOS@sju.ac.kr 로그인 성공
+[2m2023-11-11 02:50:51.400[0;39m [31mERROR[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mo.a.c.c.C.[.[.[/].[dispatcherServlet]   [0;39m [2m:[0;39m Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException] with root cause
+
+java.lang.NullPointerException: null
+	at xyz.interfacesejong.interfaceapi.global.jwt.TokenProvider.generateToken(TokenProvider.java:40) ~[classes!/:na]
+	at xyz.interfacesejong.interfaceapi.domain.user.controller.UserController.signIn(UserController.java:45) ~[classes!/:na]
+	at xyz.interfacesejong.interfaceapi.domain.user.controller.UserController$$FastClassBySpringCGLIB$$5393578d.invoke(<generated>) ~[classes!/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218) ~[spring-core-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:793) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at xyz.interfacesejong.interfaceapi.global.aop.LogAspect.timerAOP(LogAspect.java:49) ~[classes!/:na]
+	at jdk.internal.reflect.GeneratedMethodAccessor147.invoke(Unknown Source) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:175) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at xyz.interfacesejong.interfaceapi.domain.user.controller.UserController$$EnhancerBySpringCGLIB$$e8fd1e14.signIn(<generated>) ~[classes!/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1072) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:965) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:555) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.servlet.resource.ResourceUrlEncodingFilter.doFilter(ResourceUrlEncodingFilter.java:67) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:214) ~[spring-security-web-5.7.10.jar!/:5.7.10]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:186) ~[spring-security-web-5.7.10.jar!/:5.7.10]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1790) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at java.base/java.lang.Thread.run(Thread.java:829) ~[na:na]
+
+[2m2023-11-11 02:51:31.442[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSubjects] Parameters : null
+[2m2023-11-11 02:51:31.461[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.i.domain.vote.service.VoteService   [0;39m [2m:[0;39m [findAllSubjects] 모든 투표 조회
+[2m2023-11-11 02:51:31.466[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSubjects] executed time 24 ms
+[2m2023-11-11 02:51:55.469[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [getAllBoards] Parameters : null
+[2m2023-11-11 02:51:55.492[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.i.domain.board.service.BoardService [0;39m [2m:[0;39m [findAllBoards] : 모든 게시글 조회
+[2m2023-11-11 02:51:55.494[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [getAllBoards] executed time 25 ms
+[2m2023-11-11 02:52:06.910[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findById] Parameters : 5, 
+[2m2023-11-11 02:52:06.918[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.i.domain.board.service.BoardService [0;39m [2m:[0;39m [findById] : id로 글 조회, 게시글 id 5
+[2m2023-11-11 02:52:06.919[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findById] executed time 9 ms
+[2m2023-11-11 02:52:46.973[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [getAllBoards] Parameters : null
+[2m2023-11-11 02:52:46.992[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.i.domain.board.service.BoardService [0;39m [2m:[0;39m [findAllBoards] : 모든 게시글 조회
+[2m2023-11-11 02:52:46.993[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [getAllBoards] executed time 20 ms
+[2m2023-11-11 02:53:10.286[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findById] Parameters : 5, 
+[2m2023-11-11 02:53:10.292[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.i.domain.board.service.BoardService [0;39m [2m:[0;39m [findById] : id로 글 조회, 게시글 id 5
+[2m2023-11-11 02:53:10.295[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findById] executed time 9 ms
+[2m2023-11-11 02:53:22.938[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findById] Parameters : 5, 
+[2m2023-11-11 02:53:22.946[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.i.domain.board.service.BoardService [0;39m [2m:[0;39m [findById] : id로 글 조회, 게시글 id 5
+[2m2023-11-11 02:53:22.949[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findById] executed time 11 ms
+[2m2023-11-11 02:55:00.646[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSubjects] Parameters : null
+[2m2023-11-11 02:55:00.658[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.i.domain.vote.service.VoteService   [0;39m [2m:[0;39m [findAllSubjects] 모든 투표 조회
+[2m2023-11-11 02:55:00.663[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSubjects] executed time 17 ms
+[2m2023-11-11 02:55:05.519[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSubjects] Parameters : null
+[2m2023-11-11 02:55:05.540[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.i.domain.vote.service.VoteService   [0;39m [2m:[0;39m [findAllSubjects] 모든 투표 조회
+[2m2023-11-11 02:55:05.542[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSubjects] executed time 23 ms
+[2m2023-11-11 02:55:23.386[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSubjects] Parameters : null
+[2m2023-11-11 02:55:23.394[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.i.domain.vote.service.VoteService   [0;39m [2m:[0;39m [findAllSubjects] 모든 투표 조회
+[2m2023-11-11 02:55:23.395[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSubjects] executed time 9 ms
+[2m2023-11-11 02:56:07.190[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 02:56:07.196[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 02:56:07.196[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzg5NjcsImV4cCI6MTY5OTY0MjU2N30.bt2Gy2AUVllzSxwX-hkRWKuEjVBNjtRq_yiCbOFkyk4
+[2m2023-11-11 02:56:07.196[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 6 ms
+[2m2023-11-11 02:56:07.273[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 02:56:07.278[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 02:56:07.279[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzg5NjcsImV4cCI6MTY5OTY0MjU2N30.bt2Gy2AUVllzSxwX-hkRWKuEjVBNjtRq_yiCbOFkyk4
+[2m2023-11-11 02:56:07.280[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 7 ms
+[2m2023-11-11 02:57:08.704[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllUsers] Parameters : null
+[2m2023-11-11 02:57:08.714[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.i.domain.user.service.UserService   [0;39m [2m:[0;39m [findAllUsers] 모든 유저 조회
+[2m2023-11-11 02:57:08.715[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllUsers] executed time 11 ms
+[2m2023-11-11 02:57:35.143[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [signIn] Parameters : UserSignRequest(email=interface@sju.ac.kr, password=interface518!, deviceId=null), 
+[2m2023-11-11 02:57:35.246[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [signIn] interface@sju.ac.kr 로그인 성공
+[2m2023-11-11 02:57:35.264[0;39m [31mERROR[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mo.a.c.c.C.[.[.[/].[dispatcherServlet]   [0;39m [2m:[0;39m Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException] with root cause
+
+java.lang.NullPointerException: null
+	at xyz.interfacesejong.interfaceapi.global.jwt.TokenProvider.generateToken(TokenProvider.java:40) ~[classes!/:na]
+	at xyz.interfacesejong.interfaceapi.domain.user.controller.UserController.signIn(UserController.java:45) ~[classes!/:na]
+	at xyz.interfacesejong.interfaceapi.domain.user.controller.UserController$$FastClassBySpringCGLIB$$5393578d.invoke(<generated>) ~[classes!/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218) ~[spring-core-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:793) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at xyz.interfacesejong.interfaceapi.global.aop.LogAspect.timerAOP(LogAspect.java:49) ~[classes!/:na]
+	at jdk.internal.reflect.GeneratedMethodAccessor147.invoke(Unknown Source) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:175) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708) ~[spring-aop-5.3.29.jar!/:5.3.29]
+	at xyz.interfacesejong.interfaceapi.domain.user.controller.UserController$$EnhancerBySpringCGLIB$$e8fd1e14.signIn(<generated>) ~[classes!/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:895) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1072) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:965) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:555) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.servlet.resource.ResourceUrlEncodingFilter.doFilter(ResourceUrlEncodingFilter.java:67) ~[spring-webmvc-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:214) ~[spring-security-web-5.7.10.jar!/:5.7.10]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:186) ~[spring-security-web-5.7.10.jar!/:5.7.10]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:354) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:267) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar!/:5.3.29]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1790) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at java.base/java.lang.Thread.run(Thread.java:829) ~[na:na]
+
+[2m2023-11-11 02:58:15.282[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSubjects] Parameters : null
+[2m2023-11-11 02:58:15.293[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.i.domain.vote.service.VoteService   [0;39m [2m:[0;39m [findAllSubjects] 모든 투표 조회
+[2m2023-11-11 02:58:15.296[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSubjects] executed time 14 ms
+[2m2023-11-11 02:58:55.189[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSubjects] Parameters : null
+[2m2023-11-11 02:58:55.198[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.i.domain.vote.service.VoteService   [0;39m [2m:[0;39m [findAllSubjects] 모든 투표 조회
+[2m2023-11-11 02:58:55.199[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSubjects] executed time 10 ms
+[2m2023-11-11 03:02:01.292[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [signIn] Parameters : UserSignRequest(email=string, password=string, deviceId=3fa85f64-5717-4562-b3fc-2c963f66afa6), 
+[2m2023-11-11 03:02:01.428[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [signIn] string 로그인 성공
+[2m2023-11-11 03:02:01.433[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJNRU1CRVJfVkVSSUZJRUQiLCJlbWFpbCI6InN0cmluZyIsInVzZXJJZCI6IjYiLCJhdWQiOiIzZmE4NWY2NC01NzE3LTQ1NjItYjNmYy0yYzk2M2Y2NmFmYTYiLCJpYXQiOjE2OTk2MzkzMjEsImV4cCI6MTY5OTY0MjkyMX0.OmsmoaaJvzZaGxRokIl6KCn-Vdrug4VwwpXon7nam-s
+[2m2023-11-11 03:02:01.433[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [signIn] executed time 141 ms
+[2m2023-11-11 03:03:35.461[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:03:35.469[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:03:35.471[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk0MTUsImV4cCI6MTY5OTY0MzAxNX0.NR79C24dFLne5Jy23MyMkYVA5ZOflBrPG7JAw7zxiXw
+[2m2023-11-11 03:03:35.471[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 10 ms
+[2m2023-11-11 03:03:35.542[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:03:35.544[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:03:35.545[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk0MTUsImV4cCI6MTY5OTY0MzAxNX0.NR79C24dFLne5Jy23MyMkYVA5ZOflBrPG7JAw7zxiXw
+[2m2023-11-11 03:03:35.545[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 3 ms
+[2m2023-11-11 03:05:05.590[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:05:05.602[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:05:05.606[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk1MDUsImV4cCI6MTY5OTY0MzEwNX0.WJJf_Z0OLS-0dTnywTzP7QyES_lq2X6yzpxlziHjstY
+[2m2023-11-11 03:05:05.606[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 17 ms
+[2m2023-11-11 03:05:05.671[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:05:05.674[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:05:05.674[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk1MDUsImV4cCI6MTY5OTY0MzEwNX0.WJJf_Z0OLS-0dTnywTzP7QyES_lq2X6yzpxlziHjstY
+[2m2023-11-11 03:05:05.675[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 4 ms
+[2m2023-11-11 03:08:40.075[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [getAllUploadFiles] Parameters : 5, 
+[2m2023-11-11 03:08:40.120[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [getAllUploadFiles] executed time 45 ms
+[2m2023-11-11 03:08:40.699[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:08:40.703[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:08:40.708[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk3MjAsImV4cCI6MTY5OTY0MzMyMH0.r4df0x-zREEGkj1xyN4pCHX-t_FlKVlyqUoX4AKzLq8
+[2m2023-11-11 03:08:40.708[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 9 ms
+[2m2023-11-11 03:08:40.769[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:08:40.771[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:08:40.772[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk3MjAsImV4cCI6MTY5OTY0MzMyMH0.r4df0x-zREEGkj1xyN4pCHX-t_FlKVlyqUoX4AKzLq8
+[2m2023-11-11 03:08:40.772[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 3 ms
+[2m2023-11-11 03:08:41.386[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:08:41.391[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:08:41.391[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk3MjEsImV4cCI6MTY5OTY0MzMyMX0.VqgK9rjHKAVsom7A7vCweAto5YfDcKeQiilwTPVHKpc
+[2m2023-11-11 03:08:41.392[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 6 ms
+[2m2023-11-11 03:08:41.394[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:08:41.398[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:08:41.399[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:08:41.399[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk3MjEsImV4cCI6MTY5OTY0MzMyMX0.VqgK9rjHKAVsom7A7vCweAto5YfDcKeQiilwTPVHKpc
+[2m2023-11-11 03:08:41.406[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 12 ms
+[2m2023-11-11 03:08:41.409[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:08:41.411[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:08:41.411[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk3MjEsImV4cCI6MTY5OTY0MzMyMX0.VqgK9rjHKAVsom7A7vCweAto5YfDcKeQiilwTPVHKpc
+[2m2023-11-11 03:08:41.411[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 2 ms
+[2m2023-11-11 03:08:41.413[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findByMonth] Parameters : 11, 
+[2m2023-11-11 03:08:41.415[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.i.d.S.service.ScheduleService       [0;39m [2m:[0;39m [findByMonth] 11월 일정 조회
+[2m2023-11-11 03:08:41.415[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:08:41.416[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk3MjEsImV4cCI6MTY5OTY0MzMyMX0.VqgK9rjHKAVsom7A7vCweAto5YfDcKeQiilwTPVHKpc
+[2m2023-11-11 03:08:41.416[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 17 ms
+[2m2023-11-11 03:08:41.417[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findByMonth] executed time 4 ms
+[2m2023-11-11 03:08:41.430[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSchedules] Parameters : null
+[2m2023-11-11 03:08:41.431[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [getAllBoards] Parameters : null
+[2m2023-11-11 03:08:41.431[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findSubjectsByStatus] Parameters : ONGOING, 
+[2m2023-11-11 03:08:41.434[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.i.d.S.service.ScheduleService       [0;39m [2m:[0;39m [findScheduleAll] 모든 일정 조회
+[2m2023-11-11 03:08:41.443[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSchedules] executed time 13 ms
+[2m2023-11-11 03:08:41.445[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.i.domain.vote.service.VoteService   [0;39m [2m:[0;39m [findOngoingSubjects] 활성된 투표 조회
+[2m2023-11-11 03:08:41.446[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findSubjectsByStatus] executed time 15 ms
+[2m2023-11-11 03:08:41.454[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.i.domain.board.service.BoardService [0;39m [2m:[0;39m [findAllBoards] : 모든 게시글 조회
+[2m2023-11-11 03:08:41.455[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [getAllBoards] executed time 24 ms
+[2m2023-11-11 03:09:34.873[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:09:34.878[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:09:34.882[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk3NzQsImV4cCI6MTY5OTY0MzM3NH0.wlIhJCJcJxns5VOEwmaVeHVGjw7Bbv-7_c6q4wwemQM
+[2m2023-11-11 03:09:34.883[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 10 ms
+[2m2023-11-11 03:09:34.954[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:09:34.957[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:09:34.957[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk3NzQsImV4cCI6MTY5OTY0MzM3NH0.wlIhJCJcJxns5VOEwmaVeHVGjw7Bbv-7_c6q4wwemQM
+[2m2023-11-11 03:09:34.958[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 4 ms
+[2m2023-11-11 03:09:35.239[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:09:35.241[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:09:35.244[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:09:35.245[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:09:35.247[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:09:35.253[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk3NzUsImV4cCI6MTY5OTY0MzM3NX0.4wFRlUjy0boEArUuii1okIal7O8flokjCUS1k9DVuL0
+[2m2023-11-11 03:09:35.254[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 10 ms
+[2m2023-11-11 03:09:35.253[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk3NzUsImV4cCI6MTY5OTY0MzM3NX0.4wFRlUjy0boEArUuii1okIal7O8flokjCUS1k9DVuL0
+[2m2023-11-11 03:09:35.259[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 20 ms
+[2m2023-11-11 03:09:35.258[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:09:35.260[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk3NzUsImV4cCI6MTY5OTY0MzM3NX0.4wFRlUjy0boEArUuii1okIal7O8flokjCUS1k9DVuL0
+[2m2023-11-11 03:09:35.260[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 15 ms
+[2m2023-11-11 03:09:35.262[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:09:35.264[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:09:35.264[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk3NzUsImV4cCI6MTY5OTY0MzM3NX0.4wFRlUjy0boEArUuii1okIal7O8flokjCUS1k9DVuL0
+[2m2023-11-11 03:09:35.264[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 2 ms
+[2m2023-11-11 03:09:35.273[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSchedules] Parameters : null
+[2m2023-11-11 03:09:35.277[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [getAllBoards] Parameters : null
+[2m2023-11-11 03:09:35.277[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findByMonth] Parameters : 11, 
+[2m2023-11-11 03:09:35.269[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findSubjectsByStatus] Parameters : ONGOING, 
+[2m2023-11-11 03:09:35.287[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.i.d.S.service.ScheduleService       [0;39m [2m:[0;39m [findScheduleAll] 모든 일정 조회
+[2m2023-11-11 03:09:35.290[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.i.domain.vote.service.VoteService   [0;39m [2m:[0;39m [findOngoingSubjects] 활성된 투표 조회
+[2m2023-11-11 03:09:35.291[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.i.d.S.service.ScheduleService       [0;39m [2m:[0;39m [findByMonth] 11월 일정 조회
+[2m2023-11-11 03:09:35.292[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSchedules] executed time 19 ms
+[2m2023-11-11 03:09:35.293[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findSubjectsByStatus] executed time 24 ms
+[2m2023-11-11 03:09:35.294[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findByMonth] executed time 17 ms
+[2m2023-11-11 03:09:35.301[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.i.domain.board.service.BoardService [0;39m [2m:[0;39m [findAllBoards] : 모든 게시글 조회
+[2m2023-11-11 03:09:35.302[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [getAllBoards] executed time 25 ms
+[2m2023-11-11 03:10:23.675[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:10:23.683[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:10:23.691[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk4MjMsImV4cCI6MTY5OTY0MzQyM30.V8zcxHqhQExFuzfNdJMbhM7YGYcDsw1nYKHXMkdnFfw
+[2m2023-11-11 03:10:23.691[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 16 ms
+[2m2023-11-11 03:10:23.762[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:10:23.769[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:10:23.770[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk4MjMsImV4cCI6MTY5OTY0MzQyM30.V8zcxHqhQExFuzfNdJMbhM7YGYcDsw1nYKHXMkdnFfw
+[2m2023-11-11 03:10:23.770[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-3][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 8 ms
+[2m2023-11-11 03:10:24.264[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:10:24.268[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:10:24.271[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk4MjQsImV4cCI6MTY5OTY0MzQyNH0.4tn7ZsQ6ghtOmjhATWYjAQvrC1R_lU7KV9ay2G-Bs_M
+[2m2023-11-11 03:10:24.271[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-7][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 7 ms
+[2m2023-11-11 03:10:24.286[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:10:24.287[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:10:24.288[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] Parameters : UserSignRequest(email=null, password=null, deviceId=db4417da-31d7-4ede-ae85-31499b5d7f03), 
+[2m2023-11-11 03:10:24.289[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findByMonth] Parameters : 11, 
+[2m2023-11-11 03:10:24.299[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:10:24.300[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk4MjQsImV4cCI6MTY5OTY0MzQyNH0.4tn7ZsQ6ghtOmjhATWYjAQvrC1R_lU7KV9ay2G-Bs_M
+[2m2023-11-11 03:10:24.300[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 13 ms
+[2m2023-11-11 03:10:24.300[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:10:24.301[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk4MjQsImV4cCI6MTY5OTY0MzQyNH0.4tn7ZsQ6ghtOmjhATWYjAQvrC1R_lU7KV9ay2G-Bs_M
+[2m2023-11-11 03:10:24.302[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-2][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 15 ms
+[2m2023-11-11 03:10:24.300[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.i.domain.user.service.SignService   [0;39m [2m:[0;39m [simpleSignIn] 서브 로그인 정보 통과
+[2m2023-11-11 03:10:24.302[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.i.global.jwt.TokenProvider          [0;39m [2m:[0;39m [generateToken] eyJhbGciOiJIUzI1NiJ9.eyJhdXRoTGV2ZWwiOiJBRE1JTiIsImVtYWlsIjoiaW50ZXJmYWNlSU9TQHNqdS5hYy5rciIsInVzZXJJZCI6IjIiLCJhdWQiOiJkYjQ0MTdkYS0zMWQ3LTRlZGUtYWU4NS0zMTQ5OWI1ZDdmMDMiLCJpYXQiOjE2OTk2Mzk4MjQsImV4cCI6MTY5OTY0MzQyNH0.4tn7ZsQ6ghtOmjhATWYjAQvrC1R_lU7KV9ay2G-Bs_M
+[2m2023-11-11 03:10:24.303[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [simpleSignIn] executed time 17 ms
+[2m2023-11-11 03:10:24.310[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.i.d.S.service.ScheduleService       [0;39m [2m:[0;39m [findByMonth] 11월 일정 조회
+[2m2023-11-11 03:10:24.313[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findByMonth] executed time 24 ms
+[2m2023-11-11 03:10:24.319[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findSubjectsByStatus] Parameters : ONGOING, 
+[2m2023-11-11 03:10:24.323[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSchedules] Parameters : null
+[2m2023-11-11 03:10:24.323[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [getAllBoards] Parameters : null
+[2m2023-11-11 03:10:24.328[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.i.d.S.service.ScheduleService       [0;39m [2m:[0;39m [findScheduleAll] 모든 일정 조회
+[2m2023-11-11 03:10:24.330[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.i.domain.vote.service.VoteService   [0;39m [2m:[0;39m [findOngoingSubjects] 활성된 투표 조회
+[2m2023-11-11 03:10:24.330[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-5][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findAllSchedules] executed time 7 ms
+[2m2023-11-11 03:10:24.332[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-9][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [findSubjectsByStatus] executed time 13 ms
+[2m2023-11-11 03:10:24.345[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.i.domain.board.service.BoardService [0;39m [2m:[0;39m [findAllBoards] : 모든 게시글 조회
+[2m2023-11-11 03:10:24.346[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-6][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [getAllBoards] executed time 23 ms
+[2m2023-11-11 03:21:39.802[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.i.global.util.LoggingInterceptor    [0;39m [2m:[0;39m [GET /] request from IP: 71.6.134.235
+[2m2023-11-11 03:21:39.804[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-4][0;39m [36mx.i.i.global.util.LoggingInterceptor    [0;39m [2m:[0;39m [GET /error] request from IP: 71.6.134.235
+[2m2023-11-11 03:37:12.180[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[io-8080-exec-10][0;39m [36mo.apache.coyote.http11.Http11Processor  [0;39m [2m:[0;39m Error parsing HTTP request header
+ Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
+
+java.lang.IllegalArgumentException: Invalid character found in method name [0x160x030x010x000xee0x010x000x000xea0x030x030xd1n!0xb7F0xef0xac0xe9k0xc7@$0m(V0x80&0x800x930x99XNnF0xbf0x9b0x8a=&0x850x10 ]. HTTP method names must be tokens
+	at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:407) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:263) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1790) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.79.jar!/:na]
+	at java.base/java.lang.Thread.run(Thread.java:829) ~[na:na]
+
+[2m2023-11-11 03:56:49.291[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [checkEmailDuplication] Parameters : 1234, 
+[2m2023-11-11 03:56:49.306[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.i.domain.user.service.UserService   [0;39m [2m:[0;39m [hasEmail] 이메일 중복 검사
+[2m2023-11-11 03:56:49.307[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-1][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [checkEmailDuplication] executed time 16 ms
+[2m2023-11-11 03:56:53.070[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [createUser] Parameters : UserSignRequest(email=1234, password=22, deviceId=3fa85f64-5717-4562-b3fc-2c963f66afa6), 
+[2m2023-11-11 03:56:53.173[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.i.domain.user.service.UserService   [0;39m [2m:[0;39m [saveUser] 신규 유저 등록
+[2m2023-11-11 03:56:53.179[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[nio-8080-exec-8][0;39m [36mx.i.interfaceapi.global.aop.LogAspect   [0;39m [2m:[0;39m [createUser] executed time 109 ms
+[2m2023-11-11 04:10:48.835[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[ionShutdownHook][0;39m [36mj.LocalContainerEntityManagerFactoryBean[0;39m [2m:[0;39m Closing JPA EntityManagerFactory for persistence unit 'default'
+[2m2023-11-11 04:10:48.840[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[ionShutdownHook][0;39m [36mcom.zaxxer.hikari.HikariDataSource      [0;39m [2m:[0;39m HikariPool-1 - Shutdown initiated...
+[2m2023-11-11 04:10:48.850[0;39m [32m INFO[0;39m [35m86495[0;39m [2m---[0;39m [2m[ionShutdownHook][0;39m [36mcom.zaxxer.hikari.HikariDataSource      [0;39m [2m:[0;39m HikariPool-1 - Shutdown completed.
