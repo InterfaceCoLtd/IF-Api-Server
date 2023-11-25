@@ -9,7 +9,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import xyz.interfacesejong.interfaceapi.domain.Schedule.dto.ScheduleResponse;
+import xyz.interfacesejong.interfaceapi.domain.Schedule.domain.Schedule;
 import xyz.interfacesejong.interfaceapi.domain.board.dto.BoardResponse;
 import xyz.interfacesejong.interfaceapi.domain.vote.dto.CreateResponse;
 import xyz.interfacesejong.interfaceapi.global.fcm.PushNotificationService;
@@ -49,8 +49,8 @@ public class PushNotificationAspect {
                     boardResponse.getTitle(),
                     topic.name()
             );
-        } else if (response instanceof ScheduleResponse) {
-            ScheduleResponse scheduleResponse = (ScheduleResponse) response;
+        } else if (response instanceof Schedule) {
+            Schedule scheduleResponse = (Schedule) response;
 
             notificationService.sendFcmScheduleAddedNotification(
                     scheduleResponse.getId(),

@@ -27,7 +27,6 @@ public class SubscriptionService {
      * User 회원 가입시 후속으로 호출
      * */
     @Transactional
-    @Async
     public void createSubscriptionRecord(User user){
         Subscription subscription = new Subscription(user);
         subscriptionRepository.save(subscription);
@@ -182,5 +181,10 @@ public class SubscriptionService {
         SubscriptionResponse response = new SubscriptionResponse(subscription);
         LOGGER.info("[getBadgeCountByUserId] 유저{} 의 구독 정보 확인", id);
         return response;
+    }
+
+    @Transactional
+    public List<Long> findUserIdsByTopic(String topic){
+        return subscriptionRepository.findIdsByTopic(topic);
     }
 }

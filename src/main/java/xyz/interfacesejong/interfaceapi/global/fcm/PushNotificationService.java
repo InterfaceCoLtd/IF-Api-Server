@@ -14,18 +14,17 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.interfacesejong.interfaceapi.domain.subscription.service.SubscriptionService;
-import xyz.interfacesejong.interfaceapi.global.fcm.domain.ContentType;
-import xyz.interfacesejong.interfaceapi.global.fcm.domain.MessageForm;
-import xyz.interfacesejong.interfaceapi.global.fcm.domain.MessageFormRepository;
-import xyz.interfacesejong.interfaceapi.global.fcm.domain.MessageStreamRepository;
+import xyz.interfacesejong.interfaceapi.global.fcm.domain.*;
 import xyz.interfacesejong.interfaceapi.global.fcm.dto.MessageRequest;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -70,36 +69,40 @@ public class PushNotificationService {
         }
     }
 
+    // 일정 등록 전송
     @Async
     public void sendFcmScheduleAddedNotification(Long id, String title, String body, String topic) {
 
         Map<String, String> data = new HashMap<>();
         data.put("contentType", topic);
-        data.put("contentId", id.toString());
+        data.put("contentId", String.valueOf(id));
 
         sendTopicMessage(title, body, data, topic);
     }
 
+    // 투표 등록 전송
     @Async
     public void sendFcmVoteAddedNotification(Long id, String title, String body, String topic) {
 
         Map<String, String> data = new HashMap<>();
         data.put("contentType", topic);
-        data.put("contentId", id.toString());
+        data.put("contentId", String.valueOf(id));
 
         sendTopicMessage(title, body, data, topic);
     }
 
+    // 공지 등록 전송
     @Async
     public void sendFcmNoticeAddedNotification(Long id, String title, String body, String topic) {
 
         Map<String, String> data = new HashMap<>();
         data.put("contentType", topic);
-        data.put("contentId", id.toString());
+        data.put("contentId", String.valueOf(id));
 
         sendTopicMessage(title, body, data, topic);
     }
 
+    // 메시지 전송
     private void sendTopicMessage(String title, String body, Map<String, String> data, String topic) {
         FirebaseMessaging firebaseMessaging = FirebaseMessaging.getInstance();
         Message message = Message.builder()
@@ -108,14 +111,23 @@ public class PushNotificationService {
                         .setTitle(title)
                         .setBody(body).build())
                 .putAllData(data)
-                .setApnsConfig(apnsConfig)
-                .setAndroidConfig(androidConfig)
+                .setApnsConfig(apnsConfig) // IOS 설정
+                .setAndroidConfig(androidConfig) // AOS 설정
                 .build();
         LOGGER.info("[sendTopicMessage] create message {}", new Gson().toJson(message));
 
         try {
             String response = firebaseMessaging.send(message);
+            
+            // badge 값 증가
             subscriptionService.increaseBadgeCountForTopic(topic);
+
+            // 메시지 형식 저장
+            MessageForm form = saveMessageForm(title, body, data, topic);
+
+            // 알림 전송 내역 저장
+            saveMessageStream(form, topic);
+
             LOGGER.info("[sendTopicMessage] send message {}", response);
         } catch (FirebaseMessagingException exception) {
             LOGGER.info("[sendTopicMessage] exception {}", exception.getMessage());
@@ -173,13 +185,36 @@ public class PushNotificationService {
     }
 
 
-    @Transactional
-    public void saveMessageForm(String title, String body, Map<String, String> data, String topic, String token) {
-        formRepository.save(MessageForm.builder()
-                .title(title)
-                .body(body)
-                .build());
+    // 메시지 형식 저장
+    public MessageForm saveMessageForm(String title, String body, Map<String, String> data, String topic) {
+        MessageForm form = new MessageForm(title, body, topic, data.get("contentType"), Long.parseLong(data.get("contentId")));
+        formRepository.save(form);
+
+        return form;
     }
 
+    // 메시지 전송 내역 저장
+    @Async
+    public void saveMessageStream(MessageForm form, String topic) {
+        List<Long> users = subscriptionService.findUserIdsByTopic(topic);
+
+        List<MessageStream> messageStreams = users.stream()
+                .map(id -> new MessageStream(id, form))
+                .collect(Collectors.toList());
+
+        streamRepository.saveAll(messageStreams);
+    }
+
+    @Transactional
+    public List<MessageRequest> findRecentThreeMonthsNotifications(Long userId){
+        LocalDateTime threeMonthsAgo = LocalDateTime.now().minusMonths(3);
+        List<MessageRequest> response = streamRepository
+                .findFormsByUserIdAndOlderThanThreeMonths(userId, threeMonthsAgo).stream()
+                .map(MessageRequest::new)
+                .collect(Collectors.toList());
+
+        LOGGER.info("[findRecentThreeMonthsNotifications] 유저{}의 알림 내역 조회", userId);
+        return response;
+    }
 
 }

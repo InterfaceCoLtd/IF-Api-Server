@@ -38,11 +38,11 @@ public class UserController {
         User user = userService.saveUser(request);
         UserSignResponse response = new UserSignResponse(user);
 
-        // 인증 메일 발송
-        signService.sendVerifyMail(response);
-
         // 구독 레코드 생성
         subscriptionService.createSubscriptionRecord(user);
+
+        // 인증 메일 발송
+        signService.sendVerifyMail(response);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
