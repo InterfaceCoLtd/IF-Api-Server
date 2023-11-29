@@ -12,6 +12,8 @@ log/
 ### 설정 파일 ###
 *.properties
 InterfaceApiApplication
+application.properties
+application-file.properties
 
 ### 보안 키 ###
 interfaceapp-a232c-firebase-adminsdk-srkiw-7d04618425.json
