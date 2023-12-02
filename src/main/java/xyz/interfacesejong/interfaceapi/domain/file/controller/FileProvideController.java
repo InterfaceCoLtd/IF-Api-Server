@@ -32,10 +32,16 @@ public class FileProvideController {
     private String IMAGES_DIR = "C:/CODE/IF/image/";
 
     @GetMapping("image")
+    @Operation(summary = "년도별 홍보 이미지 목록",
+            description = "year에 해당하는 년도에 대한 모든 홍보 이미지 url를 제공한다.\n\n" +
+                    "response에 들어 있는 주소로 Get요청시 이미지를 확인할 수 있다.")
     public ResponseEntity<List<String>> findIntroductionPhotoNames(@RequestParam String year){
         File dir = new File(IMAGES_DIR + year);
 
         if (dir.exists() && dir.isDirectory()) {
+            if (dir.listFiles() == null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
             List<String> imageFileNames = Arrays.stream(dir.listFiles())
                     .filter(file ->
                             file.getName().toLowerCase().endsWith(".jpg")
@@ -50,8 +56,10 @@ public class FileProvideController {
     }
 
     @GetMapping("image/{boardId}/{src-url}")
-    @Operation(summary = "image 제공", description = "image 제공")
-    public ResponseEntity<InputStreamResource> getImage(@PathVariable String boardId, @PathVariable(value = "src-url") String srcUrl) throws FileNotFoundException {
+    @Operation(summary = "image 제공",
+            description = "게시글 목록인 boardId와 게시글에 속한 이미지명에 해당하는 이미지를 반환한다.")
+    public ResponseEntity<InputStreamResource> getImage(@PathVariable String boardId,
+                                                        @PathVariable(value = "src-url") String srcUrl) throws FileNotFoundException {
         Path imagePath = Paths.get(IMAGES_DIR + "/" + boardId + "/" + srcUrl);
 
         if (!Files.exists(imagePath) || Files.isDirectory(imagePath)) {
