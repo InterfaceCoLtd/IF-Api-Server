@@ -2,6 +2,7 @@ package xyz.interfacesejong.interfaceapi.domain.vote.dto;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import xyz.interfacesejong.interfaceapi.domain.vote.domain.VoteSubject;
 
 import java.time.LocalDateTime;
 
@@ -28,5 +29,13 @@ public class SubjectResponse {
         this.startDate = startDate;
         this.endDate = endDate;
         this.total = total;
+    }
+
+    public SubjectResponse(VoteSubject voteSubject){
+        this.subject = voteSubject.getSubject();
+        this.subjectId = voteSubject.getId();
+        this.endDate = voteSubject.getEndDateTime();
+        this.startDate = voteSubject.getStartDateTime();
+        this.total = voteSubject.getTotal();
     }
 }

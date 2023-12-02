@@ -63,19 +63,13 @@ public class VoteService {
         return createResponse;
     }
 
-    /*x`
+    /*
     * 모든 투표 주제 조회
     */
     @Transactional
     public List<SubjectResponse> findAllSubjects() {
-        List<SubjectResponse> subjects = subjectRepository.findAll().stream()
-                .map(subject -> SubjectResponse.builder()
-                        .subject(subject.getSubject())
-                        .subjectId(subject.getId())
-                        .startDate(subject.getStartDateTime())
-                        .endDate(subject.getEndDateTime())
-                        .total(subject.getTotal())
-                        .build())
+        List<SubjectResponse> subjects = subjectRepository.findAllByOrderByStartDateTimeDesc().stream()
+                .map(SubjectResponse::new)
                 .collect(Collectors.toList());
 
         LOGGER.info("[findAllSubjects] 모든 투표 조회");
