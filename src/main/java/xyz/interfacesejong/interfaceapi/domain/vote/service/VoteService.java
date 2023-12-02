@@ -81,7 +81,9 @@ public class VoteService {
     * */
     @Transactional
     public List<SubjectResponse> findOngoingSubjects(){
-        List<SubjectResponse> subjects = subjectRepository.findAllByOngoing(LocalDateTime.now());
+        List<SubjectResponse> subjects = subjectRepository.findAllByOngoingSubjects(LocalDateTime.now()).stream()
+                .map(SubjectResponse::new)
+                .collect(Collectors.toList());
 
         LOGGER.info("[findOngoingSubjects] 활성된 투표 조회");
         return subjects;
@@ -91,7 +93,9 @@ public class VoteService {
     * */
     @Transactional
     public List<SubjectResponse> findUpcomingSubjects(){
-        List<SubjectResponse> subjects = subjectRepository.findAllByUpcoming(LocalDateTime.now());
+        List<SubjectResponse> subjects = subjectRepository.findAllByUpcomingSubjects(LocalDateTime.now()).stream()
+                .map(SubjectResponse::new)
+                .collect(Collectors.toList());;
 
         LOGGER.info("[findUpcomingSubjects] 예정된 투표 조회");
         return subjects;
@@ -101,7 +105,9 @@ public class VoteService {
     * */
     @Transactional
     public List<SubjectResponse> findCompletedSubjects(){
-        List<SubjectResponse> subjects = subjectRepository.findAllByCompleted(LocalDateTime.now());
+        List<SubjectResponse> subjects = subjectRepository.findAllByCompletedSubjects(LocalDateTime.now()).stream()
+                .map(SubjectResponse::new)
+                .collect(Collectors.toList());;
 
         LOGGER.info("[findCompletedSubjects] 만료된 투표 조회");
         return subjects;
